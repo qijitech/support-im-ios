@@ -98,8 +98,8 @@
 		806705CBC3DFE2116228881C /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
-				80670EAC56A3AC0AC2618440 /* AppDelegate.m */,
 				80670C252006DCC5078C5C8D /* AppDelegate.h */,
+				80670EAC56A3AC0AC2618440 /* AppDelegate.m */,
 			);
 			path = AppDelegate;
 			sourceTree = "<group>";
