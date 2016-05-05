@@ -5,11 +5,13 @@ PODS:
   - AVOSCloudIM (3.2.8):
     - AVOSCloud
   - DateTools (1.7.0)
+  - Masonry (1.0.0)
   - SupportIm (0.1.0):
     - AVOSCloud
     - AVOSCloudCrashReporting
     - AVOSCloudIM
     - DateTools
+    - Masonry
 
 DEPENDENCIES:
   - SupportIm (from `.`)
@@ -23,7 +25,8 @@ SPEC CHECKSUMS:
   AVOSCloudCrashReporting: 2dddc7dfc8ef423492a01c0076b3e97716854701
   AVOSCloudIM: d2f6a13d64f9676a43e4d68b822bd1be3f96fb76
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
-  SupportIm: 889fb3b4265ca03415b258850565a27f4743c683
+  Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
+  SupportIm: 375320a4d4362003df0fa37a3b041ff164322b6f
 
 PODFILE CHECKSUM: 2205ec9ddc30209ae85133999c3ad5de280d9df6
 
