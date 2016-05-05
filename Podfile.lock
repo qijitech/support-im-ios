@@ -1,0 +1,30 @@
+PODS:
+  - AVOSCloud (3.2.6)
+  - AVOSCloudCrashReporting (3.2.6):
+    - AVOSCloud
+  - AVOSCloudIM (3.2.6):
+    - AVOSCloud
+  - DateTools (1.7.0)
+  - SupportIm (0.1.0):
+    - AVOSCloud
+    - AVOSCloudCrashReporting
+    - AVOSCloudIM
+    - DateTools
+
+DEPENDENCIES:
+  - SupportIm (from `.`)
+
+EXTERNAL SOURCES:
+  SupportIm:
+    :path: .
+
+SPEC CHECKSUMS:
+  AVOSCloud: 08ba88573fca8559dfc658942b391c4568fabfc0
+  AVOSCloudCrashReporting: e5adfdfbfe683cb9097daa1723732b269e8b8d08
+  AVOSCloudIM: 9b23286bf2a86b8a7440c70762990dcb15092d52
+  DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
+  SupportIm: 889fb3b4265ca03415b258850565a27f4743c683
+
+PODFILE CHECKSUM: 2205ec9ddc30209ae85133999c3ad5de280d9df6
+
+COCOAPODS: 1.0.0.beta.3

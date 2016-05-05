@@ -25,18 +25,25 @@ TODO: Add long description of the pod here.
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "杨玉刚" => "smartydroid@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/SupportIm.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/qijitech/support-im-ios.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'SupportIm/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'SupportIm' => ['SupportIm/Assets/*.png']
-  # }
+  s.resource_bundles = {
+   'StarterKit' => ['SupportIm/Assets/**/*.{png,gif}']
+  }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.public_header_files = 'SupportIm/Classes/**/*.h'
+  s.frameworks = 'UIKit', 'MapKit', 'MobileCoreServices', 'SystemConfiguration'
+  s.vendored_frameworks = 'lib/libAVOSCloud.a'
+  s.libraries = 'AVOSCloud'
+
+  s.dependency 'AVOSCloud'
+  s.dependency 'AVOSCloudIM'
+  s.dependency 'AVOSCloudCrashReporting'
+  s.dependency 'DateTools'
+
 end
