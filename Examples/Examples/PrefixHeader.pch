@@ -1,0 +1,44 @@
+//
+//  PrefixHeader.pch
+//  Examples
+//
+//  Created by shuu on 16/5/8.
+//  Copyright © 2016年 奇迹空间. All rights reserved.
+//
+
+
+#import <Masonry/Masonry.h>
+#import <MBProgressHUD/MBProgressHUD.h>
+#import <AVOSCloud/AVOSCloud.h>
+#import <AVOSCloudIM/AVOSCloudIM.h>
+
+#import "UIViewTools.h"
+#import "SKToastUtil.h"
+#import "AddRequest.h"
+#import "AVIMConversation+Custom.h"
+#import "ChatManager.h"
+#import "ConversationStore.h"
+#import "UserManager.h"
+#import "AVUser+Custom.h"
+
+
+
+#define WEAKSELF typeof(self) __weak weakSelf = self;
+
+#define MAINCOLOR [UIColor colorWithRed:203.f/255.f green:0.f/255.f blue:41.f/255.f alpha:1.f]
+#define BACKGROUNDCOLOR [UIColor colorWithRed:239.f/255.f green:239.f/255.f blue:239.f/255.f alpha:1.f]
+#define RGBCOLOR(r, g, b) [UIColor colorWithRed : (r) / 255.0 green : (g) / 255.0 blue : (b) / 255.0 alpha : 1]
+
+
+#define KEY_USERNAME @"KEY_USERNAME"
+#define KEY_PASSWORD @"KEY_PASSWORD"
+
+
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */

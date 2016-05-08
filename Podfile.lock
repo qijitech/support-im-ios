@@ -5,15 +5,27 @@ PODS:
   - AVOSCloudIM (3.2.8):
     - AVOSCloud
   - DateTools (1.7.0)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
   - Masonry (1.0.0)
+  - MaterialControls (1.0.2)
+  - MBProgressHUD (0.9.2)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
   - SupportIm (0.1.0):
     - AVOSCloud
     - AVOSCloudCrashReporting
     - AVOSCloudIM
     - DateTools
+    - FMDB
     - Masonry
+    - SDWebImage
 
 DEPENDENCIES:
+  - MaterialControls
+  - MBProgressHUD
   - SupportIm (from `.`)
 
 EXTERNAL SOURCES:
@@ -25,9 +37,13 @@ SPEC CHECKSUMS:
   AVOSCloudCrashReporting: 2dddc7dfc8ef423492a01c0076b3e97716854701
   AVOSCloudIM: d2f6a13d64f9676a43e4d68b822bd1be3f96fb76
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
-  SupportIm: 375320a4d4362003df0fa37a3b041ff164322b6f
+  MaterialControls: bdeeb94aa049b73f70739a5514be137d2d45c08a
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SupportIm: b510dfc1af96a19c9f591e9de35b2b7702f045f8
 
-PODFILE CHECKSUM: 2205ec9ddc30209ae85133999c3ad5de280d9df6
+PODFILE CHECKSUM: 0158b27aba84986465d2500153adfa9e9d1f290a
 
 COCOAPODS: 1.0.0.beta.3

@@ -7,8 +7,7 @@
 //
 
 #import "ConversationTableViewCell.h"
-
-
+#import <Masonry/Masonry.h>
 
 static CGFloat kImageSize = 45;
 static CGFloat kVerticalSpacing = 8;
@@ -60,13 +59,35 @@ static CGFloat kLittleBadgeSize = 10;
 - (void)updateConstraints {
     if (!self.didSetupConstraints) {
         self.didSetupConstraints = YES;
-//        self.avatarImageView mas_make
-        
-        
-        
- 
+        [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self).with.offset(kHorizontalSpacing);
+            make.centerY.equalTo(self);
+            make.size.mas_equalTo(CGSizeMake(kImageSize, kImageSize));
+        }];
+        [self.badgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(kLittleBadgeSize, kLittleBadgeSize));
+            make.centerY.mas_equalTo(self.avatarImageView.mas_top);
+            make.centerX.mas_equalTo(self.avatarImageView.mas_right);
+        }];
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.avatarImageView.mas_right).with.offset(kHorizontalSpacing);
+            make.right.equalTo(self.timestampLabel.mas_left).with.offset(-kHorizontalSpacing);
+            make.height.mas_equalTo(kNameLabelHeight);
+            make.top.equalTo(self.avatarImageView);
+        }];
+        [self.messageTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.nameLabel);
+            make.bottom.equalTo(self.avatarImageView);
+            make.right.equalTo(self).with.offset(-kHorizontalSpacing);
+            make.height.mas_equalTo(kMessageLabelHeight);
+        }];
+        [self.timestampLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.messageTextLabel);
+            make.width.mas_equalTo(kTimestampeLabelWidth);
+            make.height.mas_equalTo(kNameLabelHeight);
+            make.top.equalTo(self.avatarImageView);
+        }];
     }
-    
     [super updateConstraints];
 }
 
@@ -76,10 +97,10 @@ static CGFloat kLittleBadgeSize = 10;
     kMessageLabelHeight = kImageSize - kNameLabelHeight;
     
     [self addSubview:self.avatarImageView];
-    [self addSubview:self.timestampLabel];
     [self addSubview:self.badgeLabel];
     [self addSubview:self.nameLabel];
     [self addSubview:self.messageTextLabel];
+    [self addSubview:self.timestampLabel];
 //    [self addSubview:self.badgeView];
 }
 

@@ -7,6 +7,25 @@
 //
 
 #import "AppDelegate.h"
+#import "CacheManager.h"
+#import "ViewController.h"
+#import "MainLoginViewController.h"
+#import "MainTabBarController.h"
+#import <AVOSCloudCrashReporting/AVOSCloudCrashReporting.h>
+#import "IMService.h"
+//
+#define AVOSAppID @"QC1CFBP5VsJfXiiHPohJatmg-gzGzoHsz"
+#define AVOSAppKey @"dQw3KFUMRMFp4vjn48z8GUDk"
+
+
+// mine
+//#define AVOSAppID @"LXQhO5hvt5IOyYOhmGoFj6YN-gzGzoHsz"
+//#define AVOSAppKey @"8n5D7YOWfV0oGcaaPurlYjtG"
+
+
+// demo
+//#define AVOSAppID @"x3o016bxnkpyee7e9pa5pre6efx2dadyerdlcez0wbzhw25g"
+//#define AVOSAppKey @"057x24cfdzhffnl3dzk14jh9xo2rq6w1hy1fdzt5tv46ym78"
 
 @interface AppDelegate ()
 
@@ -16,12 +35,41 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     // Override point for customization after application launch.
-
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor grayColor];
+    
+    [AddRequest registerSubclass];
+    
+    // Enable Crash Reporting
+    [AVOSCloudCrashReporting enable];
+    //希望能提供更详细的日志信息，打开日志的方式是在 AVOSCloud 初始化语句之后加上下面这句：
+    
+    //Objective-C
+#ifndef __OPTIMIZE__
+    [AVOSCloud setAllLogsEnabled:YES];
+#endif
+    
+    [AVOSCloud setApplicationId:AVOSAppID clientKey:AVOSAppKey];
+#ifdef DEBUG
 
+    [AVAnalytics setAnalyticsEnabled:NO];
+    [AVOSCloud setVerbosePolicy:kAVVerboseShow];
+    [AVLogger addLoggerDomain:AVLoggerDomainIM];
+    [AVLogger addLoggerDomain:AVLoggerDomainCURL];
+    [AVLogger setLoggerLevelMask:AVLoggerLevelAll];
+#endif    
+    
+    self.window.backgroundColor = [UIColor whiteColor];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self.window makeKeyAndVisible];
+    
+    ViewController *rootViewController = [[ViewController alloc] init];
+    self.window.rootViewController = rootViewController;
+    
     return YES;
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -45,5 +93,49 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+- (void)toMain {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[CacheManager manager] registerUsers:@[[AVUser currentUser]]];
+    [ChatManager manager].userDelegate = [IMService service];
+    
+#ifdef DEBUG
+#warning 使用开发证书来推送，方便调试，具体可看这个变量的定义处
+    [ChatManager manager].useDevPushCerticate = YES;
+#endif
+    
+    [[ChatManager manager] openWithCallback: ^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            [self toChat];
+        } else {
+            [SKToastUtil toastWithText:@"login fail"];
+            [self toLogin];
+        }
+    }];
+}
+
+- (void)toChat {
+    MainTabBarController *mainTabBarController = [[MainTabBarController alloc] init];
+    [UIView transitionWithView:[[[UIApplication sharedApplication] delegate] window] duration:0.4 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        BOOL oldState = [UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        [[[[UIApplication sharedApplication] delegate] window] setRootViewController:mainTabBarController];
+        [UIView setAnimationsEnabled:oldState];
+    } completion:nil];
+}
+
+- (void)toLogin {
+    MainLoginViewController *mainLoginViewController = [[MainLoginViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mainLoginViewController];
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    navigationController.navigationBar.barTintColor = MAINCOLOR;
+    [UIView transitionWithView:[[[UIApplication sharedApplication] delegate] window] duration:0.4 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        BOOL oldState=[UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        [[[[UIApplication sharedApplication] delegate] window] setRootViewController:navigationController];
+        [UIView setAnimationsEnabled:oldState];
+    } completion:nil];
+}
+
 
 @end

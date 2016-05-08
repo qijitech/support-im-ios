@@ -46,5 +46,7 @@ TODO: Add long description of the pod here.
   s.dependency 'AVOSCloudCrashReporting'
   s.dependency 'DateTools'
   s.dependency 'Masonry'
+  s.dependency 'FMDB'
+  s.dependency 'SDWebImage'
 
 end
