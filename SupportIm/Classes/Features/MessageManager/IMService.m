@@ -15,7 +15,6 @@
 #import "ChatViewController.h"
 #import "EmotionUtils.h"
 #import "SKToastUtil.h"
-//#import "AppDelegate.h"
 #import "AVUser+Custom.h"
 
 
@@ -47,6 +46,7 @@
     NSAssert(avUser, reason);
     user.userId = userId;
     user.username = avUser.username;
+    user.displayName = avUser.displayName;
 //    AVFile *avatarFile = [avUser objectForKey:@"avatar"];
     AVFile *avatarFile = [AVFile fileWithURL:avUser.avatar];
     user.avatarUrl = avatarFile.url;
@@ -54,17 +54,18 @@
 }
 
 - (void)pushToChatRoomByConversation:(AVIMConversation *)conversation fromNavigation:(UINavigationController *)navigation completion:(CompletionBlock)completion {
-    [SKToastUtil toastWithText:@"do something"];
+//    [SKToastUtil toastWithText:@"do something"];
+
 //    //如果从单聊聊天界面跳转到单聊页面，根据当前的业务可以认为这两个单聊是同一个页面，则直接 pop 回聊天界面
-//    for (UIViewController *viewController in navigation.viewControllers) {
-//        if ([viewController isKindOfClass:[ChatViewController class]] ) {
-//            AVIMConversation  *conversationInCDChatVC = [(ChatViewController *)viewController conversation];
-//            if (conversation.members.count == 2 && conversationInCDChatVC.members.count == 2) {
-//                [navigation popToViewController:viewController animated:YES];
-//                return;
-//            }
-//        }
-//    }
+    for (UIViewController *viewController in navigation.viewControllers) {
+        if ([viewController isKindOfClass:[ChatViewController class]] ) {
+            AVIMConversation  *conversationInCDChatVC = [(ChatViewController *)viewController conversation];
+            if (conversation.members.count == 2 && conversationInCDChatVC.members.count == 2) {
+                [navigation popToViewController:viewController animated:YES];
+                return;
+            }
+        }
+    }
 //    //如果是从类似朋友圈的地方跳转来，则重新 push 到一个新创建的聊天界面
 //    AppDelegate *delegate = ((AppDelegate *)[[UIApplication sharedApplication] delegate]);
 //    UIWindow *window = delegate.window;
@@ -77,6 +78,14 @@
 //    [navigation popToRootViewControllerAnimated:NO];
 //    [tabbarController.selectedViewController pushViewController:chatVC animated:YES];
 //    completion ? completion(YES, nil) : nil;
+
+    UITabBarController *tabbarController = (UITabBarController *)[[UIApplication sharedApplication] delegate].window.rootViewController;
+    ChatViewController *chatVC = [[ChatViewController alloc] initWithConversation:conversation];
+    chatVC.hidesBottomBarWhenPushed = YES;
+    tabbarController.selectedViewController = tabbarController.viewControllers[0];
+    [navigation popToRootViewControllerAnimated:NO];
+    [tabbarController.selectedViewController pushViewController:chatVC animated:YES];
+    completion ? completion(YES, nil) : nil;
 }
 
 - (void)createChatRoomByUserId:(NSString *)userId fromViewController:(BaseViewController *)viewController completion:(CompletionBlock)completion {

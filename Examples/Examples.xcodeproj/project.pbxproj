@@ -178,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				A825BC8F1CE07ACD00BE8DA0 /* Controllers */,
-				A825BC941CE07ACD00BE8DA0 /* Models */,
 				A825BC951CE07ACD00BE8DA0 /* Views */,
 			);
 			path = Account;
@@ -191,13 +190,6 @@
 				A825BC911CE07ACD00BE8DA0 /* MainAccountViewController.m */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		A825BC941CE07ACD00BE8DA0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		A825BC951CE07ACD00BE8DA0 /* Views */ = {

@@ -65,8 +65,11 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [self.window makeKeyAndVisible];
     
+    
+
     ViewController *rootViewController = [[ViewController alloc] init];
     self.window.rootViewController = rootViewController;
+
     
     return YES;
 
@@ -99,10 +102,10 @@
     [[CacheManager manager] registerUsers:@[[AVUser currentUser]]];
     [ChatManager manager].userDelegate = [IMService service];
     
-#ifdef DEBUG
-#warning 使用开发证书来推送，方便调试，具体可看这个变量的定义处
-    [ChatManager manager].useDevPushCerticate = YES;
-#endif
+//#ifdef DEBUG
+//#warning 使用开发证书来推送，方便调试，具体可看这个变量的定义处
+//    [ChatManager manager].useDevPushCerticate = YES;
+//#endif
     
     [[ChatManager manager] openWithCallback: ^(BOOL succeeded, NSError *error) {
         if (succeeded) {

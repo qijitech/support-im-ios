@@ -15,7 +15,6 @@
 
 
 
-
 #define WEAKSELF typeof(self) __weak weakSelf = self;
 
 #define MAINCOLOR [UIColor colorWithRed:203.f/255.f green:0.f/255.f blue:41.f/255.f alpha:1.f]

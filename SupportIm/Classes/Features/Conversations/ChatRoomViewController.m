@@ -132,7 +132,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
 }
 
 - (void)refreshConversation {
-    self.title = self.conversation.title;
+    self.title = self.conversation.displayName;
 }
 
 #pragma mark - connect status view

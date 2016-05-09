@@ -56,7 +56,7 @@
     if ([self type] == ConversationTypeSingle) {
         NSString *otherId = [self otherId];
         id<UserModelDelegate> other = [[ChatManager manager].userDelegate getUserById:otherId];
-        return other.username;
+        return other.displayName;
     } else {
         return self.name;
     }

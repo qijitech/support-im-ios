@@ -183,7 +183,7 @@ static NSString *cellIdentifier = @"ContactCell";
     AVIMConversation *conversation = [self.conversations objectAtIndex:indexPath.row];
     if (conversation.type == ConversationTypeSingle) {
         id<UserModelDelegate> user = [[ChatManager manager].userDelegate getUserById:conversation.otherId];
-        cell.nameLabel.text = user.username;
+        cell.nameLabel.text = user.displayName;
         if ([self.chatListDelegate respondsToSelector:@selector(defaultAvatarImage)] && user.avatarUrl) {
             [cell.avatarImageView sd_setImageWithURL:[NSURL URLWithString:user.avatarUrl] placeholderImage:[self.chatListDelegate defaultAvatarImage]];
         } else {
