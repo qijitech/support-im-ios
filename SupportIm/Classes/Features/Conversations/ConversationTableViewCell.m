@@ -64,11 +64,21 @@ static CGFloat kLittleBadgeSize = 10;
             make.centerY.equalTo(self);
             make.size.mas_equalTo(CGSizeMake(kImageSize, kImageSize));
         }];
-        [self.badgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.litteBadgeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.size.mas_equalTo(CGSizeMake(kLittleBadgeSize, kLittleBadgeSize));
-            make.centerY.mas_equalTo(self.avatarImageView.mas_top);
-            make.centerX.mas_equalTo(self.avatarImageView.mas_right);
+            make.left.mas_equalTo(kHorizontalSpacing + kImageSize);
+            make.top.mas_equalTo(10);
+//            make.centerX.equalTo(self.avatarImageView.mas_right);
+//            make.centerY.equalTo(self.avatarImageView.mas_top);
         }];
+        [self.badgeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(kLittleBadgeSize, kLittleBadgeSize));
+            make.left.mas_equalTo(kHorizontalSpacing + kImageSize);
+            make.top.mas_equalTo(10);
+//            make.centerX.equalTo(self.avatarImageView.mas_right);
+//            make.centerY.equalTo(self.avatarImageView.mas_top);
+        }];
+
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.avatarImageView.mas_right).with.offset(kHorizontalSpacing);
             make.right.equalTo(self.timestampLabel.mas_left).with.offset(-kHorizontalSpacing);
@@ -97,11 +107,12 @@ static CGFloat kLittleBadgeSize = 10;
     kMessageLabelHeight = kImageSize - kNameLabelHeight;
     
     [self addSubview:self.avatarImageView];
-    [self addSubview:self.badgeLabel];
+    [self.avatarImageView addSubview:self.badgeView];
+    [self addSubview:self.litteBadgeView];
     [self addSubview:self.nameLabel];
     [self addSubview:self.messageTextLabel];
     [self addSubview:self.timestampLabel];
-//    [self addSubview:self.badgeView];
+    [self addSubview:self.badgeView];
 }
 
 - (UIImageView *)avatarImageView {
@@ -110,18 +121,6 @@ static CGFloat kLittleBadgeSize = 10;
     }
     return _avatarImageView;
 }
-
-//- (UIView *)litteBadgeView {
-//    if (_litteBadgeView == nil) {
-//        _litteBadgeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kLittleBadgeSize, kLittleBadgeSize)];
-//        _litteBadgeView.backgroundColor = [UIColor redColor];
-//        _litteBadgeView.layer.masksToBounds = YES;
-//        _litteBadgeView.layer.cornerRadius = kLittleBadgeSize / 2;
-//        _litteBadgeView.center = CGPointMake(CGRectGetMaxX(_avatarImageView.frame), CGRectGetMinY(_avatarImageView.frame));
-//        _litteBadgeView.hidden = YES;
-//    }
-//    return _litteBadgeView;
-//}
 
 - (UILabel *)timestampLabel {
     if (_timestampLabel == nil) {
@@ -149,14 +148,23 @@ static CGFloat kLittleBadgeSize = 10;
     return _messageTextLabel;
 }
 
-- (UILabel *)badgeLabel {
-    if (_badgeLabel == nil) {
-        _badgeLabel = [[UILabel alloc] init];
-        _badgeLabel.backgroundColor = [UIColor redColor];
-        _badgeLabel.layer.masksToBounds = YES;
-        _badgeLabel.layer.cornerRadius = kLittleBadgeSize / 2;
+- (UIView *)litteBadgeView {
+    if (_litteBadgeView == nil) {
+        _litteBadgeView = [[UIView alloc] init];
+        _litteBadgeView.backgroundColor = [UIColor redColor];
+        _litteBadgeView.layer.masksToBounds = YES;
+        _litteBadgeView.layer.cornerRadius = kLittleBadgeSize / 2;
+        _litteBadgeView.hidden = YES;
     }
-    return _badgeLabel;
+    return _litteBadgeView;
+}
+
+- (JSBadgeView *)badgeView {
+    if (_badgeView == nil) {
+        _badgeView = [[JSBadgeView alloc] init];
+//        _badgeView = [[JSBadgeView alloc] initWithParentView:_avatarImageView alignment:JSBadgeViewAlignmentTopRight];
+    }
+    return _badgeView;
 }
 
 - (void)awakeFromNib {
@@ -168,9 +176,8 @@ static CGFloat kLittleBadgeSize = 10;
 
 - (void)prepareForReuse {
     [super prepareForReuse];
-    self.badgeLabel.text = nil;
-    self.badgeLabel.hidden = YES;
-//    self.litteBadgeView.hidden = YES;
+    self.badgeView.badgeText = nil;
+    self.litteBadgeView.hidden = YES;
     self.messageTextLabel.text = nil;
     self.timestampLabel.text = nil;
     self.nameLabel.text = nil;

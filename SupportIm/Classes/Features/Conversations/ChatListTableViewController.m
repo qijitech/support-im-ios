@@ -199,9 +199,9 @@ static NSString *cellIdentifier = @"ContactCell";
     }
     if (conversation.unreadCount > 0) {
         if (conversation.muted) {
-            cell.badgeLabel.hidden = NO;
+            cell.litteBadgeView.hidden = NO;
         } else {
-            cell.badgeLabel.text = [NSString stringWithFormat:@"%@", @(conversation.unreadCount)];
+            cell.badgeView.badgeText = [NSString stringWithFormat:@"%@", @(conversation.unreadCount)];
         }
     }
     if ([self.chatListDelegate respondsToSelector:@selector(configureCell:atIndexPath:withConversation:)]) {

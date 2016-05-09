@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JSBadgeView.h"
 
 @interface ConversationTableViewCell : UITableViewCell
 
@@ -19,8 +20,8 @@
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *messageTextLabel;
-@property (nonatomic, strong) UILabel *badgeLabel;
-//@property (nonatomic, strong) UIView *litteBadgeView;
+@property (nonatomic, strong) JSBadgeView *badgeView;
+@property (nonatomic, strong) UIView *litteBadgeView;
 @property (nonatomic, strong) UILabel *timestampLabel;
 
 @end

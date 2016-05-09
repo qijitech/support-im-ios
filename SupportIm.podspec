@@ -31,9 +31,8 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'SupportIm/Classes/**/*'
-  
   s.resource_bundles = {
-   'StarterKit' => ['SupportIm/Assets/**/*.{png,gif}']
+    'SupportIm' => ['SupportIm/Assets/*']
   }
 
   s.public_header_files = 'SupportIm/Classes/**/*.h'
@@ -48,5 +47,7 @@ TODO: Add long description of the pod here.
   s.dependency 'Masonry'
   s.dependency 'FMDB'
   s.dependency 'SDWebImage'
+  s.dependency 'MaterialControls'
+  s.dependency 'MBProgressHUD'
 
 end

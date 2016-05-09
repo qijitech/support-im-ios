@@ -21,11 +21,11 @@ PODS:
     - DateTools
     - FMDB
     - Masonry
+    - MaterialControls
+    - MBProgressHUD
     - SDWebImage
 
 DEPENDENCIES:
-  - MaterialControls
-  - MBProgressHUD
   - SupportIm (from `.`)
 
 EXTERNAL SOURCES:
@@ -42,8 +42,8 @@ SPEC CHECKSUMS:
   MaterialControls: bdeeb94aa049b73f70739a5514be137d2d45c08a
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
-  SupportIm: b510dfc1af96a19c9f591e9de35b2b7702f045f8
+  SupportIm: ec751738f57cfca3f4b9f9bc29da25fd96a6c017
 
-PODFILE CHECKSUM: 0158b27aba84986465d2500153adfa9e9d1f290a
+PODFILE CHECKSUM: e0aaab9f5bc0cc78038d481a8d66479228c45a54
 
 COCOAPODS: 1.0.0.beta.3

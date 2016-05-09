@@ -16,6 +16,16 @@
 #import <SupportIm/UIImage+Icon.h>
 #import <SupportIm/SoundManager.h>
 #import <SupportIm/EmotionUtils.h>
+#import <SupportIm/CacheManager.h>
+#import <SupportIm/IMService.h>
+
+#import <SupportIm/ConversationViewController.h>
+#import <SupportIm/FriendListViewController.h>
+#import <SupportIm/BaseNavigationController.h>
+#import <SupportIm/PhotoGraphyPicker.h>
+
+
+
 
 
 #endif /* SupportIm_h */

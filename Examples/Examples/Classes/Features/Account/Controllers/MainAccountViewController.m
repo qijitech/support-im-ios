@@ -176,16 +176,17 @@
 }
 
 - (void)userLogout {
-    [[ChatManager manager] closeWithCallback: ^(BOOL succeeded, NSError *error) {
-        if (succeeded && !error) {
-            [AVUser logOut];
-            AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            [delegate toLogin];
-
-        } else {
-            [SKToastUtil toastWithText:error.localizedDescription];
-        }
-    }];
+    [SKToastUtil toastWithText:@"do something"];
+//    [[ChatManager manager] closeWithCallback: ^(BOOL succeeded, NSError *error) {
+//        if (succeeded && !error) {
+//            [AVUser logOut];
+//            AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//            [delegate toLogin];
+//
+//        } else {
+//            [SKToastUtil toastWithText:error.localizedDescription];
+//        }
+//    }];
 }
 
 #pragma mark - load data
