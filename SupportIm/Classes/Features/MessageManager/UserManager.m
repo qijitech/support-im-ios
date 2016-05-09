@@ -347,9 +347,9 @@ static UserManager *userManager;
         if (error) {
             callback(NO, error);
         } else {
-            if (succeeded) {
-                callback(YES, [NSError errorWithDomain:@"Add Request" code:0 userInfo:@{ NSLocalizedDescriptionKey:@"已经请求过了" }]);
-            } else {
+//            if (succeeded) {
+//                callback(YES, [NSError errorWithDomain:@"Add Request" code:0 userInfo:@{ NSLocalizedDescriptionKey:@"已经请求过了" }]);
+//            } else {
                 AVUser *curUser = [AVUser currentUser];
                 AddRequest *addRequest = [[AddRequest alloc] init];
                 addRequest.fromUser = curUser;
@@ -357,7 +357,7 @@ static UserManager *userManager;
                 addRequest.isRead = NO;
                 addRequest.status = AddRequestStatusWait;
                 [addRequest saveInBackgroundWithBlock:callback];
-            }
+//            }
         }
     }];
 }

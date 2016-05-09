@@ -12,6 +12,7 @@
 #import "UserInfoViewController.h"
 #import "UserInfoTableViewCell.h"
 #import "Utils.h"
+#import "AVUser+Custom.h"
 #import <Masonry/Masonry.h>
 
 @interface AddFriendViewController ()
@@ -83,7 +84,7 @@ static NSString *cellIndentifier = @"cellIndentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserInfoTableViewCell *cell = [UserInfoTableViewCell createOrDequeueCellByTableView:tableView];
     AVUser *user = self.users[indexPath.row];
-    cell.nameLabel.text = user.username;
+    cell.nameLabel.text = user.displayName;
     [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
     return cell;
 }

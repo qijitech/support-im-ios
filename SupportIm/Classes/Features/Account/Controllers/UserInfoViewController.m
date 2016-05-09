@@ -12,6 +12,7 @@
 #import "Utils.h"
 #import "IMService.h"
 #import "LZPushManager.h"
+#import "AVUser+Custom.h"
 
 @interface UserInfoViewController ()
 
@@ -46,7 +47,7 @@
         if ([self filterError:error]) {
             [[UserManager manager] getBigAvatarImageOfUser:_user block:^(UIImage *image) {
                 self.dataSource =[NSMutableArray array];
-                [self.dataSource addObject:@[@{kMutipleSectionImageKey:image, kMutipleSectionTitleKey:self.user.username}]];
+                [self.dataSource addObject:@[@{kMutipleSectionImageKey:image, kMutipleSectionTitleKey:self.user.displayName}]];
                 NSString *title;
                 NSString *selector;
                 if (isFriend) {

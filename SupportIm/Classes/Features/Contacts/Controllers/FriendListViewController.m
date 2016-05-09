@@ -16,6 +16,8 @@
 #import "Utils.h"
 #import "UserManager.h"
 #import "IMService.h"
+#import "AVUser+Custom.h"
+
 
 static NSString *kCellImageKey = @"image";
 static NSString *kCellBadgeKey = @"badge";
@@ -192,7 +194,7 @@ static NSString *kCellSelectorKey = @"selector";
     } else {
         AVUser *user = [self.dataSource objectAtIndex:indexPath.row];
         [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
-        cell.nameLabel.text = user.username;
+        cell.nameLabel.text = user.displayName;
     }
     return cell;
 }

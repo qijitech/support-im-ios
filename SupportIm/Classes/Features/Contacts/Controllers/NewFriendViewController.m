@@ -102,7 +102,7 @@
         cell = [[AddFriendTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     AddRequest *addRequest = [_addRequests objectAtIndex:indexPath.row];
-    cell.nameLabel.text = addRequest.fromUser.username;
+    cell.nameLabel.text = addRequest.fromUser.displayName;
     [[UserManager manager] displayAvatarOfUser:addRequest.fromUser avatarView:cell.avatarImageView];
     if (addRequest.status == AddRequestStatusWait) {
         cell.actionButton.enabled = true;

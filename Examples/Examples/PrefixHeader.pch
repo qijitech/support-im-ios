@@ -11,15 +11,8 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <AVOSCloud/AVOSCloud.h>
 #import <AVOSCloudIM/AVOSCloudIM.h>
+#import <SupportIm/SupportIm.h>
 
-#import "UIViewTools.h"
-#import "SKToastUtil.h"
-#import "AddRequest.h"
-#import "AVIMConversation+Custom.h"
-#import "ChatManager.h"
-#import "ConversationStore.h"
-#import "UserManager.h"
-#import "AVUser+Custom.h"
 
 
 
