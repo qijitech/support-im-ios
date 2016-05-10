@@ -11,6 +11,7 @@
 
 @interface ChatRoomViewController : XHMessageTableViewController
 
+@property (nonatomic, strong, readwrite) NSMutableArray *avimTypedMessage;
 /**
  *  开放给子类，来对当前对话进行额外操作
  */

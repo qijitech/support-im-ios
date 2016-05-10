@@ -35,7 +35,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
  * msgs and messages are not repeated, this means online messages, which means sending succeed.
  * When deal with those messages which are sent failed, you must use self.messages instead of this.
  */
-@property (nonatomic, strong, readwrite) NSMutableArray *avimTypedMessage;
+
 @property (nonatomic, strong) XHMessageTableViewCell *currentSelectedCell;
 @property (nonatomic, strong) NSArray *emotionManagers;
 @property (nonatomic, strong) StatusView *clientStatusView;

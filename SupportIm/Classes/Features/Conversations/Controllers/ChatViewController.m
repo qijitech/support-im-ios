@@ -49,7 +49,7 @@
 }
 
 - (void)didSelectedAvatorOnMessage:(id<XHMessageModel>)message atIndexPath:(NSIndexPath *)indexPath {
-    AVIMTypedMessage *msg = self.msgs[indexPath.row];
+    AVIMTypedMessage *msg = self.avimTypedMessage[indexPath.row];
     if ([msg.clientId isEqualToString:[ChatManager manager].clientId] == NO) {
         UserInfoViewController *userInfoVC = [[UserInfoViewController alloc] initWithUser:[[CacheManager manager] lookupUser:msg.clientId]];
         [self.navigationController pushViewController:userInfoVC animated:YES];
@@ -75,7 +75,7 @@
 #pragma mark - CDSelectMemberVCDelegate
 
 - (void)didSelectMember:(AVUser *)member {
-    self.messageInputView.inputTextView.text = [NSString stringWithFormat:@"%@%@ ", self.messageInputView.inputTextView.text, member.username];
+    self.messageInputView.inputTextView.text = [NSString stringWithFormat:@"%@%@ ", self.messageInputView.inputTextView.text, member.displayName];
     [self performSelector:@selector(messageInputViewBecomeFristResponder) withObject:nil afterDelay:0];
 }
 
