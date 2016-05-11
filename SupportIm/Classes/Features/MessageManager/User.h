@@ -22,5 +22,7 @@
 
 @property (nonatomic, strong) NSString *displayName;
 
+@property (nonatomic, strong) NSString *avatar;
+
 
 @end

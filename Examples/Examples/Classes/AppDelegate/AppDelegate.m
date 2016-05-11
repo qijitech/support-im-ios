@@ -13,6 +13,7 @@
 #import "MainTabBarController.h"
 #import <AVOSCloudCrashReporting/AVOSCloudCrashReporting.h>
 #import "IMService.h"
+#import <SupportIm/LZPushManager.h>
 //
 #define AVOSAppID @"QC1CFBP5VsJfXiiHPohJatmg-gzGzoHsz"
 #define AVOSAppKey @"dQw3KFUMRMFp4vjn48z8GUDk"
@@ -40,19 +41,22 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     [AddRequest registerSubclass];
-    
+    [AbuseReport registerSubclass];
     // Enable Crash Reporting
     [AVOSCloudCrashReporting enable];
     //希望能提供更详细的日志信息，打开日志的方式是在 AVOSCloud 初始化语句之后加上下面这句：
     
     //Objective-C
 #ifndef __OPTIMIZE__
+    // !!!important need disable when release version
     [AVOSCloud setAllLogsEnabled:YES];
 #endif
     
     [AVOSCloud setApplicationId:AVOSAppID clientKey:AVOSAppKey];
+    
+    [AVOSCloud setLastModifyEnabled:YES];
 #ifdef DEBUG
-
+    
     [AVAnalytics setAnalyticsEnabled:NO];
     [AVOSCloud setVerbosePolicy:kAVVerboseShow];
     [AVLogger addLoggerDomain:AVLoggerDomainIM];
@@ -65,7 +69,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [self.window makeKeyAndVisible];
     
-    
+    [[LZPushManager manager] registerForRemoteNotification];
 
     ViewController *rootViewController = [[ViewController alloc] init];
     self.window.rootViewController = rootViewController;
@@ -95,6 +99,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [AVOSCloud handleRemoteNotificationsWithDeviceToken:deviceToken];
+    [[LZPushManager manager] saveInstallationWithDeviceToken:deviceToken userId:[AVUser currentUser].objectId];
 }
 
 - (void)toMain {
@@ -139,6 +148,7 @@
         [UIView setAnimationsEnabled:oldState];
     } completion:nil];
 }
+
 
 
 @end

@@ -146,11 +146,13 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
 }
 
 - (void)updateStatusView {
-    if ([ChatManager manager].connect) {
-        self.clientStatusView.hidden = YES;
-    } else {
-        self.clientStatusView.hidden = NO;
-    }
+    // If statusview effect experience , note all. heheda
+    
+    //    if ([ChatManager manager].connect) {
+    //        self.tableView.tableHeaderView = nil ;
+    //    }else {
+    //        self.tableView.tableHeaderView = self.clientStatusView;
+    //    }
 }
 
 #pragma mark - XHMessageTableViewCell delegate
@@ -332,6 +334,11 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         //FIXME:这里只能设NO, 不然会引起显示异常
         return NO;
     }  else {
+        
+//        // sometimes maybe crash ,because indexPath.row
+//        NSInteger index = indexPath.row >= self.messages.count ? self.messages.count - 1 : indexPath.row;
+//        XHMessage *msg = [self.messages objectAtIndex:index];
+        
         XHMessage *msg = [self.messages objectAtIndex:indexPath.row];
         XHMessage *lastMsg = [self.messages objectAtIndex:indexPath.row - 1];
         int interval = [msg.timestamp timeIntervalSinceDate:lastMsg.timestamp];
@@ -487,8 +494,8 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
             break;
             
         case XHBubbleMessageMediaTypeLocalPosition: {
-            //TODO:
-            // avimTypedMessage = [AVIMLocationMessage messageWithText:nil latitude:message.latitude longitude:message.longitude attributes:nil];
+            // used chat framework not support location share ... if need this function ... you know ... he he da
+//             avimTypedMessage = [AVIMLocationMessage messageWithText:nil latitude:message.latitude longitude:message.longitude attributes:nil];
             break;
         }
     }
@@ -536,6 +543,9 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
 
 - (void)resendMessageAtIndexPath:(NSIndexPath *)indexPath discardIfFailed:(BOOL)discardIfFailed {
     //FIXME:why also get the last message when i want to get current xhMessage?
+    
+    // If use simulator resend failed message sometimes will fail because bundle maybe change. So,if you find problem with it...he he da
+    
     NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@ %@", @(__PRETTY_FUNCTION__), @(__LINE__), @(indexPath.row), @(self.messages.count));
     XHMessage *xhMessage =  self.messages[indexPath.row];
     [self.messages removeObjectAtIndex:indexPath.row];
@@ -545,7 +555,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         [[FailedMessageStore store] deleteFailedMessageByRecordId:messageUUID];
     } failed:^(NSString *messageUUID, NSError *error) {
         if (discardIfFailed) {
-            // 服务器连通的情况下重发依然失败，说明消息有问题，如音频文件不存在，删掉这条消息
+            // 服务器连通的情况下重发依然失败，说明消息有问题，如音频文件不存在，删掉这条消息 ? maybe wrong ?
             [[FailedMessageStore store] deleteFailedMessageByRecordId:messageUUID];
         }
     }];

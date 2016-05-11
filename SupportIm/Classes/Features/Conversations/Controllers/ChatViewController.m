@@ -38,7 +38,7 @@
 }
 
 - (void)testSendCustomeMessage {
-    AVIMCustomMessage *userInfoMessage = [AVIMCustomMessage messageWithAttributes:@{ @"nickname" : @"lzw" }];
+    AVIMCustomMessage *userInfoMessage = [AVIMCustomMessage messageWithAttributes:@{ @"displayName" : @"heheda" }];
     [self.conversation sendMessage:userInfoMessage callback: ^(BOOL succeeded, NSError *error) {
         DLog(@"%@", error);
     }];

@@ -110,14 +110,16 @@
         emotionManager.emotions = emotions;
         [emotionManagers addObject:emotionManager];
     }
-    {
-        XHEmotionManager *emotionManager = [self emotionManagerWithSize:55 pages:1 name:@"兔斯基" maxIndex:15 prefix:@"tusiji"];
-        [emotionManagers addObject:emotionManager];
-    }
-    {
-        XHEmotionManager *emotionManager = [self emotionManagerWithSize:55 pages:2 name:@"玉兔" maxIndex:22 prefix:@"rabbit"];
-        [emotionManagers addObject:emotionManager];
-    }
+    
+    // custom emotion 
+//    {
+//        XHEmotionManager *emotionManager = [self emotionManagerWithSize:55 pages:1 name:@"兔斯基" maxIndex:15 prefix:@"tusiji"];
+//        [emotionManagers addObject:emotionManager];
+//    }
+//    {
+//        XHEmotionManager *emotionManager = [self emotionManagerWithSize:55 pages:2 name:@"玉兔" maxIndex:22 prefix:@"rabbit"];
+//        [emotionManagers addObject:emotionManager];
+//    }
     return emotionManagers;
 }
 

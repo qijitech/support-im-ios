@@ -258,7 +258,10 @@ const char* const kXHMessageAvatorTypeKey   = "XHMessageAvatorTypeKey";
             [UIImageView dataWithContentsOfURL:weakSelf.url
                                completionBlock:^(NSURL *url, NSData *data, NSError *error) {
                                    UIImage *image = [weakSelf didFinishDownloadWithData:data forURL:url error:error];
-                                   
+//                                   if (!image || error) {
+//                                       image = [UIImage imageNamed:@"lcim_conversation_placeholder_avator"];
+//                                       error = nil;
+//                                   }
                                    if(handler) {
                                        handler(image, url, error);
                                    }

@@ -217,11 +217,20 @@ static const CGFloat kXHBubbleMessageViewBottomPadding = 8;
     }
 }
 
+
 - (void)configAvatorWithMessage:(id<XHMessageModel>)message {
     if (message.avator) {
         [self.avatorButton setImage:message.avator forState:UIControlStateNormal];
     } else if(message.avatorUrl){
+        
+        
+        // If avatar have nil or current url, avator will show current, if avatar have wrong url... heheda
+//        NSURL *url = [NSURL URLWithString:@"https://pic4.zhimg.com/c009a954e4055a3bae3c0caf2de152bf_b.png"];
+//        NSURL *url = nil;
+//        [self.avatorButton setImageWithURL:url placeholer:[UIImage imageNamed:@"lcim_conversation_placeholder_avator"]];
+
         [self.avatorButton setImageWithURL:[NSURL URLWithString:message.avatorUrl] placeholer:[UIImage imageNamed:@"lcim_conversation_placeholder_avator"]];
+        
     } else {
         [self.avatorButton setImage:[XHMessageAvatorFactory avatorImageNamed:[UIImage imageNamed:@"lcim_conversation_placeholder_avator"] messageAvatorType:XHMessageAvatorTypeSquare] forState:UIControlStateNormal];
     }
@@ -289,21 +298,29 @@ static const CGFloat kXHBubbleMessageViewBottomPadding = 8;
         return;
     
     UIMenuItem *copy = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"copy", @"MessageDisplayKitString", @"复制文本消息") action:@selector(copied:)];
-    UIMenuItem *transpond = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"transpond", @"MessageDisplayKitString", @"转发") action:@selector(transpond:)];
-    UIMenuItem *favorites = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"favorites", @"MessageDisplayKitString", @"收藏") action:@selector(favorites:)];
-    UIMenuItem *more = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"more", @"MessageDisplayKitString", @"更多") action:@selector(more:)];
+    
+    
+    //  note because not implement method
+//    UIMenuItem *transpond = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"transpond", @"MessageDisplayKitString", @"转发") action:@selector(transpond:)];
+//    UIMenuItem *favorites = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"favorites", @"MessageDisplayKitString", @"收藏") action:@selector(favorites:)];
+//    UIMenuItem *more = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"more", @"MessageDisplayKitString", @"更多") action:@selector(more:)];
     
     UIMenuController *menu = [UIMenuController sharedMenuController];
     switch (self.messageBubbleView.message.messageMediaType) {
         case XHBubbleMessageMediaTypeText:
+            [menu setMenuItems:[NSArray arrayWithObjects:copy, nil]];
+            break;
+            
         case XHBubbleMessageMediaTypePhoto:
         case XHBubbleMessageMediaTypeLocalPosition:
-            [menu setMenuItems:[NSArray arrayWithObjects:copy, transpond, favorites, more, nil]];
-            break;
+//            [menu setMenuItems:[NSArray arrayWithObjects:copy, nil]];
+//            [menu setMenuItems:[NSArray arrayWithObjects:copy, transpond, favorites, more, nil]];
+//            break;
         case XHBubbleMessageMediaTypeEmotion:
         case XHBubbleMessageMediaTypeVideo:
         case XHBubbleMessageMediaTypeVoice:
-            [menu setMenuItems:[NSArray arrayWithObjects:transpond, favorites, more, nil]];
+//            [menu setMenuItems:[NSArray arrayWithObjects:transpond, favorites, more, nil]];
+            
             break;
     }
     

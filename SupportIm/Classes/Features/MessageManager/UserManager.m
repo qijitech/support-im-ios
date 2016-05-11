@@ -237,7 +237,8 @@ static UserManager *userManager;
 }
 
 - (UIImage *)defaultAvatarOfUser:(AVUser *)user {
-    return [UIImage imageWithHashString:user.objectId displayString:[[user.username substringWithRange:NSMakeRange(0, 1)] capitalizedString]];
+    return [UIImage imageNamed:@"lcim_conversation_placeholder_avator"];
+//    return [UIImage imageWithHashString:user.objectId displayString:[[user.displayName substringWithRange:NSMakeRange(0, 1)] capitalizedString]];
 }
 
 - (void)updateAvatarWithImage:(UIImage *)image callback:(AVBooleanResultBlock)callback {

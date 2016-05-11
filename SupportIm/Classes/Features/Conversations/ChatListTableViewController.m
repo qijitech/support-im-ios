@@ -82,11 +82,14 @@ static NSString *cellIdentifier = @"ContactCell";
 }
 
 - (void)updateStatusView {
-    if ([ChatManager manager].connect) {
-        self.tableView.tableHeaderView = nil ;
-    }else {
-        self.tableView.tableHeaderView = self.clientStatusView;
-    }
+    
+    // If statusview effect experience , note all. heheda
+    
+//    if ([ChatManager manager].connect) {
+//        self.tableView.tableHeaderView = nil ;
+//    }else {
+//        self.tableView.tableHeaderView = self.clientStatusView;
+//    }
 }
 
 - (UIRefreshControl *)getRefreshControl {

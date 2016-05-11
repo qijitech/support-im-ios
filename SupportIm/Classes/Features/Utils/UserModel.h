@@ -15,6 +15,7 @@
 
 @required
 
+- (NSString *)avatar;
 /**
  *  用户的 id，如果你的用户系统是数字，则可转换成字符串 @"123"
  *  @return

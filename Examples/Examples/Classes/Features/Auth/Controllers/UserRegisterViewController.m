@@ -9,7 +9,7 @@
 #import "UserRegisterViewController.h"
 #import "UserRegisterView.h"
 
-static  NSString * const kAvatar = @"http://img1.imgtn.bdimg.com/it/u=1248462995,728310824&fm=21&gp=0.jpg";
+static  NSString * const kAvatar = @"https://pic4.zhimg.com/c009a954e4055a3bae3c0caf2de152bf_b.png";
 
 @interface UserRegisterViewController ()
 @property (nonatomic, assign) BOOL didSetupConstraints;
@@ -65,7 +65,7 @@ static  NSString * const kAvatar = @"http://img1.imgtn.bdimg.com/it/u=1248462995
             return;
         }
         
-       // register
+       // register !!!Important!!! Do not pass by wrong avatar value. or heheda
         AVUser *user = [AVUser user];
         user.username = weakSelf.userRegisterView.accountTextField.text;
         user.password = weakSelf.userRegisterView.passwordTextField.text;
