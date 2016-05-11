@@ -17,6 +17,8 @@
 #import "UserManager.h"
 #import "IMService.h"
 #import "AVUser+Custom.h"
+#import "JSBadgeView.h"
+#import <Masonry/Masonry.h>
 
 
 static NSString *kCellImageKey = @"image";
@@ -188,6 +190,7 @@ static NSString *kCellSelectorKey = @"selector";
         NSInteger badgeNumber = [cellDatas[kCellBadgeKey] intValue];
         if (badgeNumber > 0) {
             badgeView = [[JSBadgeView alloc] initWithParentView:cell.avatarImageView alignment:JSBadgeViewAlignmentTopRight];
+            cell.avatarImageView.clipsToBounds = NO;
             badgeView.tag = kBadgeViewTag;
             badgeView.badgeText = [NSString stringWithFormat:@"%ld", badgeNumber];
         }

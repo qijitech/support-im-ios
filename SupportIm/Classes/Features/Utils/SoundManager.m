@@ -39,9 +39,9 @@
         self.needPlaySoundWhenNotChatting  = [[[NSUserDefaults standardUserDefaults] objectForKey:STR_BY_SEL(needPlaySoundWhenNotChatting)] boolValue];
         self.needVibrateWhenNotChatting = [[[NSUserDefaults standardUserDefaults] objectForKey:STR_BY_SEL(needVibrateWhenNotChatting)] boolValue];
         
-        self.needPlaySoundWhenChatting =  YES;
-        self.needPlaySoundWhenNotChatting  = YES;
-        self.needVibrateWhenNotChatting = YES;
+//        self.needPlaySoundWhenChatting =  YES;
+//        self.needPlaySoundWhenNotChatting  = YES;
+//        self.needVibrateWhenNotChatting = YES;
 
         
         [self createSoundWithName:@"loudReceive" soundId:&_loudReceiveSound];

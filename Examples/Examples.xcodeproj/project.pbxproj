@@ -15,6 +15,11 @@
 		53DC5E491C528D3E009A3CCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DC5E471C528D3E009A3CCD /* LaunchScreen.storyboard */; };
 		806701B66B5952E673C98EB2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 80670EAC56A3AC0AC2618440 /* AppDelegate.m */; };
 		9964AB4B22C55D185F07F575 /* libPods-Examples.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DD6FBE6AA3B8E8707621CD /* libPods-Examples.a */; };
+		A80F31CA1CE343A100F55688 /* MessageDisplayKitString.strings in Resources */ = {isa = PBXBuildFile; fileRef = A80F31C81CE343A100F55688 /* MessageDisplayKitString.strings */; };
+		A80F31CE1CE3526C00F55688 /* loudReceive.caf in Resources */ = {isa = PBXBuildFile; fileRef = A80F31CB1CE3526C00F55688 /* loudReceive.caf */; };
+		A80F31CF1CE3526C00F55688 /* receive.caf in Resources */ = {isa = PBXBuildFile; fileRef = A80F31CC1CE3526C00F55688 /* receive.caf */; };
+		A80F31D01CE3526C00F55688 /* send.caf in Resources */ = {isa = PBXBuildFile; fileRef = A80F31CD1CE3526C00F55688 /* send.caf */; };
+		A80F31D21CE3539E00F55688 /* defaultSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = A80F31D11CE3539E00F55688 /* defaultSettings.plist */; };
 		A825BC981CE07ACD00BE8DA0 /* MainAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A825BC911CE07ACD00BE8DA0 /* MainAccountViewController.m */; };
 		A825BC9A1CE07ACD00BE8DA0 /* MainAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = A825BC971CE07ACD00BE8DA0 /* MainAccountView.m */; };
 		A825BCAB1CE07B1B00BE8DA0 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A825BCA61CE07B1B00BE8DA0 /* MainTabBarController.m */; };
@@ -30,11 +35,6 @@
 		A8796C741CDE7D0C0026E4A1 /* PhoneVerifyCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8796C3A1CDE7D0C0026E4A1 /* PhoneVerifyCodeView.m */; };
 		A8796C751CDE7D0C0026E4A1 /* UserLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8796C3C1CDE7D0C0026E4A1 /* UserLoginView.m */; };
 		A8796C761CDE7D0C0026E4A1 /* UserRegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8796C3E1CDE7D0C0026E4A1 /* UserRegisterView.m */; };
-		A8DA02671CE211BA00550F33 /* MessageDisplayKitString.strings in Resources */ = {isa = PBXBuildFile; fileRef = A8DA02641CE211BA00550F33 /* MessageDisplayKitString.strings */; };
-		A8DA02691CE2CB1500550F33 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DA02681CE2CB1500550F33 /* SystemConfiguration.framework */; };
-		A8DA026B1CE2CB1B00550F33 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DA026A1CE2CB1B00550F33 /* MobileCoreServices.framework */; };
-		A8DA026D1CE2CB2300550F33 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DA026C1CE2CB2300550F33 /* CoreTelephony.framework */; };
-		A8DA026F1CE2CB2900550F33 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DA026E1CE2CB2900550F33 /* CoreLocation.framework */; };
 		A8E0345F1CDE91FA00E9744D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8E0345E1CDE91FA00E9744D /* ViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +51,12 @@
 		80670C252006DCC5078C5C8D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		80670EAC56A3AC0AC2618440 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8A3429AD3E96A3B3E69FEEFD /* Pods-Examples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Examples.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Examples/Pods-Examples.release.xcconfig"; sourceTree = "<group>"; };
+		A80F31C91CE343A100F55688 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MessageDisplayKitString.strings; sourceTree = "<group>"; };
+		A80F31CB1CE3526C00F55688 /* loudReceive.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = loudReceive.caf; sourceTree = "<group>"; };
+		A80F31CC1CE3526C00F55688 /* receive.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = receive.caf; sourceTree = "<group>"; };
+		A80F31CD1CE3526C00F55688 /* send.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = send.caf; sourceTree = "<group>"; };
+		A80F31D11CE3539E00F55688 /* defaultSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultSettings.plist; sourceTree = "<group>"; };
+		A80F31D41CE35D0600F55688 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A825BC901CE07ACD00BE8DA0 /* MainAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAccountViewController.h; sourceTree = "<group>"; };
 		A825BC911CE07ACD00BE8DA0 /* MainAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainAccountViewController.m; sourceTree = "<group>"; };
 		A825BC961CE07ACD00BE8DA0 /* MainAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAccountView.h; sourceTree = "<group>"; };
@@ -82,7 +88,6 @@
 		A8796C3C1CDE7D0C0026E4A1 /* UserLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginView.m; sourceTree = "<group>"; };
 		A8796C3D1CDE7D0C0026E4A1 /* UserRegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRegisterView.h; sourceTree = "<group>"; };
 		A8796C3E1CDE7D0C0026E4A1 /* UserRegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRegisterView.m; sourceTree = "<group>"; };
-		A8DA02651CE211BA00550F33 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MessageDisplayKitString.strings; sourceTree = "<group>"; };
 		A8DA02681CE2CB1500550F33 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A8DA026A1CE2CB1B00550F33 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A8DA026C1CE2CB2300550F33 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -97,10 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8DA026F1CE2CB2900550F33 /* CoreLocation.framework in Frameworks */,
-				A8DA026D1CE2CB2300550F33 /* CoreTelephony.framework in Frameworks */,
-				A8DA026B1CE2CB1B00550F33 /* MobileCoreServices.framework in Frameworks */,
-				A8DA02691CE2CB1500550F33 /* SystemConfiguration.framework in Frameworks */,
 				9964AB4B22C55D185F07F575 /* libPods-Examples.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,6 +153,10 @@
 		5361ED201C4D38DB0048F4AC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A80F31D11CE3539E00F55688 /* defaultSettings.plist */,
+				A80F31CB1CE3526C00F55688 /* loudReceive.caf */,
+				A80F31CC1CE3526C00F55688 /* receive.caf */,
+				A80F31CD1CE3526C00F55688 /* send.caf */,
 				A8DA02631CE211BA00550F33 /* zh-Hans.lproj */,
 				53DC5E471C528D3E009A3CCD /* LaunchScreen.storyboard */,
 				5361ED211C4D38DB0048F4AC /* main.m */,
@@ -309,7 +314,7 @@
 		A8DA02631CE211BA00550F33 /* zh-Hans.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				A8DA02641CE211BA00550F33 /* MessageDisplayKitString.strings */,
+				A80F31C81CE343A100F55688 /* MessageDisplayKitString.strings */,
 			);
 			path = "zh-Hans.lproj";
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 		F3C6F341A32E0A841A2F63ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A80F31D41CE35D0600F55688 /* AudioToolbox.framework */,
 				A8DA026E1CE2CB2900550F33 /* CoreLocation.framework */,
 				A8DA026C1CE2CB2300550F33 /* CoreTelephony.framework */,
 				A8DA026A1CE2CB1B00550F33 /* MobileCoreServices.framework */,
@@ -388,9 +394,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				517DB4421CDB822D00868755 /* SupportIm.podspec in Resources */,
-				A8DA02671CE211BA00550F33 /* MessageDisplayKitString.strings in Resources */,
 				531838371C5233E700A38298 /* LICENSE in Resources */,
+				A80F31D01CE3526C00F55688 /* send.caf in Resources */,
 				5361ED2D1C4D38DB0048F4AC /* Assets.xcassets in Resources */,
+				A80F31CF1CE3526C00F55688 /* receive.caf in Resources */,
+				A80F31CA1CE343A100F55688 /* MessageDisplayKitString.strings in Resources */,
+				A80F31CE1CE3526C00F55688 /* loudReceive.caf in Resources */,
+				A80F31D21CE3539E00F55688 /* defaultSettings.plist in Resources */,
 				53DC5E491C528D3E009A3CCD /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,10 +493,10 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		A8DA02641CE211BA00550F33 /* MessageDisplayKitString.strings */ = {
+		A80F31C81CE343A100F55688 /* MessageDisplayKitString.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A8DA02651CE211BA00550F33 /* zh-Hans */,
+				A80F31C91CE343A100F55688 /* zh-Hans */,
 			);
 			name = MessageDisplayKitString.strings;
 			sourceTree = "<group>";

@@ -66,15 +66,11 @@ static CGFloat kLittleBadgeSize = 10;
         }];
         [self.litteBadgeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.size.mas_equalTo(CGSizeMake(kLittleBadgeSize, kLittleBadgeSize));
-//            make.left.mas_equalTo(kHorizontalSpacing + kImageSize);
-//            make.top.mas_equalTo(10);
             make.centerX.equalTo(self.avatarImageView.mas_right);
             make.centerY.equalTo(self.avatarImageView.mas_top);
         }];
         [self.badgeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.size.mas_equalTo(CGSizeMake(kLittleBadgeSize, kLittleBadgeSize));
-//            make.left.mas_equalTo(kHorizontalSpacing + kImageSize);
-//            make.top.mas_equalTo(10);
             make.centerX.equalTo(self.avatarImageView.mas_right);
             make.centerY.equalTo(self.avatarImageView.mas_top);
         }];
@@ -113,12 +109,10 @@ static CGFloat kLittleBadgeSize = 10;
     [self addSubview:self.nameLabel];
     [self addSubview:self.messageTextLabel];
    
-    
 }
 
 - (UIImageView *)avatarImageView {
     if (_avatarImageView == nil) {
-//        _avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kHorizontalSpacing, kVerticalSpacing, kImageSize, kImageSize)];
         _avatarImageView = [[UIImageView alloc] init];
     }
     return _avatarImageView;
@@ -127,7 +121,6 @@ static CGFloat kLittleBadgeSize = 10;
 - (UILabel *)timestampLabel {
     if (_timestampLabel == nil) {
         _timestampLabel = [[UILabel alloc] init];
-//        _timestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth([UIScreen mainScreen].bounds) - kHorizontalSpacing - kTimestampeLabelWidth, CGRectGetMinY(_avatarImageView.frame), kTimestampeLabelWidth, kNameLabelHeight)];
         _timestampLabel.font = [UIFont systemFontOfSize:13];
         _timestampLabel.textAlignment = NSTextAlignmentRight;
         
@@ -139,7 +132,6 @@ static CGFloat kLittleBadgeSize = 10;
 - (UILabel *)nameLabel {
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
-//        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_avatarImageView.frame) + kHorizontalSpacing, CGRectGetMinY(_avatarImageView.frame), CGRectGetMinX(_timestampLabel.frame) - kHorizontalSpacing * 3 - kImageSize, kNameLabelHeight)];
         _nameLabel.font = [UIFont systemFontOfSize:17];
     }
     return _nameLabel;
@@ -148,7 +140,6 @@ static CGFloat kLittleBadgeSize = 10;
 - (UILabel *)messageTextLabel {
     if (_messageTextLabel == nil) {
         _messageTextLabel = [[UILabel alloc] init];
-//        _messageTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(_nameLabel.frame), CGRectGetMaxY(_nameLabel.frame), CGRectGetWidth([UIScreen mainScreen].bounds)- 3 * kHorizontalSpacing - kImageSize, kMessageLabelHeight)];
         _messageTextLabel.backgroundColor = [UIColor clearColor];
     }
     return _messageTextLabel;
@@ -157,8 +148,6 @@ static CGFloat kLittleBadgeSize = 10;
 - (UIView *)litteBadgeView {
     if (_litteBadgeView == nil) {
         _litteBadgeView = [[UIView alloc] init];
-//        _litteBadgeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kLittleBadgeSize, kLittleBadgeSize)];
-//        _litteBadgeView.center = CGPointMake(CGRectGetMaxX(_avatarImageView.frame), CGRectGetMinY(_avatarImageView.frame));
         _litteBadgeView.backgroundColor = [UIColor redColor];
         _litteBadgeView.layer.masksToBounds = YES;
         _litteBadgeView.layer.cornerRadius = kLittleBadgeSize / 2;
@@ -170,7 +159,6 @@ static CGFloat kLittleBadgeSize = 10;
 - (JSBadgeView *)badgeView {
     if (_badgeView == nil) {
         _badgeView = [[JSBadgeView alloc] init];
-//        _badgeView = [[JSBadgeView alloc] initWithParentView:_avatarImageView alignment:JSBadgeViewAlignmentTopRight];
     }
     return _badgeView;
 }

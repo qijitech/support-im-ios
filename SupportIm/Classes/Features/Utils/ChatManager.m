@@ -46,7 +46,7 @@ static ChatManager *instance;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [AVIMClient setTimeoutIntervalInSeconds:20];
+        [AVIMClient setTimeoutIntervalInSeconds:300];
         // 以下选项也即是说 A 不在线时，有人往A发了很多条消息，下次启动时，不再收到具体的离线消息，而是收到离线消息的数目(未读通知)
         //         [AVIMClient setUserOptions:@{AVIMUserOptionUseUnread:@(YES)}];
         _cachedConversations = [NSMutableDictionary dictionary];

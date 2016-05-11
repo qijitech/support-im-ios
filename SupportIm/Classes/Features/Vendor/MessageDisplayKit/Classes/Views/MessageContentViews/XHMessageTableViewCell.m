@@ -297,7 +297,9 @@ static const CGFloat kXHBubbleMessageViewBottomPadding = 8;
     if (longPressGestureRecognizer.state != UIGestureRecognizerStateBegan || ![self becomeFirstResponder])
         return;
     
-    UIMenuItem *copy = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"copy", @"MessageDisplayKitString", @"复制文本消息") action:@selector(copied:)];
+//    UIMenuItem *copy = [[UIMenuItem alloc] initWithTitle:NSLocalizedStringFromTable(@"copy", @"MessageDisplayKitString", @"复制文本消息") action:@selector(copied:)];
+    
+    UIMenuItem *copy = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copied:)];
     
     
     //  note because not implement method
