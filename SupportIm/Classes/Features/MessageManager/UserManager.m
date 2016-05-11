@@ -187,7 +187,7 @@ static UserManager *userManager;
 - (void)findUsersByPartname:(NSString *)partName withBlock:(AVArrayResultBlock)block {
     AVQuery *q = [AVUser query];
     [q setCachePolicy:kAVCachePolicyNetworkElseCache];
-    [q whereKey:@"displayName" containsString:partName];
+    [q whereKey:@"username" containsString:partName];
     AVUser *curUser = [AVUser currentUser];
     [q whereKey:@"objectId" notEqualTo:curUser.objectId];
     [q orderByDescending:@"updatedAt"];

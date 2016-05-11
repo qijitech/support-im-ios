@@ -25,6 +25,8 @@ static NSString *kCellImageKey = @"image";
 static NSString *kCellBadgeKey = @"badge";
 static NSString *kCellTextKey = @"text";
 static NSString *kCellSelectorKey = @"selector";
+static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefresh";
+
 
 @interface FriendListViewController () <UIAlertViewDelegate>
 
@@ -54,6 +56,11 @@ static NSString *kCellSelectorKey = @"selector";
     //Do this because -- Tab Bar covers TableView cells in iOS7
     self.tableView.contentInset = UIEdgeInsetsMake(0., 0., CGRectGetHeight(self.tabBarController.tabBar.frame), 0);
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationFriendListNeedRefresh object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:kNotificationFriendListNeedRefresh];
 }
 
 - (void)setupTableView {

@@ -14,6 +14,8 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import "EmotionUtils.h"
 
+static NSString *const kFriendListNeedRefreshContent = @"我通过了你的好友验证请求";
+static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefresh";
 static ChatManager *instance;
 
 @interface ChatManager () <AVIMClientDelegate, AVIMSignatureDataSource>
@@ -301,6 +303,9 @@ static ChatManager *instance;
 #pragma mark - receive message handle
 
 - (void)receiveMessage:(AVIMTypedMessage *)message conversation:(AVIMConversation *)conversation{
+    if ([message.text rangeOfString:kFriendListNeedRefreshContent].location != NSNotFound) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationFriendListNeedRefresh object:nil];
+    }
     [[ConversationStore store] insertConversation:conversation];
     if (![self.chattingConversationId isEqualToString:conversation.conversationId]) {
         // 没有在聊天的时候才增加未读数和设置mentioned

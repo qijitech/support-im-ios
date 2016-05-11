@@ -225,11 +225,12 @@ static const CGFloat kXHBubbleMessageViewBottomPadding = 8;
         
         
         // If avatar have nil or current url, avator will show current, if avatar have wrong url... heheda
-//        NSURL *url = [NSURL URLWithString:@"https://pic4.zhimg.com/c009a954e4055a3bae3c0caf2de152bf_b.png"];
+//        NSURL *url = [NSURL URLWithString:@"http://img1.imgtn.bdimg.com/it/u=1214574036,3486187985&fm=116&gp=0.jpg"];
 //        NSURL *url = nil;
 //        [self.avatorButton setImageWithURL:url placeholer:[UIImage imageNamed:@"lcim_conversation_placeholder_avator"]];
 
         [self.avatorButton setImageWithURL:[NSURL URLWithString:message.avatorUrl] placeholer:[UIImage imageNamed:@"lcim_conversation_placeholder_avator"]];
+
         
     } else {
         [self.avatorButton setImage:[XHMessageAvatorFactory avatorImageNamed:[UIImage imageNamed:@"lcim_conversation_placeholder_avator"] messageAvatorType:XHMessageAvatorTypeSquare] forState:UIControlStateNormal];

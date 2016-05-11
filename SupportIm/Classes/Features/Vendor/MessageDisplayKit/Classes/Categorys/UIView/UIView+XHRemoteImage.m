@@ -287,6 +287,15 @@ const char* const kXHMessageAvatorTypeKey   = "XHMessageAvatorTypeKey";
         [self cachingImageData:data url:url];
     }
     UIImage *image = [UIImage imageWithData:data];
+    
+    
+    // when avatar has a bad url,maybe not current show avatar. so replace default avatar heheda
+    if (!image || error) {
+        image = [UIImage imageNamed:@"lcim_conversation_placeholder_avator"];
+        error = nil;
+    }
+    
+    
     if (self.messageAvatorType != XHMessageAvatorTypeNormal) {
         image = [XHMessageAvatorFactory avatorImageNamed:image messageAvatorType:self.messageAvatorType];
     }
@@ -299,6 +308,7 @@ const char* const kXHMessageAvatorTypeKey   = "XHMessageAvatorTypeKey";
         }
         [self hideLoadingView];
     }
+
     return image;
 }
 

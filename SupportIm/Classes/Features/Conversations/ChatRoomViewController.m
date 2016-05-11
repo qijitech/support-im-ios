@@ -20,6 +20,7 @@
 #import "FailedMessageStore.h"
 #import "AVIMEmotionMessage.h"
 #import "EmotionUtils.h"
+#import "User.h"
 
 static NSInteger const kOnePageSize = 10;
 
@@ -609,14 +610,14 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     NSDate *time = [self getTimestampDate:message.sendTimestamp];
     if (message.mediaType == kAVIMMessageMediaTypeText) {
         AVIMTextMessage *textMsg = (AVIMTextMessage *)message;
-        xhMessage = [[XHMessage alloc] initWithText:[EmotionUtils emojiStringFromString:textMsg.text] sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithText:[EmotionUtils emojiStringFromString:textMsg.text] sender:fromUser.displayName timestamp:time];
     } else if (message.mediaType == kAVIMMessageMediaTypeAudio) {
         AVIMAudioMessage *audioMsg = (AVIMAudioMessage *)message;
         NSString *duration = [NSString stringWithFormat:@"%.0f", audioMsg.duration];
-        xhMessage = [[XHMessage alloc] initWithVoicePath:audioMsg.file.localPath voiceUrl:nil voiceDuration:duration sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithVoicePath:audioMsg.file.localPath voiceUrl:nil voiceDuration:duration sender:fromUser.displayName timestamp:time];
     } else if (message.mediaType == kAVIMMessageMediaTypeLocation) {
         AVIMLocationMessage *locationMsg = (AVIMLocationMessage *)message;
-        xhMessage = [[XHMessage alloc] initWithLocalPositionPhoto:[UIImage imageNamed:@"Fav_Cell_Loc"] geolocations:locationMsg.text location:[[CLLocation alloc] initWithLatitude:locationMsg.latitude longitude:locationMsg.longitude] sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithLocalPositionPhoto:[UIImage imageNamed:@"Fav_Cell_Loc"] geolocations:locationMsg.text location:[[CLLocation alloc] initWithLatitude:locationMsg.latitude longitude:locationMsg.longitude] sender:fromUser.displayName timestamp:time];
     } else if (message.mediaType == kAVIMMessageMediaTypeImage) {
         AVIMImageMessage *imageMsg = (AVIMImageMessage *)message;
         UIImage *image;
@@ -628,17 +629,17 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
             image = [UIImage imageWithData:data];
         }
         //TODO: image and photoPath may all be nil
-        xhMessage = [[XHMessage alloc] initWithPhoto:image photoPath:nil thumbnailUrl:nil originPhotoUrl:nil sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithPhoto:image photoPath:nil thumbnailUrl:nil originPhotoUrl:nil sender:fromUser.displayName timestamp:time];
     } else if (message.mediaType == kAVIMMessageMediaTypeEmotion) {
         AVIMEmotionMessage *emotionMsg = (AVIMEmotionMessage *)message;
         NSString *path = [[NSBundle mainBundle] pathForResource:emotionMsg.emotionPath ofType:@"gif"];
-        xhMessage = [[XHMessage alloc] initWithEmotionPath:path sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithEmotionPath:path sender:fromUser.displayName timestamp:time];
     } else if (message.mediaType == kAVIMMessageMediaTypeVideo) {
         AVIMVideoMessage *videoMsg = (AVIMVideoMessage *)message;
         NSString *path = [[ChatManager manager] videoPathOfMessag:videoMsg];
-        xhMessage = [[XHMessage alloc] initWithVideoConverPhoto:[XHMessageVideoConverPhotoFactory videoConverPhotoWithVideoPath:path] videoPath:path videoUrl:nil sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithVideoConverPhoto:[XHMessageVideoConverPhotoFactory videoConverPhotoWithVideoPath:path] videoPath:path videoUrl:nil sender:fromUser.displayName timestamp:time];
     } else {
-        xhMessage = [[XHMessage alloc] initWithText:@"未知消息" sender:fromUser.username timestamp:time];
+        xhMessage = [[XHMessage alloc] initWithText:@"未知消息" sender:fromUser.displayName timestamp:time];
         DLog("unkonwMessage");
     }
     
