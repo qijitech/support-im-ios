@@ -61,6 +61,10 @@
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
         navigationController.navigationBar.tintColor = [UIColor whiteColor];
         navigationController.navigationBar.barTintColor = MAINCOLOR;
+        NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor whiteColor],
+//                                     NSFontAttributeName:[UIFont systemFontOfSize:16]
+                                     };
+        navigationController.navigationBar.titleTextAttributes = attributes;
         NSString *title = titles[index];
         NSString *normalImage = normalImages[index];
         NSString *selectedImage = selectedImages[index];
