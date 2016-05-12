@@ -67,7 +67,15 @@ static CGFloat const kVoiceMargin = 20.0f;
 
 + (CGSize)neededSizeForPhoto:(UIImage *)photo {
     // 这里需要缩放后的size
-    CGSize photoSize = CGSizeMake(120, 120);
+    CGFloat currentWidth = photo.size.width;
+    CGFloat currentHeight = photo.size.height;
+    CGFloat showWidth = 220;
+    CGFloat showHeight = currentHeight / currentWidth * showWidth;
+    
+    CGSize photoSize = CGSizeMake(showWidth, showHeight);
+    
+//    CGSize photoSize = CGSizeMake(120, 120);
+    
     return photoSize;
 }
 

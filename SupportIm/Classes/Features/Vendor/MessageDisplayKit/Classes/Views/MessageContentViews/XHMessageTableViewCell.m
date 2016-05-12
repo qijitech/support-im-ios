@@ -507,6 +507,8 @@ static const CGFloat kXHBubbleMessageViewBottomPadding = 8;
                                                   | UIViewAutoresizingFlexibleBottomMargin);
             [self.contentView addSubview:messageBubbleView];
             [self.contentView sendSubviewToBack:messageBubbleView];
+            
+            
             self.messageBubbleView = messageBubbleView;
         }
         

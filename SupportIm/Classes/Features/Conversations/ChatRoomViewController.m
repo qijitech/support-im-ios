@@ -52,7 +52,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     if (self) {
         // 配置输入框UI的样式
         //self.allowsSendVoice = NO;
-        //self.allowsSendFace = NO;
+        self.allowsSendFace = NO;
         //self.allowsSendMultiMedia = NO;
         self.loadingMoreMessage = NO;
         _avimTypedMessage = [NSMutableArray array];
@@ -263,7 +263,8 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         return;
     }
     if ([text length] > 0 ) {
-        XHMessage *xhMessage = [[XHMessage alloc] initWithText:[EmotionUtils emojiStringFromString:text] sender:sender timestamp:date];
+//        XHMessage *xhMessage = [[XHMessage alloc] initWithText:[EmotionUtils emojiStringFromString:text] sender:sender timestamp:date];
+        XHMessage *xhMessage = [[XHMessage alloc] initWithText:text sender:sender timestamp:date];
         [self sendMessage:xhMessage];
         [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeText];
     }
@@ -300,23 +301,29 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     if ([ChatManager manager].client.status != AVIMClientStatusOpened) {
         return;
     }
-    if ([emotion hasPrefix:@":"]) {
-        // 普通表情
-        UITextView *textView = self.messageInputView.inputTextView;
-        NSRange range = [textView selectedRange];
-        NSMutableString *str = [[NSMutableString alloc] initWithString:textView.text];
-        [str deleteCharactersInRange:range];
-        [str insertString:emotion atIndex:range.location];
-        textView.text = [EmotionUtils emojiStringFromString:str];
-        textView.selectedRange = NSMakeRange(range.location + emotion.length, 0);
-        //TODO:
-        [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeEmotion];
-    } else {
-        NSString *path = [[NSBundle mainBundle] pathForResource:emotion ofType:@"gif"];
-        XHMessage *message = [[XHMessage alloc] initWithEmotionPath:path emotionName:emotion sender:sender timestamp:nil];
-        [self sendMessage:message];
-        [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeEmotion];
+    if ([emotion length] > 0 ) {
+        //        XHMessage *xhMessage = [[XHMessage alloc] initWithText:[EmotionUtils emojiStringFromString:text] sender:sender timestamp:date];
+        XHMessage *xhMessage = [[XHMessage alloc] initWithText:emotion sender:sender timestamp:date];
+        [self sendMessage:xhMessage];
+        [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeText];
     }
+//    if ([emotion hasPrefix:@":"]) {
+//        // 普通表情
+//        UITextView *textView = self.messageInputView.inputTextView;
+//        NSRange range = [textView selectedRange];
+//        NSMutableString *str = [[NSMutableString alloc] initWithString:textView.text];
+//        [str deleteCharactersInRange:range];
+//        [str insertString:emotion atIndex:range.location];
+//        textView.text = [EmotionUtils emojiStringFromString:str];
+//        textView.selectedRange = NSMakeRange(range.location + emotion.length, 0);
+//        //TODO:
+//        [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeEmotion];
+//    } else {
+//        NSString *path = [[NSBundle mainBundle] pathForResource:emotion ofType:@"gif"];
+//        XHMessage *message = [[XHMessage alloc] initWithEmotionPath:path emotionName:emotion sender:sender timestamp:nil];
+//        [self sendMessage:message];
+//        [self finishSendMessageWithBubbleMessageType:XHBubbleMessageMediaTypeEmotion];
+//    }
 }
 
 - (void)didSendGeoLocationsPhoto:(UIImage *)geoLocationsPhoto geolocations:(NSString *)geolocations location:(CLLocation *)location fromSender:(NSString *)sender onDate:(NSDate *)date {
@@ -477,7 +484,8 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     AVIMTypedMessage *avimTypedMessage;
     switch (message.messageMediaType) {
         case XHBubbleMessageMediaTypeText: {
-            avimTypedMessage = [AVIMTextMessage messageWithText:[EmotionUtils plainStringFromEmojiString:message.text] attributes:nil];
+//            avimTypedMessage = [AVIMTextMessage messageWithText:[EmotionUtils plainStringFromEmojiString:message.text] attributes:nil];
+            avimTypedMessage = [AVIMTextMessage messageWithText:message.text attributes:nil];
             break;
         }
         case XHBubbleMessageMediaTypeVideo:
@@ -491,7 +499,8 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         }
             
         case XHBubbleMessageMediaTypeEmotion:
-            avimTypedMessage = [AVIMEmotionMessage messageWithEmotionPath:message.emotionName];
+//            avimTypedMessage = [AVIMEmotionMessage messageWithEmotionPath:message.emotionName];
+            avimTypedMessage = [AVIMTextMessage messageWithText:message.text attributes:nil];
             break;
             
         case XHBubbleMessageMediaTypeLocalPosition: {
