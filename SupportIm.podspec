@@ -49,5 +49,7 @@ TODO: Add long description of the pod here.
   s.dependency 'SDWebImage'
   s.dependency 'MaterialControls'
   s.dependency 'MBProgressHUD'
+  s.dependency 'AMapSearch'
+  s.dependency 'AMap2DMap'
 
 end

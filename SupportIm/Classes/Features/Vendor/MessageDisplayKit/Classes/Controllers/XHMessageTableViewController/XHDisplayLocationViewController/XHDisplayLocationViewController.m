@@ -52,8 +52,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = NSLocalizedStringFromTable(@"Location", @"MessageDisplayKitString", @"地理位置");
-    
+//    self.title = NSLocalizedStringFromTable(@"Location", @"MessageDisplayKitString", @"地理位置");
+    self.title = @"地理位置";
     [self.view addSubview:self.mapView];
 }
 

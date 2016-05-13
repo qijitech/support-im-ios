@@ -18,6 +18,9 @@
 
 @implementation MainTabBarController
 
+# pragma mark - initialization
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBar.tintColor = [UIColor lightGrayColor];

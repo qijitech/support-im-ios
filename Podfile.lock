@@ -1,4 +1,6 @@
 PODS:
+  - AMap2DMap (3.3.0)
+  - AMapSearch (3.3.0)
   - AVOSCloud (3.2.8)
   - AVOSCloudCrashReporting (3.2.8):
     - AVOSCloud
@@ -15,6 +17,8 @@ PODS:
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SupportIm (0.1.0):
+    - AMap2DMap
+    - AMapSearch
     - AVOSCloud
     - AVOSCloudCrashReporting
     - AVOSCloudIM
@@ -33,6 +37,8 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
+  AMap2DMap: e53461cdc345375e514579db17dbd721ff9ed9eb
+  AMapSearch: cff4faf59c007f7d1f2bae2d7170c3912783981a
   AVOSCloud: b789619942a4275e615f8f0782e7475675951b95
   AVOSCloudCrashReporting: 2dddc7dfc8ef423492a01c0076b3e97716854701
   AVOSCloudIM: d2f6a13d64f9676a43e4d68b822bd1be3f96fb76
@@ -42,7 +48,7 @@ SPEC CHECKSUMS:
   MaterialControls: bdeeb94aa049b73f70739a5514be137d2d45c08a
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
-  SupportIm: ec751738f57cfca3f4b9f9bc29da25fd96a6c017
+  SupportIm: 27f3e39ffda3333ff2665ec6afc4d57da8c611b6
 
 PODFILE CHECKSUM: e0aaab9f5bc0cc78038d481a8d66479228c45a54
 

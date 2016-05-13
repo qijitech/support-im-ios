@@ -21,6 +21,9 @@
 #import "AVIMEmotionMessage.h"
 #import "EmotionUtils.h"
 #import "User.h"
+#import "LocationViewController.h"
+#import "SKToastUtil.h"
+
 
 static NSInteger const kOnePageSize = 10;
 
@@ -52,7 +55,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     if (self) {
         // 配置输入框UI的样式
         //self.allowsSendVoice = NO;
-        self.allowsSendFace = NO;
+//        self.allowsSendFace = NO;
         //self.allowsSendMultiMedia = NO;
         self.loadingMoreMessage = NO;
         _avimTypedMessage = [NSMutableArray array];
@@ -118,8 +121,8 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
 
 - (void)initBottomMenuAndEmotionView {
     NSMutableArray *shareMenuItems = [NSMutableArray array];
-    NSArray *plugIcons = @[@"sharemore_pic", @"sharemore_video"];
-    NSArray *plugTitle = @[@"照片", @"拍摄"];
+    NSArray *plugIcons = @[@"sharemore_pic", @"sharemore_video", @"sharemore_location"];
+    NSArray *plugTitle = @[@"照片", @"拍摄", @"定位"];
     for (NSString *plugIcon in plugIcons) {
         XHShareMenuItem *shareMenuItem = [[XHShareMenuItem alloc] initWithNormalIconImage:[UIImage imageNamed:plugIcon] title:[plugTitle objectAtIndex:[plugIcons indexOfObject:plugIcon]]];
         [shareMenuItems addObject:shareMenuItem];
@@ -343,11 +346,11 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         return NO;
     }  else {
         
-//        // sometimes maybe crash ,because indexPath.row
-//        NSInteger index = indexPath.row >= self.messages.count ? self.messages.count - 1 : indexPath.row;
-//        XHMessage *msg = [self.messages objectAtIndex:index];
+        // sometimes maybe crash ,because indexPath.row
+        NSInteger index = indexPath.row >= self.messages.count ? self.messages.count - 1 : indexPath.row;
+        XHMessage *msg = [self.messages objectAtIndex:index];
         
-        XHMessage *msg = [self.messages objectAtIndex:indexPath.row];
+//        XHMessage *msg = [self.messages objectAtIndex:indexPath.row];
         XHMessage *lastMsg = [self.messages objectAtIndex:indexPath.row - 1];
         int interval = [msg.timestamp timeIntervalSinceDate:lastMsg.timestamp];
         if (interval > 60 * 3) {
@@ -386,7 +389,44 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
 }
 
 - (void)didSelecteShareMenuItem:(XHShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
+    if (index == 2) {
+        NSLog(@"%s",__func__);
+        
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                  message:nil
+                                                                           preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction: [UIAlertAction actionWithTitle: @"发送位置"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action) {
+                                                               LocationViewController *locationViewController = [[LocationViewController alloc] init];
+                                                               locationViewController.locationShareBlock = ^(NSString *location, CLLocationCoordinate2D coordinate, UIImage *image){
+                                                                   [self sendLocationWithLocation:location coordinate:coordinate image:image];
+                                                               };
+                                                               [self.navigationController pushViewController:locationViewController animated:YES];
+                                                           }]];
+        [alertController addAction: [UIAlertAction actionWithTitle: @"共享实时位置"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action){
+                                                               [SKToastUtil toastWithText:@"not implement yet"];
+                                                           }]];
+        [alertController addAction: [UIAlertAction actionWithTitle: @"取消"
+                                                             style: UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction *action) {
+                                                           }]];
+        [self presentViewController:alertController animated:YES completion:nil];
+
+        return;
+    }
     [super didSelecteShareMenuItem:shareMenuItem atIndex:index];
+}
+
+- (void)sendLocationWithLocation:(NSString *)location coordinate:(CLLocationCoordinate2D)coordinate image:(UIImage *)image {
+    
+    CLLocation *cllocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+    XHMessage *message = [[XHMessage alloc] initWithLocalPositionPhoto:[UIImage imageNamed:@"Fav_Cell_Loc"] geolocations:location location:cllocation sender:nil timestamp:nil];
+    message.text = location;
+    [self sendMessage:message];
+
 }
 
 #pragma mark - @ reference other
@@ -505,7 +545,9 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
             
         case XHBubbleMessageMediaTypeLocalPosition: {
             // used chat framework not support location share ... if need this function ... you know ... he he da
-//             avimTypedMessage = [AVIMLocationMessage messageWithText:nil latitude:message.latitude longitude:message.longitude attributes:nil];
+            //had implement. i'm so dia
+            avimTypedMessage = [AVIMLocationMessage messageWithText:message.text latitude:message.location.coordinate.latitude longitude:message.location.coordinate.longitude attributes:nil];
+//            avimTypedMessage = [AVIMLocationMessage messageWithText:message.text latitude:message.location.coordinate.latitude longitude:message.location.coordinate.longitude attributes:@{@"localPositionPhoto":message.localPositionPhoto}];
             break;
         }
     }

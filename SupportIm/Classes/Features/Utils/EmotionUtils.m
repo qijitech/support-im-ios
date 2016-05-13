@@ -94,20 +94,20 @@
     NSMutableArray *emotionManagers = [NSMutableArray array];
     {
         XHEmotionManager *emotionManager = [[XHEmotionManager alloc] init];
-        CGFloat width = 35;
-        emotionManager.estimatedPages = 2;
-        emotionManager.emotionSize = CGSizeMake(width, width);
+//        CGFloat width = 35;
+//        emotionManager.estimatedPages = 2;
+//        emotionManager.emotionSize = CGSizeMake(width, width);
         emotionManager.emotionName = @"普通";
-        NSMutableArray *emotions = [NSMutableArray array];
-        for (NSInteger j = 0; j < emotionCodes.count; j++) {
-            XHEmotion *xhEmotion = [[XHEmotion alloc] init];
-            NSString *code = emotionCodes[j];
-            CGFloat emojiSize = 30;
-            xhEmotion.emotionConverPhoto = [self imageFromString:codeToEmoji[code] attributes:@{ NSFontAttributeName:[UIFont systemFontOfSize:25] } size:CGSizeMake(emojiSize, emojiSize)];
-            xhEmotion.emotionPath = code;
-            [emotions addObject:xhEmotion];
-        }
-        emotionManager.emotions = emotions;
+//        NSMutableArray *emotions = [NSMutableArray array];
+//        for (NSInteger j = 0; j < emotionCodes.count; j++) {
+//            XHEmotion *xhEmotion = [[XHEmotion alloc] init];
+//            NSString *code = emotionCodes[j];
+//            CGFloat emojiSize = 30;
+//            xhEmotion.emotionConverPhoto = [self imageFromString:codeToEmoji[code] attributes:@{ NSFontAttributeName:[UIFont systemFontOfSize:25] } size:CGSizeMake(emojiSize, emojiSize)];
+//            xhEmotion.emotionPath = code;
+//            [emotions addObject:xhEmotion];
+//        }
+//        emotionManager.emotions = emotions;
         [emotionManagers addObject:emotionManager];
     }
     

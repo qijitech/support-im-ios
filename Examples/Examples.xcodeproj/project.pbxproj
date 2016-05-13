@@ -35,6 +35,11 @@
 		A8796C741CDE7D0C0026E4A1 /* PhoneVerifyCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8796C3A1CDE7D0C0026E4A1 /* PhoneVerifyCodeView.m */; };
 		A8796C751CDE7D0C0026E4A1 /* UserLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8796C3C1CDE7D0C0026E4A1 /* UserLoginView.m */; };
 		A8796C761CDE7D0C0026E4A1 /* UserRegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8796C3E1CDE7D0C0026E4A1 /* UserRegisterView.m */; };
+		A88ED95F1CE49257001C4A6E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A88ED95E1CE49257001C4A6E /* libz.tbd */; };
+		A88ED9611CE4925D001C4A6E /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A88ED9601CE4925D001C4A6E /* libstdc++.6.0.9.tbd */; };
+		A88ED9631CE49267001C4A6E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A88ED9621CE49267001C4A6E /* libc++.tbd */; };
+		A88ED9641CE49285001C4A6E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80F31D41CE35D0600F55688 /* AudioToolbox.framework */; };
+		A88ED9661CE4928B001C4A6E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A88ED9651CE4928B001C4A6E /* AVFoundation.framework */; };
 		A8E0345F1CDE91FA00E9744D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8E0345E1CDE91FA00E9744D /* ViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +93,11 @@
 		A8796C3C1CDE7D0C0026E4A1 /* UserLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginView.m; sourceTree = "<group>"; };
 		A8796C3D1CDE7D0C0026E4A1 /* UserRegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRegisterView.h; sourceTree = "<group>"; };
 		A8796C3E1CDE7D0C0026E4A1 /* UserRegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRegisterView.m; sourceTree = "<group>"; };
+		A88ED95E1CE49257001C4A6E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A88ED9601CE4925D001C4A6E /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		A88ED9621CE49267001C4A6E /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		A88ED9651CE4928B001C4A6E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A88ED9671CE492B2001C4A6E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A8DA02681CE2CB1500550F33 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A8DA026A1CE2CB1B00550F33 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A8DA026C1CE2CB2300550F33 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -102,6 +112,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A88ED9661CE4928B001C4A6E /* AVFoundation.framework in Frameworks */,
+				A88ED9641CE49285001C4A6E /* AudioToolbox.framework in Frameworks */,
+				A88ED9631CE49267001C4A6E /* libc++.tbd in Frameworks */,
+				A88ED9611CE4925D001C4A6E /* libstdc++.6.0.9.tbd in Frameworks */,
+				A88ED95F1CE49257001C4A6E /* libz.tbd in Frameworks */,
 				9964AB4B22C55D185F07F575 /* libPods-Examples.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +337,11 @@
 		F3C6F341A32E0A841A2F63ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A88ED9671CE492B2001C4A6E /* CoreGraphics.framework */,
+				A88ED9651CE4928B001C4A6E /* AVFoundation.framework */,
+				A88ED9621CE49267001C4A6E /* libc++.tbd */,
+				A88ED9601CE4925D001C4A6E /* libstdc++.6.0.9.tbd */,
+				A88ED95E1CE49257001C4A6E /* libz.tbd */,
 				A80F31D41CE35D0600F55688 /* AudioToolbox.framework */,
 				A8DA026E1CE2CB2900550F33 /* CoreLocation.framework */,
 				A8DA026C1CE2CB2300550F33 /* CoreTelephony.framework */,
