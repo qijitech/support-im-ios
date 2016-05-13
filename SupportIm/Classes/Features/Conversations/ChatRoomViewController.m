@@ -427,13 +427,13 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
 - (void)sendLocationWithLocation:(NSString *)location coordinate:(CLLocationCoordinate2D)coordinate image:(UIImage *)image {
     
     CLLocation *cllocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-    XHMessage *message = [[XHMessage alloc] initWithLocalPositionPhoto:[UIImage imageNamed:@"Fav_Cell_Loc"] geolocations:location location:cllocation sender:nil timestamp:nil];
+    XHMessage *message = [[XHMessage alloc] initWithLocalPositionPhoto:image geolocations:location location:cllocation sender:nil timestamp:nil];
     message.text = location;
     [self sendMessage:message];
 
 }
 
-- (void)openSharedLoactionWithMessage:(XHMessage *)message {
+- (void)openSharedLoactionWithMessage:(id<XHMessageModel>)message {
     ShowSharedLocationViewController *locationViewController = [[ShowSharedLocationViewController alloc] initWithMessage:message];
     [self.navigationController pushViewController:locationViewController animated:YES];
 }

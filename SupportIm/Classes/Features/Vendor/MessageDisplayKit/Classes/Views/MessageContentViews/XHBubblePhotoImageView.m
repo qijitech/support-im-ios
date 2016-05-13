@@ -51,6 +51,7 @@
         WEAKSELF
         [self addSubview:self.activityIndicatorView];
         [self.activityIndicatorView startAnimating];
+        
         [self setImageWithURL:[NSURL URLWithString:thumbnailUrl] placeholer:nil showActivityIndicatorView:NO completionBlock:^(UIImage *image, NSURL *url, NSError *error) {
             if ([url.absoluteString isEqualToString:thumbnailUrl]) {
 
@@ -60,7 +61,7 @@
                     weakSelf.semaphore = nil;
                 }
                 
-                image = [image thumbnailImage:CGRectGetWidth(weakSelf.bounds) * 2 transparentBorder:0 cornerRadius:0 interpolationQuality:1.0];
+//                image = [image thumbnailImage:CGRectGetWidth(weakSelf.bounds) * 2 transparentBorder:0 cornerRadius:0 interpolationQuality:1.0];
                 if (image) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         weakSelf.messagePhoto = image;

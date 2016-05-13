@@ -26,6 +26,7 @@
 @property (nonatomic, assign) BOOL needRefreshLocation;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIView *searchBarBlockTouchView;
+@property (nonatomic, strong) UITableView *searchTableView;
 
 
 @end
@@ -113,7 +114,7 @@
     }
     if (self.locationShareBlock) {
         AMapPOI *point = self.locationArray[0];
-        NSString *location = [NSString stringWithFormat:@"%@%@", point.district, point.address];
+        NSString *location = [NSString stringWithFormat:@"%@", point.address];
         UIImage *image = [self.mapView takeSnapshotInRect:self.mapView.frame];
         self.locationShareBlock(location, self.mapView.userLocation.location.coordinate, image);
     }
@@ -158,9 +159,12 @@
 
 - (void)setupSearchBar {
     if (self.searchBarBlockTouchView.hidden) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
         self.searchBarBlockTouchView.hidden = NO;
         [self.searchBar setShowsCancelButton:YES animated:YES];
+        
     } else {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
         self.searchBarBlockTouchView.hidden = YES;
         [self.searchBar resignFirstResponder];
         [self.searchBar setShowsCancelButton:NO animated:YES];
@@ -270,7 +274,9 @@
     [self setupSearchBar];
 }
 
-
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self setupSearchBar];
+}
 
 # pragma mark - lazy load
 
@@ -318,6 +324,7 @@
 //        _resetButton.backgroundColor = [UIColor darkGrayColor];
 //        [_resetButton setTitle:@"复位" forState:UIControlStateNormal];
         [_resetButton setBackgroundImage:[UIImage imageNamed:@"ResetMapButton"] forState:UIControlStateNormal];
+        [_resetButton addTarget:self action:@selector(resetMap) forControlEvents:UIControlEventTouchUpInside];
     }
     return _resetButton;
 }
@@ -357,6 +364,13 @@
         [_searchBarBlockTouchView addGestureRecognizer:tap];
     }
     return _searchBarBlockTouchView;
+}
+
+- (UITableView *)searchTableView {
+    if (!_searchTableView) {
+        _searchTableView = [[UITableView alloc] init];
+    }
+    return _searchTableView;
 }
 
 @end

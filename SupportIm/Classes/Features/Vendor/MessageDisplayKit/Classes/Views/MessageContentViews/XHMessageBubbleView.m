@@ -69,9 +69,17 @@ static CGFloat const kVoiceMargin = 20.0f;
     // 这里需要缩放后的size
     CGFloat currentWidth = photo.size.width;
     CGFloat currentHeight = photo.size.height;
-    CGFloat showWidth = 220;
-    CGFloat showHeight = currentHeight / currentWidth * showWidth;
+    CGFloat showWidth;
+    CGFloat showHeight;
     
+    if (currentWidth > currentHeight) {
+        showWidth = 220;
+        showHeight = currentHeight / currentWidth * showWidth;
+    } else {
+        showHeight = 220;
+        showWidth = currentWidth / currentHeight * showHeight;
+        
+    }
     CGSize photoSize = CGSizeMake(showWidth, showHeight);
     
 //    CGSize photoSize = CGSizeMake(120, 120);
@@ -117,8 +125,9 @@ static CGFloat const kVoiceMargin = 20.0f;
             bubbleSize = CGSizeMake(100, 100);
             break;
         case XHBubbleMessageMediaTypeLocalPosition:
-            // 固定大小，必须的
-            bubbleSize = CGSizeMake(119, 119);
+            //
+            bubbleSize = CGSizeMake(280, 150);
+//            bubbleSize = CGSizeMake(119, 119);
             break;
         default:
             break;
@@ -255,7 +264,7 @@ static CGFloat const kVoiceMargin = 20.0f;
             }
             break;
         case XHBubbleMessageMediaTypeLocalPosition:
-            [_bubblePhotoImageView configureMessagePhoto:message.localPositionPhoto thumbnailUrl:nil originPhotoUrl:nil onBubbleMessageType:self.message.bubbleMessageType];
+            [_bubblePhotoImageView configureMessagePhoto:message.localPositionPhoto thumbnailUrl:[self setupThumbnailUrl] originPhotoUrl:nil onBubbleMessageType:self.message.bubbleMessageType];
             
             _geolocationsLabel.text = message.geolocations;
             break;
@@ -264,6 +273,16 @@ static CGFloat const kVoiceMargin = 20.0f;
     }
     
     [self setNeedsLayout];
+}
+
+- (NSString *)setupThumbnailUrl {
+    XHMessage *message = self.message;
+    NSString *key = @"8d226fc63316e790c759e7f5430dd6c2";
+//   NSString *a = @"http://restapi.amap.com/v3/staticmap?location=116.481485,39.990464&zoom=10&size=750*300&markers=mid,,A:116.481485,39.990464&key=ee95e52bf08006f63fd29bcfbcf21df0";
+    // need encode uft8
+    NSString *url = [NSString stringWithFormat:@"http://restapi.amap.com/v3/staticmap?zoom=14&size=560*300&markers=mid,,A:%f,%f&key=%@",message.location.coordinate.longitude,message.location.coordinate.latitude,key];
+
+    return url;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -420,8 +439,17 @@ static CGFloat const kVoiceMargin = 20.0f;
             
             self.videoPlayImageView.center = CGPointMake(CGRectGetWidth(photoImageViewFrame) / 2.0, CGRectGetHeight(photoImageViewFrame) / 2.0);
             
-            CGRect geolocationsLabelFrame = CGRectMake(11, CGRectGetHeight(photoImageViewFrame) - 47, CGRectGetWidth(photoImageViewFrame) - 20, 40);
+            UIView *labelBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(8, CGRectGetHeight(photoImageViewFrame) - 37, CGRectGetWidth(photoImageViewFrame) - 16, 30)];
+            labelBackgroundView.backgroundColor = [UIColor darkGrayColor];
+            labelBackgroundView.alpha = 0.7;
+            labelBackgroundView.layer.cornerRadius = 3.f;
+            labelBackgroundView.layer.masksToBounds = YES;
+            [self.bubblePhotoImageView addSubview:labelBackgroundView];
+            [self.bubblePhotoImageView bringSubviewToFront:labelBackgroundView];
+//            CGRect geolocationsLabelFrame = CGRectMake(11, CGRectGetHeight(photoImageViewFrame) - 47, CGRectGetWidth(photoImageViewFrame) - 20, 40);
+            CGRect geolocationsLabelFrame = CGRectMake(11, CGRectGetHeight(photoImageViewFrame) - 37, CGRectGetWidth(photoImageViewFrame) - 20, 30);
             self.geolocationsLabel.frame = geolocationsLabelFrame;
+            [self.bubblePhotoImageView bringSubviewToFront:self.geolocationsLabel];
             
             break;
         }
