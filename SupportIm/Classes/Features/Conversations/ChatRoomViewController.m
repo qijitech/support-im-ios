@@ -23,7 +23,7 @@
 #import "User.h"
 #import "LocationViewController.h"
 #import "SKToastUtil.h"
-
+#import "ShowSharedLocationViewController.h"
 
 static NSInteger const kOnePageSize = 10;
 
@@ -199,9 +199,11 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
             
         case XHBubbleMessageMediaTypeLocalPosition: {
             DLog(@"facePath : %@", message.localPositionPhoto);
-            XHDisplayLocationViewController *displayLocationViewController = [[XHDisplayLocationViewController alloc] init];
-            displayLocationViewController.message = message;
-            disPlayViewController = displayLocationViewController;
+//            XHDisplayLocationViewController *displayLocationViewController = [[XHDisplayLocationViewController alloc] init];
+//            displayLocationViewController.message = message;
+//            disPlayViewController = displayLocationViewController;
+            [self openSharedLoactionWithMessage:message];
+            
             break;
         }
     }
@@ -388,6 +390,8 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     return YES;
 }
 
+# pragma mark - LocationShare
+
 - (void)didSelecteShareMenuItem:(XHShareMenuItem *)shareMenuItem atIndex:(NSInteger)index {
     if (index == 2) {
         NSLog(@"%s",__func__);
@@ -427,6 +431,11 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
     message.text = location;
     [self sendMessage:message];
 
+}
+
+- (void)openSharedLoactionWithMessage:(XHMessage *)message {
+    ShowSharedLocationViewController *locationViewController = [[ShowSharedLocationViewController alloc] initWithMessage:message];
+    [self.navigationController pushViewController:locationViewController animated:YES];
 }
 
 #pragma mark - @ reference other

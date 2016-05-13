@@ -15,5 +15,4 @@ typedef void (^LocationShareBlock)(NSString *location, CLLocationCoordinate2D co
 @interface LocationViewController : UIViewController
 @property (nonatomic, copy) LocationShareBlock locationShareBlock;
 
-
 @end

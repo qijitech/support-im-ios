@@ -12,7 +12,7 @@
 #import <MAMapKit/MAMapKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
 
-@interface LocationViewController () <MAMapViewDelegate, AMapSearchDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface LocationViewController () <MAMapViewDelegate, AMapSearchDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 @property (nonatomic, assign) BOOL didSetupConstraints;
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) UITableView *tableView;
@@ -23,6 +23,9 @@
 //@property (nonatomic, strong) MAPointAnnotation *pointAnnotation;
 @property (nonatomic, strong) UIImageView *pin;
 @property (nonatomic, assign) NSInteger *selectRow;
+@property (nonatomic, assign) BOOL needRefreshLocation;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UIView *searchBarBlockTouchView;
 
 
 @end
@@ -30,7 +33,6 @@
 @implementation LocationViewController
 
 # pragma mark - initialization
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,10 +46,12 @@
 }
 
 - (void)setupViews {
+    [self.view addSubview:self.searchBar];
     [self.view addSubview:self.mapView];
     [self.view addSubview:self.tableView];
     [self.mapView addSubview:self.resetButton];
     [self.mapView addSubview:self.pin];
+    [self.view addSubview:self.searchBarBlockTouchView];
 
 }
 
@@ -55,8 +59,12 @@
     if (!self.didSetupConstraints) {
         self.didSetupConstraints = YES;
         UIView *superView = self.view;
-        [self.mapView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_topLayoutGuideBottom);
+            make.left.right.equalTo(superView);
+        }];
+        [self.mapView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.searchBar.mas_bottom);
             make.right.left.equalTo(superView);
             make.height.mas_equalTo(superView.bounds.size.height * 0.5);
         }];
@@ -67,12 +75,17 @@
         [self.resetButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.mapView).with.offset(-50);
             make.right.equalTo(superView).with.offset(-30);
-            make.size.mas_equalTo(CGSizeMake(40, 30));
+            make.size.mas_equalTo(CGSizeMake(40, 40));
         }];
         [self.pin mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.mapView);
             make.bottom.equalTo(self.mapView.mas_centerY);
             make.size.mas_equalTo(CGSizeMake(20, 40));
+        }];
+        [self.searchBarBlockTouchView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(superView);
+            make.bottom.equalTo(superView);
+            make.top.equalTo(self.searchBar.mas_bottom);
         }];
 
     }
@@ -82,7 +95,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self.mapView setZoomLevel:14.f animated:YES];
-//    self.pointAnnotation.coordinate = self.mapView.centerCoordinate;
+
 }
 
 # pragma mark - private API
@@ -100,10 +113,9 @@
     }
     if (self.locationShareBlock) {
         AMapPOI *point = self.locationArray[0];
-        NSString *location = point.address;
-        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude);
+        NSString *location = [NSString stringWithFormat:@"%@%@", point.district, point.address];
         UIImage *image = [self.mapView takeSnapshotInRect:self.mapView.frame];
-        self.locationShareBlock(location, coordinate, image);
+        self.locationShareBlock(location, self.mapView.userLocation.location.coordinate, image);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -120,7 +132,8 @@
     //    // 交通设施服务|金融保险服务|公司企业|道路附属设施|地名地址信息|公共设施
     //    request.types = @"餐饮服务|生活服务";
 //    request.sortrule = 0;
-//    request.requireExtension = YES;
+//    request.requireSubPOIs = YES;
+    request.requireExtension = YES;
     return request;
 }
 
@@ -137,6 +150,21 @@
                          } completion:^(BOOL finished) {
                          }];
                      }];
+}
+
+- (void)tapGeatureHandle {
+    [self setupSearchBar];
+}
+
+- (void)setupSearchBar {
+    if (self.searchBarBlockTouchView.hidden) {
+        self.searchBarBlockTouchView.hidden = NO;
+        [self.searchBar setShowsCancelButton:YES animated:YES];
+    } else {
+        self.searchBarBlockTouchView.hidden = YES;
+        [self.searchBar resignFirstResponder];
+        [self.searchBar setShowsCancelButton:NO animated:YES];
+    }
 }
 
 # pragma mark - AMapSearchDelegate
@@ -157,7 +185,12 @@
 # pragma mark - MAMapViewDelegate
 
 - (void)mapView:(MAMapView *)mapView mapDidMoveByUser:(BOOL)wasUserAction {
-//    self.pointAnnotation.coordinate = self.mapView.centerCoordinate;
+    
+    if (!self.needRefreshLocation) {
+        self.needRefreshLocation = YES;
+        return;
+    }
+    
     [self shockPin];
     [self.search AMapPOIAroundSearch:[self searchWithCoordinate:self.mapView.centerCoordinate]];
 
@@ -193,20 +226,15 @@
 # pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.selectRow = indexPath.row;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.selectRow = indexPath.row;
+    self.needRefreshLocation = NO;
     [self.tableView reloadData];
     
     AMapPOI *point = self.locationArray[indexPath.row];
     [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude) animated:YES];
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView*)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath*)indexPath {
-    if(indexPath.row == self.selectRow) {
-        return UITableViewCellAccessoryCheckmark;
-    }
-    return UITableViewCellAccessoryNone;
-}
 
 # pragma mark - UITableViewDataSource
 
@@ -220,14 +248,29 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
-    cell.textLabel.text = [self.locationArray[indexPath.row] name];
-    cell.detailTextLabel.text = [self.locationArray[indexPath.row] address];
-    
-    
-    
+    AMapPOI *point = self.locationArray[indexPath.row];
+    cell.textLabel.text = point.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@%@%@", point.province, point.city, point.district, point.address];
+    if(indexPath.row == self.selectRow) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
     
     return cell;
 }
+
+# pragma mark - UISearchBarDelegate
+
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [self setupSearchBar];
+
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self setupSearchBar];
+}
+
+
 
 # pragma mark - lazy load
 
@@ -272,9 +315,9 @@
 - (UIButton *)resetButton {
     if (!_resetButton) {
         _resetButton = [[UIButton alloc] init];
-        _resetButton.backgroundColor = [UIColor darkGrayColor];
-        [_resetButton setTitle:@"复位" forState:UIControlStateNormal];
-        [_resetButton addTarget:self action:@selector(resetMap) forControlEvents:UIControlEventTouchUpInside];
+//        _resetButton.backgroundColor = [UIColor darkGrayColor];
+//        [_resetButton setTitle:@"复位" forState:UIControlStateNormal];
+        [_resetButton setBackgroundImage:[UIImage imageNamed:@"ResetMapButton"] forState:UIControlStateNormal];
     }
     return _resetButton;
 }
@@ -289,9 +332,31 @@
 
 - (UIImageView *)pin {
     if (!_pin) {
-        _pin = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LocationPoint"]];
+        _pin = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PinButtonImage"]];
     }
     return _pin;
+}
+
+- (UISearchBar *)searchBar {
+    if (!_searchBar) {
+        _searchBar = [[UISearchBar alloc] init];
+        _searchBar.placeholder = @"搜索";
+        _searchBar.delegate = self;
+        
+    }
+    return _searchBar;
+}
+
+- (UIView *)searchBarBlockTouchView {
+    if (!_searchBarBlockTouchView) {
+        _searchBarBlockTouchView = [[UIView alloc] init];
+        _searchBarBlockTouchView.backgroundColor = [UIColor darkGrayColor];
+        _searchBarBlockTouchView.alpha = 0.6;
+        _searchBarBlockTouchView.hidden = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGeatureHandle)];
+        [_searchBarBlockTouchView addGestureRecognizer:tap];
+    }
+    return _searchBarBlockTouchView;
 }
 
 @end
