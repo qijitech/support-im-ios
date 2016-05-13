@@ -126,7 +126,7 @@ static CGFloat const kVoiceMargin = 20.0f;
             break;
         case XHBubbleMessageMediaTypeLocalPosition:
             //
-            bubbleSize = CGSizeMake(280, 150);
+            bubbleSize = CGSizeMake(250, 150);
 //            bubbleSize = CGSizeMake(119, 119);
             break;
         default:
@@ -267,9 +267,18 @@ static CGFloat const kVoiceMargin = 20.0f;
             [_bubblePhotoImageView configureMessagePhoto:message.localPositionPhoto thumbnailUrl:[self setupThumbnailUrl] originPhotoUrl:nil onBubbleMessageType:self.message.bubbleMessageType];
             
             _geolocationsLabel.text = message.geolocations;
+//            _geolocationsLabel.text = [NSString stringWithFormat:@"      %@",message.geolocations];
+            
+            NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[self.message geolocations]];
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            style.firstLineHeadIndent = 10;
+            style.lineBreakMode = NSLineBreakByTruncatingTail;
+            [text addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, message.geolocations.length)];
+            self.geolocationsLabel.attributedText = text;
+            
             break;
-        default:
-            break;
+//        default:
+//            break;
     }
     
     [self setNeedsLayout];
@@ -280,7 +289,7 @@ static CGFloat const kVoiceMargin = 20.0f;
     NSString *key = @"8d226fc63316e790c759e7f5430dd6c2";
 //   NSString *a = @"http://restapi.amap.com/v3/staticmap?location=116.481485,39.990464&zoom=10&size=750*300&markers=mid,,A:116.481485,39.990464&key=ee95e52bf08006f63fd29bcfbcf21df0";
     // need encode uft8
-    NSString *url = [NSString stringWithFormat:@"http://restapi.amap.com/v3/staticmap?zoom=14&size=560*300&markers=mid,,A:%f,%f&key=%@",message.location.coordinate.longitude,message.location.coordinate.latitude,key];
+    NSString *url = [NSString stringWithFormat:@"http://restapi.amap.com/v3/staticmap?zoom=14&size=500*300&markers=mid,,A:%f,%f&key=%@",message.location.coordinate.longitude,message.location.coordinate.latitude,key];
 
     return url;
 }
@@ -439,17 +448,14 @@ static CGFloat const kVoiceMargin = 20.0f;
             
             self.videoPlayImageView.center = CGPointMake(CGRectGetWidth(photoImageViewFrame) / 2.0, CGRectGetHeight(photoImageViewFrame) / 2.0);
             
-            UIView *labelBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(8, CGRectGetHeight(photoImageViewFrame) - 37, CGRectGetWidth(photoImageViewFrame) - 16, 30)];
-            labelBackgroundView.backgroundColor = [UIColor darkGrayColor];
-            labelBackgroundView.alpha = 0.7;
-            labelBackgroundView.layer.cornerRadius = 3.f;
-            labelBackgroundView.layer.masksToBounds = YES;
-            [self.bubblePhotoImageView addSubview:labelBackgroundView];
-            [self.bubblePhotoImageView bringSubviewToFront:labelBackgroundView];
 //            CGRect geolocationsLabelFrame = CGRectMake(11, CGRectGetHeight(photoImageViewFrame) - 47, CGRectGetWidth(photoImageViewFrame) - 20, 40);
-            CGRect geolocationsLabelFrame = CGRectMake(11, CGRectGetHeight(photoImageViewFrame) - 37, CGRectGetWidth(photoImageViewFrame) - 20, 30);
+            CGRect geolocationsLabelFrame = CGRectMake(8, CGRectGetHeight(photoImageViewFrame) - 37, CGRectGetWidth(photoImageViewFrame) - 16, 30);
             self.geolocationsLabel.frame = geolocationsLabelFrame;
-            [self.bubblePhotoImageView bringSubviewToFront:self.geolocationsLabel];
+            self.geolocationsLabel.backgroundColor = [UIColor darkGrayColor];
+            self.geolocationsLabel.alpha = 0.7;
+            self.geolocationsLabel.layer.cornerRadius = 3.f;
+            self.geolocationsLabel.layer.masksToBounds = YES;
+            self.geolocationsLabel.numberOfLines = 1;
             
             break;
         }
