@@ -24,13 +24,14 @@
 //@property (nonatomic, strong) MAPointAnnotation *pointAnnotation;
 @property (nonatomic, strong) UIImageView *pin;
 @property (nonatomic, assign) NSInteger *selectRow;
-@property (nonatomic, assign) BOOL userSelectLocation;
 @property (nonatomic, strong) AMapPOI *currentMapPOI;
 @property (nonatomic, strong) AMapPOI *firstMapPOI;
 @property (nonatomic, assign, getter = isDidReceivedCurrentLocation) BOOL didReceivedCurrentLocation;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIView *searchBarBlockTouchView;
-@property (nonatomic, strong) UITableView *searchTableView;
+@property (nonatomic, strong) UITableView *searchTipsTableView;
+@property (nonatomic, strong) NSMutableArray *tipsArray;
+
 
 @end
 
@@ -56,6 +57,7 @@
     [self.mapView addSubview:self.resetButton];
     [self.mapView addSubview:self.pin];
     [self.view addSubview:self.searchBarBlockTouchView];
+    [self.view addSubview:self.searchTipsTableView];
 
 }
 
@@ -91,14 +93,17 @@
             make.bottom.equalTo(superView);
             make.top.equalTo(self.searchBar.mas_bottom);
         }];
-
+        [self.searchTipsTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.searchBar.mas_bottom);
+            make.left.right.bottom.equalTo(superView);
+        }];
     }
     [super updateViewConstraints];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.mapView setZoomLevel:14.f animated:YES];
+    [self.mapView setZoomLevel:14.f animated:NO];
 
 }
 
@@ -151,11 +156,19 @@
 
 - (AMapCloudPOILocalSearchRequest *)searchWithKeywords:(NSString *)keywords {
     AMapCloudPOILocalSearchRequest *request = [[AMapPOIAroundSearchRequest alloc] init];
-    request.tableID = @"您的tableID";//在数据管理台中取得
+    request.tableID = @"8d226fc63316e790c759e7f5430dd6c2";//在数据管理台中取得
     request.keywords = keywords;
     request.city = self.mapView.userLocation;
  
     return request;
+}
+
+- (AMapInputTipsSearchRequest *)searchTipsWithKeywords:(NSString *)keywords {
+    AMapInputTipsSearchRequest *tipsRequest = [[AMapInputTipsSearchRequest alloc] init];
+    tipsRequest.keywords = keywords;
+    tipsRequest.city = [self.locationArray[0] city];
+    [self.search AMapInputTipsSearch:tipsRequest];
+    return tipsRequest;
 }
 
 - (void)getLocationDetailWithUserLocation:(MAUserLocation *)userLocation {
@@ -192,6 +205,7 @@
     } else {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         self.searchBarBlockTouchView.hidden = YES;
+        self.searchTipsTableView.hidden = YES;
         [self.searchBar resignFirstResponder];
         [self.searchBar setShowsCancelButton:NO animated:YES];
     }
@@ -234,35 +248,35 @@
     [self.tableView reloadData];
 }
 
+-(void)onInputTipsSearchDone:(AMapInputTipsSearchRequest*)request response:(AMapInputTipsSearchResponse *)response {
+    if(response.tips.count == 0) {
+        return;
+    }
+    
+    self.tipsArray = response.tips;
+    [self.searchTipsTableView reloadData];
+    
+    //通过AMapInputTipsSearchResponse对象处理搜索结果
+    NSString *strCount = [NSString stringWithFormat:@"count: %d", response.count];
+    NSString *strtips = @"";
+    for (AMapTip *p in response.tips) {
+        strtips = [NSString stringWithFormat:@"%@\nTip: %@", strtips, p.description];
+    }
+    NSString *result = [NSString stringWithFormat:@"%@ \n %@", strCount, strtips];
+    NSLog(@"InputTips: %@", result);
+}
+
 # pragma mark - MAMapViewDelegate
 
 - (void)mapView:(MAMapView *)mapView mapDidMoveByUser:(BOOL)wasUserAction {
-    
-    if (self.userSelectLocation) {
-        self.userSelectLocation = NO;
+    if (!wasUserAction && self.firstMapPOI) {
         return;
     }
+    
     [self shockPin];
     [self.search AMapPOIAroundSearch:[self searchWithCoordinate:self.mapView.centerCoordinate]];
 
 }
-
-//- (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id <MAAnnotation>)annotation {
-//    if ([annotation isKindOfClass:[MAPointAnnotation class]]) {
-//        static NSString *pointReuseIndentifier = @"pointReuseIndentifier";
-//        MAPinAnnotationView *annotationView = (MAPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:pointReuseIndentifier];
-//        if (annotationView == nil) {
-//            annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pointReuseIndentifier];
-//        }
-////        annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
-//        annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
-////        annotationView.draggable = YES;        //设置标注可以拖动，默认为NO
-//        annotationView.pinColor = MAPinAnnotationColorRed;
-//        
-//        return annotationView;
-//    }
-//    return nil;
-//}
 
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation {
     if(updatingLocation) {
@@ -272,52 +286,17 @@
     }
 }
 
-
-# pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.selectRow = indexPath.row;
-    self.userSelectLocation = YES;
-    [self.tableView reloadData];
-    
-    AMapPOI *point = self.locationArray[indexPath.row];
-    [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude) animated:YES];
-}
-
-
-# pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.locationArray.count;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
-    AMapPOI *point = self.locationArray[indexPath.row];
-    cell.textLabel.text = point.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@%@%@", point.province, point.city, point.district, point.address];
-    if(indexPath.row == self.selectRow) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    
-    return cell;
-}
-
 # pragma mark - UISearchBarDelegate
 
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [self setupSearchBar];
-
+    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self setupSearchBar];
+    [self searchTipsWithKeywords:searchBar.text];
+    self.searchTipsTableView.hidden = NO;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -325,8 +304,69 @@
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    
+    if (!searchText.length) {
+        self.searchTipsTableView.hidden = YES;
+        return;
+    }
+    [self searchTipsWithKeywords:searchText];
+    self.searchTipsTableView.hidden = NO;
 }
+
+
+# pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (tableView == self.tableView) {
+        self.selectRow = indexPath.row;
+        [self.tableView reloadData];
+        AMapPOI *point = self.locationArray[indexPath.row];
+        [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude) animated:YES];
+    } else {
+        [self setupSearchBar];
+        AMapTip *tip = self.tipsArray[indexPath.row];
+        [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(tip.location.latitude, tip.location.longitude) animated:YES];
+    }
+}
+
+
+# pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+     if (tableView == self.tableView) {
+         return self.locationArray.count;
+     } else {
+         return self.tipsArray.count;
+     }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.tableView) {
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LocationDetailCell"];
+        AMapPOI *point = self.locationArray[indexPath.row];
+        cell.textLabel.text = point.name;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@%@%@", point.province, point.city, point.district, point.address];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
+        if(indexPath.row == self.selectRow) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        return cell;
+    } else {
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchTipCell"];
+        AMapTip *tip = self.tipsArray[indexPath.row];
+        cell.textLabel.text = tip.name;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tip.district];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
+        return cell;
+    }
+}
+
+
+
 
 # pragma mark - lazy load
 
@@ -344,6 +384,7 @@
         _mapView = [[MAMapView alloc] init];
         _mapView.delegate = self;
         _mapView.showsUserLocation = YES;
+//        _mapView.distanceFilter = 1.f;
         [_mapView setUserTrackingMode:MAUserTrackingModeFollow animated:YES];
 //        _mapView.showsScale = YES;  //设置成NO表示不显示比例尺；YES表示显示比例尺
 //        _mapView.scaleOrigin = CGPointMake(_mapView.scaleOrigin.x, 22);
@@ -416,11 +457,21 @@
     return _searchBarBlockTouchView;
 }
 
-- (UITableView *)searchTableView {
-    if (!_searchTableView) {
-        _searchTableView = [[UITableView alloc] init];
+- (UITableView *)searchTipsTableView {
+    if (!_searchTipsTableView) {
+        _searchTipsTableView = [[UITableView alloc] init];
+        _searchTipsTableView.delegate = self;
+        _searchTipsTableView.dataSource = self;
+        _searchTipsTableView.hidden = YES;
     }
-    return _searchTableView;
+    return _searchTipsTableView;
+}
+
+- (NSMutableArray *)tipsArray {
+    if (!_tipsArray) {
+        _tipsArray = [NSMutableArray array];
+    }
+    return _tipsArray;
 }
 
 @end
