@@ -19,7 +19,7 @@
 #import "AVUser+Custom.h"
 #import "JSBadgeView.h"
 #import <Masonry/Masonry.h>
-
+#import "ContactIndexModel.h"
 
 static NSString *kCellImageKey = @"image";
 static NSString *kCellBadgeKey = @"badge";
@@ -32,6 +32,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) NSMutableArray *headerSectionDatas;
+@property (nonatomic, strong) NSMutableArray *indexArray;
+@property (nonatomic, strong) NSMutableArray *indexTitleArray;
 
 @end
 
@@ -67,8 +69,10 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     [self.tableView addSubview:self.refreshControl];
 }
 
+
+
 - (UIRefreshControl *)refreshControl {
-    if (_refreshControl == nil) {
+    if (!_refreshControl) {
         _refreshControl = [[UIRefreshControl alloc] init];
         [_refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     }
@@ -118,6 +122,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
                                          kCellSelectorKey : NSStringFromSelector(@selector(goGroup:))
                                          }];
     self.dataSource = [friends mutableCopy];
+    if (self.dataSource.count) [self sortDataSourceWithIndex];
     [self.tableView reloadData];
 }
 
@@ -159,26 +164,115 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     }];
 }
 
+#pragma mark - contact index 
+
+- (NSMutableArray *)indexArray {
+    if (!_indexArray) {
+        _indexArray = [NSMutableArray array];
+    }
+    return _indexArray;
+}
+
+- (NSMutableArray *)indexTitleArray {
+    if (!_indexTitleArray) {
+        _indexTitleArray = [NSMutableArray array];
+    }
+    return _indexTitleArray;
+}
+
+- (NSString *)stringWithSpell:(NSString *)string {
+    NSMutableString *mutableString = [NSMutableString stringWithString:string];
+    CFStringTransform((CFMutableStringRef)mutableString, NULL, kCFStringTransformMandarinLatin, NO);
+    CFStringTransform((CFMutableStringRef)mutableString, NULL, kCFStringTransformStripDiacritics, NO);
+    //    NSMutableString *removedBlankString = [mutableString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return mutableString;
+}
+
+// i'm so diao, i'm heheda ,been here.
+- (void)sortDataSourceWithIndex {
+
+    NSMutableArray *displayNameSortArray = [NSMutableArray array];
+    NSMutableSet *indexSet = [NSMutableSet set];
+    NSMutableArray *indexArray = [NSMutableArray array];
+    
+    [self.dataSource enumerateObjectsUsingBlock:^(AVUser *user, NSUInteger idx, BOOL * _Nonnull stop) {
+        ContactIndexModel *model = [[ContactIndexModel alloc] init];
+        model.displayName = user.displayName;
+        model.index = idx;
+        model.fullSpelling = [self stringWithSpell:user.displayName];
+        model.indexSpelling = [model.fullSpelling substringWithRange:NSMakeRange(0, 1)];
+        [displayNameSortArray addObject:model];
+        [indexSet addObject:model.indexSpelling];
+        NSLog(@"%ld--%@--%@",model.index,model.indexSpelling,model.fullSpelling);
+    }];
+    
+    indexArray = [[indexSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [obj1 compare:obj2 options:NSCaseInsensitiveSearch];
+    }];
+    indexArray = [NSMutableArray arrayWithArray:indexArray];
+    
+    NSMutableArray *sortArray = [NSMutableArray array];
+    [indexArray enumerateObjectsUsingBlock:^(NSString *indexSpelling, NSUInteger section, BOOL * _Nonnull stop) {
+        NSMutableArray *sectionArray = [NSMutableArray array];
+        [displayNameSortArray enumerateObjectsUsingBlock:^(ContactIndexModel *model, NSUInteger index, BOOL * _Nonnull stop) {
+            if ([model.indexSpelling isEqualToString:indexSpelling]) {
+                model.index = index;
+                model.section = section;
+                [sectionArray addObject:model];
+            }
+        }];
+        [sortArray addObject:sectionArray];
+    }];
+
+    [sortArray enumerateObjectsUsingBlock:^(NSMutableArray *sectionArray, NSUInteger section, BOOL * _Nonnull stop) {
+        sectionArray = [sectionArray sortedArrayUsingComparator:^NSComparisonResult(ContactIndexModel *model1, ContactIndexModel *model2) {
+            return [model1.fullSpelling compare:model2.fullSpelling options:NSCaseInsensitiveSearch];
+        }];
+    }];
+    
+ 
+    NSScanner *scan = [NSScanner scannerWithString:indexArray[0]];
+    int val;
+    if ([scan scanInt:&val]) {
+        [sortArray addObject:sortArray.firstObject];
+        [sortArray removeObjectAtIndex:0];
+        [indexArray addObject:indexArray.firstObject];
+        [indexArray removeObjectAtIndex:0];
+    }
+                       
+    self.indexArray = sortArray;
+    self.indexTitleArray = indexArray;
+    
+    NSLog(@"%s",__func__);
+    
+    
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    self.tableView.sectionIndexColor = [UIColor darkGrayColor];
+    return self.indexTitleArray;
+}
+
 #pragma mark - Table view data delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return self.headerSectionDatas.count;
     } else {
-        return self.dataSource.count;
+        return [self.indexArray[section - 1] count];
     }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return self.indexArray.count + 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @[ @"", @"" ][section];
+    return section ? [self.indexArray[section - 1][0] indexSpelling] : nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [@[ @0, @14 ][section] intValue];
+    return section ? 20.f : 0.f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -201,7 +295,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             badgeView.badgeText = [NSString stringWithFormat:@"%ld", badgeNumber];
         }
     } else {
-        AVUser *user = [self.dataSource objectAtIndex:indexPath.row];
+        NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
+        AVUser *user = self.dataSource[index];
         [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
         cell.nameLabel.text = user.displayName;
     }
@@ -214,7 +309,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         SEL selector = NSSelectorFromString(self.headerSectionDatas[indexPath.row][kCellSelectorKey]);
         [self performSelector:selector withObject:nil afterDelay:0];
     } else {
-        AVUser *user = [self.dataSource objectAtIndex:indexPath.row];
+        NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
+        AVUser *user = self.dataSource[index];
         [self showProgress];
         [[IMService service] createChatRoomByUserId:user.objectId fromViewController:self completion:^(BOOL successed, NSError *error) {
             [self hideProgress];

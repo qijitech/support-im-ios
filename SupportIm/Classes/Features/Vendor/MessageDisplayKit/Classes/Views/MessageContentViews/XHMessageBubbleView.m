@@ -267,7 +267,7 @@ static CGFloat const kVoiceMargin = 20.0f;
             [_bubblePhotoImageView configureMessagePhoto:message.localPositionPhoto thumbnailUrl:[self setupThumbnailUrl] originPhotoUrl:nil onBubbleMessageType:self.message.bubbleMessageType];
             
             _geolocationsLabel.text = message.geolocations;
-//            _geolocationsLabel.text = [NSString stringWithFormat:@"      %@",message.geolocations];
+//            _geolocationsLabel.text = message.geolocations;
             
             NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[self.message geolocations]];
             NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];

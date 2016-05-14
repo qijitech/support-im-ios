@@ -29,7 +29,12 @@
 - (instancetype)initWithMessage:(XHMessage *)message {
     if (self = [super init]) {
         self.message = message;
-        self.locationLabel.text = message.geolocations;
+        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:message.geolocations];
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.firstLineHeadIndent = 20;
+        style.lineBreakMode = NSLineBreakByTruncatingTail;
+        [text addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
+        self.locationLabel.attributedText = text;
     }
     return self;
 }
