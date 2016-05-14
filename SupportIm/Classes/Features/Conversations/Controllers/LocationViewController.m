@@ -31,7 +31,8 @@
 @property (nonatomic, strong) UIView *searchBarBlockTouchView;
 @property (nonatomic, strong) UITableView *searchTipsTableView;
 @property (nonatomic, strong) NSMutableArray *tipsArray;
-
+@property (nonatomic, strong) NSString *searchKeywords;
+@property (nonatomic, assign) BOOL needUpdateLocationDetail;
 
 @end
 
@@ -156,7 +157,7 @@
 
 - (AMapCloudPOILocalSearchRequest *)searchWithKeywords:(NSString *)keywords {
     AMapCloudPOILocalSearchRequest *request = [[AMapPOIAroundSearchRequest alloc] init];
-    request.tableID = @"8d226fc63316e790c759e7f5430dd6c2";//在数据管理台中取得
+    request.tableID = @"8d226fc63316e790c759e7f5430dd6c2";
     request.keywords = keywords;
     request.city = self.mapView.userLocation;
  
@@ -201,14 +202,25 @@
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         self.searchBarBlockTouchView.hidden = NO;
         [self.searchBar setShowsCancelButton:YES animated:YES];
-        
     } else {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         self.searchBarBlockTouchView.hidden = YES;
         self.searchTipsTableView.hidden = YES;
         [self.searchBar resignFirstResponder];
         [self.searchBar setShowsCancelButton:NO animated:YES];
+        self.searchKeywords = self.searchBar.text;
+        [self.tableView reloadData];
     }
+    self.searchBar.text = nil;
+}
+
+- (NSMutableAttributedString *)colorDetailText:(NSString *)detailText withTextColor:(UIColor *)textColor {
+    NSMutableAttributedString * attributedString=[[NSMutableAttributedString alloc]initWithString:detailText];
+    NSRange range = [detailText rangeOfString:self.searchKeywords];
+    [attributedString addAttributes:@{NSForegroundColorAttributeName:textColor} range:NSMakeRange(0, detailText.length)];
+    [attributedString addAttributes:@{NSForegroundColorAttributeName:[UIColor blueColor]} range:range];
+    
+    return attributedString;
 }
 
 # pragma mark - AMapSearchDelegate
@@ -269,10 +281,10 @@
 # pragma mark - MAMapViewDelegate
 
 - (void)mapView:(MAMapView *)mapView mapDidMoveByUser:(BOOL)wasUserAction {
-    if (!wasUserAction && self.firstMapPOI) {
+    if (!wasUserAction && self.firstMapPOI && !self.needUpdateLocationDetail) {
         return;
     }
-    
+    self.needUpdateLocationDetail = NO;
     [self shockPin];
     [self.search AMapPOIAroundSearch:[self searchWithCoordinate:self.mapView.centerCoordinate]];
 
@@ -291,11 +303,10 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [self setupSearchBar];
-    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self searchTipsWithKeywords:searchBar.text];
+    [self searchTipsWithKeywords:self.searchKeywords];
     self.searchTipsTableView.hidden = NO;
 }
 
@@ -308,7 +319,8 @@
         self.searchTipsTableView.hidden = YES;
         return;
     }
-    [self searchTipsWithKeywords:searchText];
+    self.searchKeywords = searchText;
+    [self searchTipsWithKeywords:self.searchKeywords];
     self.searchTipsTableView.hidden = NO;
 }
 
@@ -324,6 +336,7 @@
         [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude) animated:YES];
     } else {
         [self setupSearchBar];
+        self.needUpdateLocationDetail = YES;
         AMapTip *tip = self.tipsArray[indexPath.row];
         [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(tip.location.latitude, tip.location.longitude) animated:YES];
     }
@@ -348,25 +361,18 @@
     if (tableView == self.tableView) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LocationDetailCell"];
         AMapPOI *point = self.locationArray[indexPath.row];
-        cell.textLabel.text = point.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@%@%@", point.province, point.city, point.district, point.address];
-        cell.detailTextLabel.textColor = [UIColor grayColor];
-        if(indexPath.row == self.selectRow) {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        }
+        cell.textLabel.attributedText = [self colorDetailText:point.name withTextColor:[UIColor blackColor]];
+        cell.detailTextLabel.attributedText = [self colorDetailText:[NSString stringWithFormat:@"%@%@%@%@", point.province, point.city, point.district, point.address] withTextColor:[UIColor grayColor]];
+        if(indexPath.row == self.selectRow)  cell.accessoryType = UITableViewCellAccessoryCheckmark;
         return cell;
     } else {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchTipCell"];
         AMapTip *tip = self.tipsArray[indexPath.row];
-        cell.textLabel.text = tip.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tip.district];
-        cell.detailTextLabel.textColor = [UIColor grayColor];
+        cell.textLabel.attributedText = [self colorDetailText:tip.name withTextColor:[UIColor blackColor]];
+        cell.detailTextLabel.attributedText = [self colorDetailText:[NSString stringWithFormat:@"%@", tip.district] withTextColor:[UIColor grayColor]];
         return cell;
     }
 }
-
-
-
 
 # pragma mark - lazy load
 
@@ -472,6 +478,13 @@
         _tipsArray = [NSMutableArray array];
     }
     return _tipsArray;
+}
+
+- (NSString *)searchKeywords {
+    if (!_searchKeywords) {
+        _searchKeywords = [NSString string];
+    }
+    return _searchKeywords;
 }
 
 @end
