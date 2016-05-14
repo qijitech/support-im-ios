@@ -11,23 +11,26 @@
 #import <Masonry/Masonry.h>
 #import <MAMapKit/MAMapKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
+#import "SKToastUtil.h"
+
 
 @interface LocationViewController () <MAMapViewDelegate, AMapSearchDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 @property (nonatomic, assign) BOOL didSetupConstraints;
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *locationArray;
-@property (nonatomic, strong) MAUserLocation *currentLocation;
 @property (nonatomic, strong) AMapSearchAPI *search;
 @property (nonatomic, strong) UIButton *resetButton;
 //@property (nonatomic, strong) MAPointAnnotation *pointAnnotation;
 @property (nonatomic, strong) UIImageView *pin;
 @property (nonatomic, assign) NSInteger *selectRow;
-@property (nonatomic, assign) BOOL needRefreshLocation;
+@property (nonatomic, assign) BOOL userSelectLocation;
+@property (nonatomic, strong) AMapPOI *currentMapPOI;
+@property (nonatomic, strong) AMapPOI *firstMapPOI;
+@property (nonatomic, assign, getter = isDidReceivedCurrentLocation) BOOL didReceivedCurrentLocation;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIView *searchBarBlockTouchView;
 @property (nonatomic, strong) UITableView *searchTableView;
-
 
 @end
 
@@ -99,6 +102,8 @@
 
 }
 
+
+
 # pragma mark - private API
 
 - (void)resetMap {
@@ -107,18 +112,24 @@
 
 
 - (void)sendLocation {
-    [self resetMap];
-    
-    if (!self.locationArray.count) {
-        return;
+    if (!self.didReceivedCurrentLocation) {
+        self.didReceivedCurrentLocation = YES;
+        [self getLocationDetailWithUserLocation:self.mapView.userLocation];
+    } else {
+        if (self.locationShareBlock) {
+            AMapPOI *point = self.currentMapPOI;
+            NSString *location = [NSString stringWithFormat:@"%@", point.address];
+            UIImage *image = [self.mapView takeSnapshotInRect:self.mapView.frame];
+            if (!point.address) {
+                [SKToastUtil toastWithText:@"您的网络不畅，请稍后再试"];
+                return;
+            }
+            self.locationShareBlock(location, self.mapView.userLocation.location.coordinate, image);
+        }
+
+        [self.navigationController popViewControllerAnimated:YES];
+        self.didReceivedCurrentLocation = NO;
     }
-    if (self.locationShareBlock) {
-        AMapPOI *point = self.locationArray[0];
-        NSString *location = [NSString stringWithFormat:@"%@", point.address];
-        UIImage *image = [self.mapView takeSnapshotInRect:self.mapView.frame];
-        self.locationShareBlock(location, self.mapView.userLocation.location.coordinate, image);
-    }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (AMapPOIAroundSearchRequest *)searchWithCoordinate:(CLLocationCoordinate2D)coordinate {
@@ -136,6 +147,21 @@
 //    request.requireSubPOIs = YES;
     request.requireExtension = YES;
     return request;
+}
+
+- (AMapCloudPOILocalSearchRequest *)searchWithKeywords:(NSString *)keywords {
+    AMapCloudPOILocalSearchRequest *request = [[AMapPOIAroundSearchRequest alloc] init];
+    request.tableID = @"您的tableID";//在数据管理台中取得
+    request.keywords = keywords;
+    request.city = self.mapView.userLocation;
+ 
+    return request;
+}
+
+- (void)getLocationDetailWithUserLocation:(MAUserLocation *)userLocation {
+    AMapPOIAroundSearchRequest *request = [self searchWithCoordinate:userLocation.location.coordinate];
+    request.offset = 1;
+    [self.search AMapPOIAroundSearch:[self searchWithCoordinate:self.mapView.centerCoordinate]];
 }
 
 - (void)shockPin {
@@ -175,13 +201,35 @@
 
 - (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error {
     NSLog(@"%@",error.localizedDescription);
+    if (error.code == 1806) {
+        [SKToastUtil toastWithText:@"您的网络不畅，暂时无法得到定位数据0"];
+    } else {
+        [SKToastUtil toastWithText:error.localizedDescription];
+    }
 }
 
 - (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response {
-    if(response.pois.count == 0) {
-        return;
+    
+    // If network was very very bad, you can not get location with network, only send nil location detail. heheda been here.
+    if (!self.firstMapPOI && response.pois.count) {
+        self.firstMapPOI = response.pois.firstObject;
+    }
+    if (self.isDidReceivedCurrentLocation) {
+        if (!response.pois.count) {
+            if (!self.firstMapPOI) {
+                self.firstMapPOI = [[AMapPOI alloc] init];
+            }
+            self.currentMapPOI = self.firstMapPOI;
+        } else {
+            self.currentMapPOI = response.pois[0];
+        }
+        [self sendLocation];
     }
     
+    
+    if (response.pois.count == 0) {
+        return;
+    }
     self.locationArray = response.pois;
     [self.tableView reloadData];
 }
@@ -190,11 +238,10 @@
 
 - (void)mapView:(MAMapView *)mapView mapDidMoveByUser:(BOOL)wasUserAction {
     
-    if (!self.needRefreshLocation) {
-        self.needRefreshLocation = YES;
+    if (self.userSelectLocation) {
+        self.userSelectLocation = NO;
         return;
     }
-    
     [self shockPin];
     [self.search AMapPOIAroundSearch:[self searchWithCoordinate:self.mapView.centerCoordinate]];
 
@@ -220,19 +267,18 @@
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation {
     if(updatingLocation) {
         
-        self.currentLocation = userLocation;
-        
         //取出当前位置的坐标
         NSLog(@"latitude : %f,longitude: %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
     }
 }
+
 
 # pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.selectRow = indexPath.row;
-    self.needRefreshLocation = NO;
+    self.userSelectLocation = YES;
     [self.tableView reloadData];
     
     AMapPOI *point = self.locationArray[indexPath.row];
@@ -276,6 +322,10 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self setupSearchBar];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
 }
 
 # pragma mark - lazy load

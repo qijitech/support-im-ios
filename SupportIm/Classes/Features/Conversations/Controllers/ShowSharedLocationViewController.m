@@ -39,7 +39,6 @@
     [self setupViews];
     [self.view updateConstraintsIfNeeded];
     [self.view setNeedsUpdateConstraints];
-    
 }
 
 - (void)setupViews {
@@ -83,12 +82,13 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self.mapView setZoomLevel:14.f animated:YES];
-    self.pointAnnotation.coordinate = self.message.location.coordinate;
     
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.mapView setCenterCoordinate:self.message.location.coordinate animated:NO];
+    self.pointAnnotation.coordinate = self.message.location.coordinate;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
