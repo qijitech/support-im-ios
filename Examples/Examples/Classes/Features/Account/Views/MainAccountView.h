@@ -12,7 +12,7 @@ typedef void(^MainAccountViewCellSelectBlock)(NSIndexPath *indexPath);
 
 @interface MainAccountView : UITableView
 
-@property (nonatomic, strong) MainAccountViewCellSelectBlock mainAccountViewCellSelectBlock;
+@property (nonatomic, copy) MainAccountViewCellSelectBlock mainAccountViewCellSelectBlock;
 
 
 @end

@@ -258,6 +258,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return self.headerSectionDatas.count;
+    } else if (section == self.indexArray.count) {
+        return [self.indexArray[section - 1] count] + 1;
     } else {
         return [self.indexArray[section - 1] count];
     }
@@ -269,10 +271,6 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return section ? [self.indexArray[section - 1][0] indexSpelling] : nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return section ? 20.f : 0.f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -295,10 +293,17 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             badgeView.badgeText = [NSString stringWithFormat:@"%ld", badgeNumber];
         }
     } else {
-        NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
-        AVUser *user = self.dataSource[index];
-        [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
-        cell.nameLabel.text = user.displayName;
+        if (indexPath.section == self.indexArray.count && indexPath.row == [self.indexArray[indexPath.section - 1] count]) {
+            cell = [[UITableViewCell alloc] init];
+            cell.textLabel.text = [NSString stringWithFormat:@"%ld位联系人", self.indexArray.count];
+            cell.textLabel.textColor = [UIColor grayColor];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        } else {
+            NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
+            AVUser *user = self.dataSource[index];
+            [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
+            cell.nameLabel.text = user.displayName;
+        }
     }
     return cell;
 }
