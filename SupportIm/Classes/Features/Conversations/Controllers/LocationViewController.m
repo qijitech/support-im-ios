@@ -118,24 +118,24 @@
 
 
 - (void)sendLocation {
-    if (!self.didReceivedCurrentLocation) {
-        self.didReceivedCurrentLocation = YES;
-        [self getLocationDetailWithUserLocation:self.mapView.userLocation];
-    } else {
+//    if (!self.didReceivedCurrentLocation) {
+//        self.didReceivedCurrentLocation = YES;
+//        [self getLocationDetailWithUserLocation:self.mapView.userLocation];
+//    } else {
         if (self.locationShareBlock) {
-            AMapPOI *point = self.currentMapPOI;
+            AMapPOI *point = self.locationArray[0];
             NSString *location = [NSString stringWithFormat:@"%@", point.address];
             UIImage *image = [self.mapView takeSnapshotInRect:self.mapView.frame];
             if (!point.address) {
                 [IMToastUtil toastWithText:@"您的网络不畅，请稍后再试"];
                 return;
             }
-            self.locationShareBlock(location, self.mapView.userLocation.location.coordinate, image);
+            self.locationShareBlock(location, CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude), image);
         }
 
         [self.navigationController popViewControllerAnimated:YES];
         self.didReceivedCurrentLocation = NO;
-    }
+//    }
 }
 
 - (AMapPOIAroundSearchRequest *)searchWithCoordinate:(CLLocationCoordinate2D)coordinate {
@@ -228,7 +228,7 @@
 - (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error {
     NSLog(@"%@",error.localizedDescription);
     if (error.code == 1806) {
-        [IMToastUtil toastWithText:@"您的网络不畅，暂时无法得到定位数据0"];
+        [IMToastUtil toastWithText:@"您的网络不畅，暂时无法得到定位数据"];
     } else {
         [IMToastUtil toastWithText:error.localizedDescription];
     }
@@ -237,20 +237,20 @@
 - (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response {
     
     // If network was very very bad, you can not get location with network, only send nil location detail. heheda been here.
-    if (!self.firstMapPOI && response.pois.count) {
-        self.firstMapPOI = response.pois.firstObject;
-    }
-    if (self.isDidReceivedCurrentLocation) {
-        if (!response.pois.count) {
-            if (!self.firstMapPOI) {
-                self.firstMapPOI = [[AMapPOI alloc] init];
-            }
-            self.currentMapPOI = self.firstMapPOI;
-        } else {
-            self.currentMapPOI = response.pois[0];
-        }
-        [self sendLocation];
-    }
+//    if (!self.firstMapPOI && response.pois.count) {
+//        self.firstMapPOI = response.pois.firstObject;
+//    }
+//    if (self.isDidReceivedCurrentLocation) {
+//        if (!response.pois.count) {
+//            if (!self.firstMapPOI) {
+//                self.firstMapPOI = [[AMapPOI alloc] init];
+//            }
+//            self.currentMapPOI = self.firstMapPOI;
+//        } else {
+//            self.currentMapPOI = response.pois[0];
+//        }
+//        [self sendLocation];
+//    }
     
     
     if (response.pois.count == 0) {

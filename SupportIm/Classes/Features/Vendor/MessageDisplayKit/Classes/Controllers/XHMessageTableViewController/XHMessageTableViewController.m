@@ -12,6 +12,8 @@
 
 #import "XHMessageTableViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "NSString+Emojize.h"
+#import "emojis.h"
 
 static void * const XHMessageInputTextViewContext = (void*)&XHMessageInputTextViewContext;
 static CGFloat const LCIMScrollViewInsetTop = 20.f;
@@ -1099,7 +1101,9 @@ static CGPoint  delayOffset = {0.0};
 
 - (void)didSelecteEmotion:(XHEmotion *)emotion atIndexPath:(NSIndexPath *)indexPath {
     if (emotion.emotionPath) {
-        [self didSendEmotionMessageWithEmotion:emotion.emotionPath];
+        NSString *s = [NSString emojizedStringWithString:emotion.emotionPath];
+        [self didSendEmotionMessageWithEmotion:s];
+//        [self didSendEmotionMessageWithEmotion:emotion.emotionPath];
     }
 }
 

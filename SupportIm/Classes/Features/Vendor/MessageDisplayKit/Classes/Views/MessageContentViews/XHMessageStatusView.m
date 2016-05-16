@@ -29,7 +29,7 @@
         _sentView.layer.cornerRadius = 3;
         _sentView.layer.masksToBounds = YES;
         //[_sentView sizeToFit];
-        [_sentView setText:@"已发送"];
+//        [_sentView setText:@"已发送"];
         [_sentView setTextColor:({
             UIColor *color = [UIColor colorWithRed:(28) / 255.f green:(116) / 255.f blue:(254) / 255.f alpha:1.0f];
             color;

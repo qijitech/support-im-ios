@@ -12,10 +12,7 @@ target 'Examples' do
   pod "SupportIm", :path => "."
 #  pod 'StarterKit', :git => 'https://github.com/qijitech/ios-starter-kit.git', :branch => 'master'
 
-  
-
 end
-
 
 xcodeproj 'Examples/Examples.xcodeproj'
 
