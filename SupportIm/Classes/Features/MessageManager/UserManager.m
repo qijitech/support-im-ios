@@ -164,9 +164,23 @@ static UserManager *userManager;
     }];
 }
 
+- (void)findFriendsOnlyCacheWithBlock:(AVArrayResultBlock)block {
+    AVUser *user = [AVUser currentUser];
+    AVQuery *q = [user followeeQuery];
+    q.cachePolicy = kAVCachePolicyCacheOnly;
+    [q findObjectsInBackgroundWithBlock: ^(NSArray *objects, NSError *error) {
+        if (error == nil) {
+            [[CacheManager manager] registerUsers:objects];
+        }
+        block(objects, error);
+    }];
+}
+
 - (void)isMyFriend:(AVUser *)user block:(AVBooleanResultBlock)block {
     AVUser *currentUser = [AVUser currentUser];
     AVQuery *q = [currentUser followeeQuery];
+    q.cachePolicy = kAVCachePolicyCacheThenNetwork;
+
     //TODO:Why nil?
     NSString *reason = [NSString stringWithFormat:@"\n\n------ BEGIN LOG ------\nclass name :%@\nline: %@\nreason:%@", @(__PRETTY_FUNCTION__), @(__LINE__), @"AVUser is nil"];
     NSAssert(user, reason);
@@ -282,6 +296,16 @@ static UserManager *userManager;
     AVQuery *q = [AddRequest query];
     [q includeKey:kAddRequestFromUser];
     [q whereKey:kAddRequestToUser equalTo:curUser];
+    [q orderByDescending:@"createdAt"];
+    [q findObjectsInBackgroundWithBlock:block];
+}
+
+- (void)findAddRequestsOnlyCacheWithBlock:(AVArrayResultBlock)block {
+    AVUser *curUser = [AVUser currentUser];
+    AVQuery *q = [AddRequest query];
+    [q includeKey:kAddRequestFromUser];
+    [q whereKey:kAddRequestToUser equalTo:curUser];
+    [q setCachePolicy:kAVCachePolicyCacheOnly];
     [q orderByDescending:@"createdAt"];
     [q findObjectsInBackgroundWithBlock:block];
 }

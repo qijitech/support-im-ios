@@ -20,6 +20,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self setupViews];
+        self.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -57,7 +58,7 @@
         }];
         
         [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.mas_equalTo(CGSizeMake(60, 20));
+            make.size.mas_equalTo(CGSizeMake(45, 25));
             make.right.equalTo(self).with.offset(-40);
             make.centerY.equalTo(self);
         }];
@@ -87,9 +88,10 @@
 - (UIButton *)actionButton {
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
-        _actionButton.backgroundColor = [UIColor lightGrayColor];
-        _actionButton.layer.cornerRadius = 5.f;
+        _actionButton.backgroundColor = [UIColor colorWithRed:203.f/255.f green:0.f/255.f blue:41.f/255.f alpha:1.f];
+        _actionButton.layer.cornerRadius = 3.f;
         _actionButton.layer.masksToBounds = YES;
+        _actionButton.titleLabel.font = [UIFont systemFontOfSize:13.f];
     }
     return _actionButton;
 }

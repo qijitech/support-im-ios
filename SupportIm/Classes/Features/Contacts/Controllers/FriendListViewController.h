@@ -12,4 +12,6 @@
 
 - (void)refresh;
 
+- (void)refreshOnlyCache;
+
 @end

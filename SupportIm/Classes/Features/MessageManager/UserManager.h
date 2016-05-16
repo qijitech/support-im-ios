@@ -20,6 +20,7 @@
 - (void)registerWithUser:(AVUser *)user block:(AVBooleanResultBlock)block;
 
 - (void)findFriendsWithBlock:(AVArrayResultBlock)block;
+- (void)findFriendsOnlyCacheWithBlock:(AVArrayResultBlock)block;
 - (void)isMyFriend:(AVUser *)user block:(AVBooleanResultBlock)block;
 
 - (void)findUsersByPartname:(NSString *)partName withBlock:(AVArrayResultBlock)block;
@@ -37,6 +38,7 @@
 
 - (void)countUnreadAddRequestsWithBlock:(AVIntegerResultBlock)block;
 - (void)findAddRequestsWithBlock:(AVArrayResultBlock)block;
+- (void)findAddRequestsOnlyCacheWithBlock:(AVArrayResultBlock)block;
 - (void)agreeAddRequest:(AddRequest *)addRequest callback:(AVBooleanResultBlock)callback;
 - (void)tryCreateAddRequestWithToUser:(AVUser *)user callback:(AVBooleanResultBlock)callback;
 - (void)markAddRequestsAsRead:(NSArray *)addRequests block:(AVBooleanResultBlock)block;

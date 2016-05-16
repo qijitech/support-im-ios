@@ -14,6 +14,8 @@
 #import "UserManager.h"
 #import "SupportIm.h"
 #import "JSBadgeView.h"
+#import "AddFriendViewController.h"
+
 
 @interface NewFriendViewController ()
 @property (nonatomic, assign) BOOL didSetupConstraints;
@@ -31,12 +33,12 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"新的朋友";
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加朋友" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddFriendViewController)];
+    
     [self setupViews];
 //    [self.view updateConstraintsIfNeeded];
 //    [self.view setNeedsUpdateConstraints];
-
-    
-    [self refresh:nil];
+    [self refreshOnlyCache];
 }
 
 - (void)setupViews {
@@ -55,7 +57,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     if (self.needRefreshFriendListVC) {
-        [self.friendListViewController refresh];
+        [self.friendListViewController refreshOnlyCache];
     }
 }
 
@@ -86,6 +88,31 @@
     }];
 }
 
+- (void)refreshOnlyCache {
+     WEAKSELF
+    [[UserManager manager] findAddRequestsOnlyCacheWithBlock : ^(NSArray *objects, NSError *error) {
+        if (error.code == kAVErrorObjectNotFound || error.code == kAVErrorCacheMiss) {
+        }
+        else {
+            if ([self filterError:error]) {
+                 [[UserManager manager] markAddRequestsAsRead:objects block:^(BOOL succeeded, NSError *error) {
+                    [self hideProgress];
+                    if (!error && objects.count > 0) {
+                        self.needRefreshFriendListVC = YES;
+                    }
+                    _addRequests = objects;
+                    [weakSelf.tableView reloadData];
+                }];
+            }
+        }
+    }];
+}
+
+- (void)pushAddFriendViewController {
+    AddFriendViewController *addFriendViewController = [[AddFriendViewController alloc] init];
+    [self.navigationController pushViewController:addFriendViewController animated:YES];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -113,7 +140,9 @@
     }
     else {
         cell.actionButton.enabled = false;
-        [cell.actionButton setTitle:@"已同意" forState:UIControlStateNormal];
+        [cell.actionButton setTitle:@"已添加" forState:UIControlStateNormal];
+        [cell.actionButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        cell.actionButton.backgroundColor = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     return cell;

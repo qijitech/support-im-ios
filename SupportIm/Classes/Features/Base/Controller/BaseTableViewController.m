@@ -43,7 +43,7 @@
 
 - (UITableView *)tableView {
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 50) style:self.tableViewStyle];
+        _tableView = [[UITableView alloc] initWithFrame:self.view.frame style:self.tableViewStyle];
         _tableView.delegate = self;
         _tableView.dataSource = self;
     }

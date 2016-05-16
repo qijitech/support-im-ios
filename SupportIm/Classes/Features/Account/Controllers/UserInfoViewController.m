@@ -41,9 +41,9 @@
 }
 
 - (void)refresh {
-    [self showProgress];
+//    [self showProgress];
     [[UserManager manager] isMyFriend : _user block : ^(BOOL isFriend, NSError *error) {
-        [self hideProgress];
+//        [self hideProgress];
         if ([self filterError:error]) {
             [[UserManager manager] getBigAvatarImageOfUser:_user block:^(UIImage *image) {
                 self.dataSource =[NSMutableArray array];

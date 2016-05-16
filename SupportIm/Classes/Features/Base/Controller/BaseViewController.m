@@ -58,7 +58,7 @@
 
 - (BOOL)alertError:(NSError *)error {
     if (error) {
-        [AVAnalytics event:@"Alert Error" attributes:@{@"desc": error.description}];
+//        [AVAnalytics event:@"Alert Error" attributes:@{@"desc": error.description}];
     }
     if (error) {
         if (error.code == kAVIMErrorConnectionLost) {
@@ -69,10 +69,10 @@
         }
         else {
 #ifndef DEBUG
-            [self alert:[NSString stringWithFormat:@"%@", error]];
+//            [self alert:[NSString stringWithFormat:@"%@", error]];
 #else
-            NSString *info = error.localizedDescription;
-            [self alert:info ? info : [NSString stringWithFormat:@"%@", error]];
+//            NSString *info = error.localizedDescription;
+//            [self alert:info ? info : [NSString stringWithFormat:@"%@", error]];
 #endif
         }
         return YES;

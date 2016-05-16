@@ -44,7 +44,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 - (instancetype)init {
     if ((self = [super init])) {
         self.title = @"联系人";
-        [self refresh];
+        [self refreshOnlyCache];
     }
     return self;
 }
@@ -57,7 +57,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     [self setupTableView];
     //Do this because -- Tab Bar covers TableView cells in iOS7
     self.tableView.contentInset = UIEdgeInsetsMake(0., 0., CGRectGetHeight(self.tabBarController.tabBar.frame), 0);
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationFriendListNeedRefresh object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationFriendListNeedRefresh object:nil];
 }
 
 - (void)dealloc {
@@ -143,11 +143,36 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     }];
 }
 
+- (void)findFriendsAndBadgeNumberCacheOnlyWithBlock:(void (^)(NSArray *friends, NSInteger badgeNumber, NSError *error))block {
+    [[UserManager manager] findFriendsOnlyCacheWithBlock : ^(NSArray *objects, NSError *error) {
+        // why kAVErrorInternalServer ?
+        if (error && error.code != kAVErrorCacheMiss && error.code == kAVErrorInternalServer) {
+            // for the first start
+            block(nil, 0, error);
+        } else {
+            if (objects == nil) {
+                objects = [NSMutableArray array];
+            }
+            [self countNewAddRequestBadge:^(NSInteger number, NSError *error) {
+                block (objects, number, nil);
+            }];
+        };
+    }];
+}
+
 - (void)refresh:(UIRefreshControl *)refreshControl {
     [self showProgress];
     [self findFriendsAndBadgeNumberWithBlock:^(NSArray *friends, NSInteger badgeNumber, NSError *error) {
         [self hideProgress];
         [Utils stopRefreshControl:refreshControl];
+        if ([self filterError:error]) {
+            [self refreshWithFriends:friends badgeNumber:badgeNumber];
+        }
+    }];
+}
+
+- (void)refreshOnlyCache {
+    [self findFriendsAndBadgeNumberCacheOnlyWithBlock:^(NSArray *friends, NSInteger badgeNumber, NSError *error) {
         if ([self filterError:error]) {
             [self refreshWithFriends:friends badgeNumber:badgeNumber];
         }
@@ -316,9 +341,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     } else {
         NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
         AVUser *user = self.dataSource[index];
-        [self showProgress];
+//        [self showProgress];
         [[IMService service] createChatRoomByUserId:user.objectId fromViewController:self completion:^(BOOL successed, NSError *error) {
-            [self hideProgress];
+//            [self hideProgress];
             if (error) {
                 NSLog(@"%@",error.userInfo);
             }
