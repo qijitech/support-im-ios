@@ -6,7 +6,7 @@
 //
 //
 
-#import "AVIMConversation.h"
+//#import "AVIMConversation.h"
 #import <AVOSCloudIM/AVOSCloudIM.h>
 
 #define CONVERSATION_TYPE @"type"

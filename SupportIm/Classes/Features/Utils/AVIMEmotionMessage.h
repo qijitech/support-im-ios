@@ -6,7 +6,8 @@
 //
 //
 
-#import "AVIMTypedMessage.h"
+//#import "AVIMTypedMessage.h"
+#import <AVOSCloudIM/AVOSCloudIM.h>
 
 static AVIMMessageMediaType const kAVIMMessageMediaTypeEmotion = 1;
 

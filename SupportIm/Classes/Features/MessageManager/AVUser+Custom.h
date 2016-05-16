@@ -6,7 +6,8 @@
 //  Copyright © 2016年 qijitech. All rights reserved.
 //
 
-#import "AVUser.h"
+//#import "AVUser.h"
+#import <AVOSCloud/AVOSCloud.h>
 
 @interface AVUser (Custom)
 

@@ -1,11 +1,11 @@
 PODS:
   - AMap2DMap (3.3.0)
   - AMapSearch (3.3.0)
-  - AVOSCloud (3.2.8)
-  - AVOSCloudCrashReporting (3.2.8):
-    - AVOSCloud
-  - AVOSCloudIM (3.2.8):
-    - AVOSCloud
+  - AVOSCloudCrashReportingDynamic (3.2.8):
+    - AVOSCloudDynamic
+  - AVOSCloudDynamic (3.2.8)
+  - AVOSCloudIMDynamic (3.2.8):
+    - AVOSCloudDynamic
   - DateTools (1.7.0)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
@@ -17,11 +17,9 @@ PODS:
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SupportIm (0.1.0):
-    - AMap2DMap
-    - AMapSearch
-    - AVOSCloud
-    - AVOSCloudCrashReporting
-    - AVOSCloudIM
+    - AVOSCloudCrashReportingDynamic
+    - AVOSCloudDynamic
+    - AVOSCloudIMDynamic
     - DateTools
     - FMDB
     - Masonry
@@ -30,6 +28,8 @@ PODS:
     - SDWebImage
 
 DEPENDENCIES:
+  - AMap2DMap
+  - AMapSearch
   - SupportIm (from `.`)
 
 EXTERNAL SOURCES:
@@ -39,17 +39,17 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AMap2DMap: e53461cdc345375e514579db17dbd721ff9ed9eb
   AMapSearch: cff4faf59c007f7d1f2bae2d7170c3912783981a
-  AVOSCloud: b789619942a4275e615f8f0782e7475675951b95
-  AVOSCloudCrashReporting: 2dddc7dfc8ef423492a01c0076b3e97716854701
-  AVOSCloudIM: d2f6a13d64f9676a43e4d68b822bd1be3f96fb76
+  AVOSCloudCrashReportingDynamic: 42e21553cd57acc86ba93716c12ebf42ddb90986
+  AVOSCloudDynamic: 440bbf71ffe533a5090a4329fe80e1027e3b0654
+  AVOSCloudIMDynamic: fb50510a9159649f91b9a2e35334b7676aa7c012
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   MaterialControls: bdeeb94aa049b73f70739a5514be137d2d45c08a
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
-  SupportIm: aa755e3e32067da09ac3fa060bdd10e062e9266b
+  SupportIm: ae9e814d3eef539aaf9410d887d49b8cdd9b5988
 
-PODFILE CHECKSUM: e0aaab9f5bc0cc78038d481a8d66479228c45a54
+PODFILE CHECKSUM: 93f5c476091390eba2fdd91b97f7a7fda3ea0b50
 
 COCOAPODS: 1.0.0.beta.3

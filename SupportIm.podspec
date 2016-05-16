@@ -32,19 +32,27 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'SupportIm/Classes/**/*'
   s.resource_bundles = {
-    'SupportIm' => ['SupportIm/Assets/*']
+    'SupportIm' => ['$(SRCROOT)/SupportIm/Assets/*']
   }
 
   s.public_header_files = 'SupportIm/Classes/**/*.h'
   s.frameworks = 'UIKit', 'MapKit', 'MobileCoreServices', 'SystemConfiguration'
-#  s.vendored_frameworks = 'lib/libAVOSCloud.a'
+
+#  s.vendored_frameworks = 'AVOSCloud', 'AVOSCloudIM', 'AVOSCloudCrashReporting'
+
+#  s.vendored_frameworks = 'SupportIm/Classes/MAMap/MAMapKit.framework', 'SupportIm/Classes/MAMap/AMapSearchKit.framework'
 
 
-  s.libraries = 'AVOSCloud' 
+#  s.libraries = 'AMapSearch', 'AMap2DMap'
 
-  s.dependency 'AVOSCloud'
-  s.dependency 'AVOSCloudIM'
-  s.dependency 'AVOSCloudCrashReporting'
+
+#  s.dependency 'AVOSCloud'
+#  s.dependency 'AVOSCloudIM'
+#  s.dependency 'AVOSCloudCrashReporting'
+
+  s.dependency 'AVOSCloudDynamic'
+  s.dependency 'AVOSCloudIMDynamic'
+  s.dependency 'AVOSCloudCrashReportingDynamic'
 
   s.dependency 'DateTools'
   s.dependency 'Masonry'
@@ -52,7 +60,8 @@ TODO: Add long description of the pod here.
   s.dependency 'SDWebImage'
   s.dependency 'MaterialControls'
   s.dependency 'MBProgressHUD'
-  s.dependency 'AMapSearch'
-  s.dependency 'AMap2DMap'
+
+#  s.dependency 'AMapSearch'
+#  s.dependency 'AMap2DMap'
 
 end

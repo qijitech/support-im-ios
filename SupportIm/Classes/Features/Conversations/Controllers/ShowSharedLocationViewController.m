@@ -9,6 +9,8 @@
 #import "ShowSharedLocationViewController.h"
 #import <Masonry/Masonry.h>
 #import <MAMapKit/MAMapKit.h>
+//#import <AMapNaviKit/MAMapKit.h>
+
 #import "XHMessage.h"
 
 @interface ShowSharedLocationViewController () <MAMapViewDelegate>

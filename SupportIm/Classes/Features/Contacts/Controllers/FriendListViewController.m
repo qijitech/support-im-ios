@@ -45,6 +45,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     if ((self = [super init])) {
         self.title = @"联系人";
         [self refreshOnlyCache];
+//        [self refresh];
     }
     return self;
 }
@@ -175,6 +176,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     [self findFriendsAndBadgeNumberCacheOnlyWithBlock:^(NSArray *friends, NSInteger badgeNumber, NSError *error) {
         if ([self filterError:error]) {
             [self refreshWithFriends:friends badgeNumber:badgeNumber];
+            if (!friends.count) {
+                [self refresh];
+            }
         }
     }];
 }
@@ -282,10 +286,15 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
+        NSLog(@"%ld",self.headerSectionDatas.count);
         return self.headerSectionDatas.count;
     } else if (section == self.indexArray.count) {
+        NSLog(@"%ld",[self.indexArray[section - 1] count] + 1);
+
         return [self.indexArray[section - 1] count] + 1;
     } else {
+        NSLog(@"%ld",[self.indexArray[section - 1] count]);
+
         return [self.indexArray[section - 1] count];
     }
 }

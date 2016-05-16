@@ -6,7 +6,7 @@
 //  Copyright © 2016年 奇迹空间. All rights reserved.
 //
 
-#import "AVObject.h"
+//#import "AVObject.h"
 #import <AVOSCloud/AVOSCloud.h>
 
 

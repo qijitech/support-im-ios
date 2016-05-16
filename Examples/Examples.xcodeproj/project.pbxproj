@@ -14,7 +14,7 @@
 		5361ED2D1C4D38DB0048F4AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5361ED2C1C4D38DB0048F4AC /* Assets.xcassets */; };
 		53DC5E491C528D3E009A3CCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DC5E471C528D3E009A3CCD /* LaunchScreen.storyboard */; };
 		806701B66B5952E673C98EB2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 80670EAC56A3AC0AC2618440 /* AppDelegate.m */; };
-		9964AB4B22C55D185F07F575 /* libPods-Examples.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DD6FBE6AA3B8E8707621CD /* libPods-Examples.a */; };
+		84355E2F8F328F540F1403D1 /* Pods_Examples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 216F74C7E9A21C0839F32CDB /* Pods_Examples.framework */; };
 		A80F31CA1CE343A100F55688 /* MessageDisplayKitString.strings in Resources */ = {isa = PBXBuildFile; fileRef = A80F31C81CE343A100F55688 /* MessageDisplayKitString.strings */; };
 		A80F31CE1CE3526C00F55688 /* loudReceive.caf in Resources */ = {isa = PBXBuildFile; fileRef = A80F31CB1CE3526C00F55688 /* loudReceive.caf */; };
 		A80F31CF1CE3526C00F55688 /* receive.caf in Resources */ = {isa = PBXBuildFile; fileRef = A80F31CC1CE3526C00F55688 /* receive.caf */; };
@@ -44,8 +44,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		216F74C7E9A21C0839F32CDB /* Pods_Examples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Examples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		517DB4411CDB822D00868755 /* SupportIm.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SupportIm.podspec; path = ../SupportIm.podspec; sourceTree = "<group>"; };
-		51DD6FBE6AA3B8E8707621CD /* libPods-Examples.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Examples.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		531838351C5233E700A38298 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		531838361C5233E700A38298 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		5361ED1D1C4D38DB0048F4AC /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +68,7 @@
 		A825BC971CE07ACD00BE8DA0 /* MainAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainAccountView.m; sourceTree = "<group>"; };
 		A825BCA51CE07B1B00BE8DA0 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
 		A825BCA61CE07B1B00BE8DA0 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
+		A82D403C1CEA079900A19A40 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		A8796C131CDE77BA0026E4A1 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		A8796C241CDE7D0C0026E4A1 /* MainLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainLoginViewController.h; sourceTree = "<group>"; };
 		A8796C251CDE7D0C0026E4A1 /* MainLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainLoginViewController.m; sourceTree = "<group>"; };
@@ -117,7 +118,7 @@
 				A88ED9631CE49267001C4A6E /* libc++.tbd in Frameworks */,
 				A88ED9611CE4925D001C4A6E /* libstdc++.6.0.9.tbd in Frameworks */,
 				A88ED95F1CE49257001C4A6E /* libz.tbd in Frameworks */,
-				9964AB4B22C55D185F07F575 /* libPods-Examples.a in Frameworks */,
+				84355E2F8F328F540F1403D1 /* Pods_Examples.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +338,7 @@
 		F3C6F341A32E0A841A2F63ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A82D403C1CEA079900A19A40 /* libstdc++.tbd */,
 				A88ED9671CE492B2001C4A6E /* CoreGraphics.framework */,
 				A88ED9651CE4928B001C4A6E /* AVFoundation.framework */,
 				A88ED9621CE49267001C4A6E /* libc++.tbd */,
@@ -347,7 +349,7 @@
 				A8DA026C1CE2CB2300550F33 /* CoreTelephony.framework */,
 				A8DA026A1CE2CB1B00550F33 /* MobileCoreServices.framework */,
 				A8DA02681CE2CB1500550F33 /* SystemConfiguration.framework */,
-				51DD6FBE6AA3B8E8707621CD /* libPods-Examples.a */,
+				216F74C7E9A21C0839F32CDB /* Pods_Examples.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -609,12 +611,66 @@
 			baseConfigurationReference = CBDD71DBC0C423DCD9396244 /* Pods-Examples.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/AVOSCloudCrashReportingDynamic/**\"",
+					"\"${PODS_ROOT}/AVOSCloudDynamic/**\"",
+					"\"${PODS_ROOT}/AVOSCloudIMDynamic/**\"",
+					"\"${PODS_ROOT}/AMap2DMap\"",
+					"\"${PODS_ROOT}/AMapSearch\"",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Examples/PrefixHeader.pch";
 				INFOPLIST_FILE = Examples/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"sqlite3\"",
+					"-l\"stdc++.6.0.9\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVOSCloud\"",
+					"-framework",
+					"\"AVOSCloudCrashReporting\"",
+					"-framework",
+					"\"AVOSCloudIM\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"DateTools\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"Masonry\"",
+					"-framework",
+					"\"MaterialControls\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SupportIm\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = tech.qiji.Exampleszzz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -626,12 +682,66 @@
 			baseConfigurationReference = 8A3429AD3E96A3B3E69FEEFD /* Pods-Examples.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/AVOSCloudCrashReportingDynamic/**\"",
+					"\"${PODS_ROOT}/AVOSCloudDynamic/**\"",
+					"\"${PODS_ROOT}/AVOSCloudIMDynamic/**\"",
+					"\"${PODS_ROOT}/AMap2DMap\"",
+					"\"${PODS_ROOT}/AMapSearch\"",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Examples/PrefixHeader.pch";
 				INFOPLIST_FILE = Examples/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"sqlite3\"",
+					"-l\"stdc++.6.0.9\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVOSCloud\"",
+					"-framework",
+					"\"AVOSCloudCrashReporting\"",
+					"-framework",
+					"\"AVOSCloudIM\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"DateTools\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"Masonry\"",
+					"-framework",
+					"\"MaterialControls\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SDWebImage\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SupportIm\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = tech.qiji.Exampleszzz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

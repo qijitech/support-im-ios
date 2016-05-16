@@ -2,7 +2,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
-#use_frameworks!
+use_frameworks!
 
 inhibit_all_warnings!
 
@@ -11,6 +11,9 @@ workspace ‘SupportIm’
 target 'Examples' do
   pod "SupportIm", :path => "."
 #  pod 'StarterKit', :git => 'https://github.com/qijitech/ios-starter-kit.git', :branch => 'master'
+  pod "AMapSearch"
+  pod "AMap2DMap"
+
 
 end
 

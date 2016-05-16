@@ -10,6 +10,8 @@
 #import "LocationViewController.h"
 #import <Masonry/Masonry.h>
 #import <MAMapKit/MAMapKit.h>
+//#import <AMapNaviKit/MAMapKit.h>
+
 #import <AMapSearchKit/AMapSearchKit.h>
 #import "IMToastUtil.h"
 
