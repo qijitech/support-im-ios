@@ -10,10 +10,11 @@
 #import "LocationViewController.h"
 #import <Masonry/Masonry.h>
 #import <MAMapKit/MAMapKit.h>
-//#import <AMapNaviKit/MAMapKit.h>
 
 #import <AMapSearchKit/AMapSearchKit.h>
 #import "IMToastUtil.h"
+
+static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 
 @interface LocationViewController () <MAMapViewDelegate, AMapSearchDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
@@ -44,6 +45,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"位置";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(sendLocation)];
@@ -283,7 +286,10 @@
 # pragma mark - MAMapViewDelegate
 
 - (void)mapView:(MAMapView *)mapView mapDidMoveByUser:(BOOL)wasUserAction {
-    if (!wasUserAction && self.firstMapPOI && !self.needUpdateLocationDetail) {
+//    if (!wasUserAction && self.firstMapPOI && !self.needUpdateLocationDetail) {
+//        return;
+//    }
+    if (!wasUserAction && !self.needUpdateLocationDetail) {
         return;
     }
     self.needUpdateLocationDetail = NO;
@@ -336,7 +342,7 @@
         [self.tableView reloadData];
         AMapPOI *point = self.locationArray[indexPath.row];
         [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(point.location.latitude, point.location.longitude) animated:YES];
-    } else {
+    } else if (tableView == self.searchTipsTableView) {
         [self setupSearchBar];
         self.needUpdateLocationDetail = YES;
         AMapTip *tip = self.tipsArray[indexPath.row];

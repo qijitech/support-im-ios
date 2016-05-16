@@ -9,9 +9,10 @@
 #import "ShowSharedLocationViewController.h"
 #import <Masonry/Masonry.h>
 #import <MAMapKit/MAMapKit.h>
-//#import <AMapNaviKit/MAMapKit.h>
-
+#import <AMapSearchKit/AMapSearchKit.h>
 #import "XHMessage.h"
+
+static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 @interface ShowSharedLocationViewController () <MAMapViewDelegate>
 @property (nonatomic, assign) BOOL didSetupConstraints;
@@ -30,6 +31,8 @@
 
 - (instancetype)initWithMessage:(XHMessage *)message {
     if (self = [super init]) {
+        [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+        [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
         self.message = message;
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:message.geolocations];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];

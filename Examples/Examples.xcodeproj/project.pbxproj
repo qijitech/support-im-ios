@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		517DB4421CDB822D00868755 /* SupportIm.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 517DB4411CDB822D00868755 /* SupportIm.podspec */; };
 		531838371C5233E700A38298 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 531838351C5233E700A38298 /* LICENSE */; };
-		531838381C5233E700A38298 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 531838361C5233E700A38298 /* README.md */; };
 		5361ED221C4D38DB0048F4AC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5361ED211C4D38DB0048F4AC /* main.m */; };
 		5361ED2D1C4D38DB0048F4AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5361ED2C1C4D38DB0048F4AC /* Assets.xcassets */; };
 		53DC5E491C528D3E009A3CCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DC5E471C528D3E009A3CCD /* LaunchScreen.storyboard */; };
@@ -494,7 +493,6 @@
 				A825BC9A1CE07ACD00BE8DA0 /* MainAccountView.m in Sources */,
 				A8796C711CDE7D0C0026E4A1 /* CountryTableViewCell.m in Sources */,
 				A8796C6F1CDE7D0C0026E4A1 /* UserRegisterViewController.m in Sources */,
-				531838381C5233E700A38298 /* README.md in Sources */,
 				806701B66B5952E673C98EB2 /* AppDelegate.m in Sources */,
 				A8796C731CDE7D0C0026E4A1 /* PhoneLoginView.m in Sources */,
 				A8796C6C1CDE7D0C0026E4A1 /* PhoneLoginViewController.m in Sources */,
