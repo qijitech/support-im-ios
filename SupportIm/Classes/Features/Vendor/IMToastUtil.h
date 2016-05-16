@@ -5,7 +5,7 @@
 #import <Foundation/Foundation.h>
 #import <MaterialControls/MDToast.h>
 
-@interface SKToastUtil : NSObject
+@interface IMToastUtil : NSObject
 
 + (void)toastWithText:(NSString *)text;
 

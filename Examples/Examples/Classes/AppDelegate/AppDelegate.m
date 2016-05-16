@@ -44,49 +44,48 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
-    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
-    
-    [AddRequest registerSubclass];
-    [AbuseReport registerSubclass];
-    // Enable Crash Reporting
-    [AVOSCloudCrashReporting enable];
-    //希望能提供更详细的日志信息，打开日志的方式是在 AVOSCloud 初始化语句之后加上下面这句：
-    
-    //Objective-C
-#ifndef __OPTIMIZE__
-    // !!!important need disable when release version
-    [AVOSCloud setAllLogsEnabled:YES];
-#endif
-    
-    [AVOSCloud setApplicationId:AVOSAppID clientKey:AVOSAppKey];
-    
-    [AVOSCloud setLastModifyEnabled:YES];
-#ifdef DEBUG
-    
-    [AVAnalytics setAnalyticsEnabled:NO];
-    [AVOSCloud setVerbosePolicy:kAVVerboseShow];
-    [AVLogger addLoggerDomain:AVLoggerDomainIM];
-    [AVLogger addLoggerDomain:AVLoggerDomainCURL];
-    [AVLogger setLoggerLevelMask:AVLoggerLevelAll];
-#endif    
+    [self setupSupportIm];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [self.window makeKeyAndVisible];
-    
-    [[LZPushManager manager] registerForRemoteNotification];
 
     ViewController *rootViewController = [[ViewController alloc] init];
     self.window.rootViewController = rootViewController;
 
-    
     return YES;
 
+}
+
+- (void)setupSupportIm {
+    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
+    [AddRequest registerSubclass];
+    [AbuseReport registerSubclass];
+    // Enable Crash Reporting
+    [AVOSCloudCrashReporting enable];
+    //希望能提供更详细的日志信息，打开日志的方式是在 AVOSCloud 初始化语句之后加上下面这句：
+    //Objective-C
+#ifndef __OPTIMIZE__
+    
+    /*------------ !!!!!! important need disable when release version --------*/
+    [AVOSCloud setAllLogsEnabled:YES];
+    /*------------ !!!!!! important need disable when release version --------*/
+    
+#endif
+    [AVOSCloud setApplicationId:AVOSAppID clientKey:AVOSAppKey];
+    [AVOSCloud setLastModifyEnabled:YES];
+#ifdef DEBUG
+    [AVAnalytics setAnalyticsEnabled:NO];
+    [AVOSCloud setVerbosePolicy:kAVVerboseShow];
+    [AVLogger addLoggerDomain:AVLoggerDomainIM];
+    [AVLogger addLoggerDomain:AVLoggerDomainCURL];
+    [AVLogger setLoggerLevelMask:AVLoggerLevelAll];
+#endif
+    [[LZPushManager manager] registerForRemoteNotification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -130,7 +129,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
         if (succeeded) {
             [self toChat];
         } else {
-            [SKToastUtil toastWithText:@"login fail"];
+            [IMToastUtil toastWithText:@"login fail"];
             [self toLogin];
         }
     }];

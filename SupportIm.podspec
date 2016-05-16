@@ -37,12 +37,15 @@ TODO: Add long description of the pod here.
 
   s.public_header_files = 'SupportIm/Classes/**/*.h'
   s.frameworks = 'UIKit', 'MapKit', 'MobileCoreServices', 'SystemConfiguration'
-  s.vendored_frameworks = 'lib/libAVOSCloud.a'
-  s.libraries = 'AVOSCloud'
+#  s.vendored_frameworks = 'lib/libAVOSCloud.a'
+
+
+  s.libraries = 'AVOSCloud' 
 
   s.dependency 'AVOSCloud'
   s.dependency 'AVOSCloudIM'
   s.dependency 'AVOSCloudCrashReporting'
+
   s.dependency 'DateTools'
   s.dependency 'Masonry'
   s.dependency 'FMDB'

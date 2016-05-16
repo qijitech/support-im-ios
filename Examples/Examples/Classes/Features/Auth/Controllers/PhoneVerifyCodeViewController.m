@@ -66,7 +66,7 @@
     self.phoneVerifyCodeView.nextStepButtonPressedBlock = ^(){
         NSString *code = weakSelf.phoneVerifyCodeView.dataArray[0];
         if (!code.length) {
-            [SKToastUtil toastWithText:@"error code..."];
+            [IMToastUtil toastWithText:@"error code..."];
             return ;
         }
         [AVOSCloud verifySmsCode:code mobilePhoneNumber:weakSelf.phone callback:^(BOOL succeeded, NSError *error) {

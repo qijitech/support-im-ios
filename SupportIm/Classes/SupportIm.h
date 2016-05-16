@@ -19,7 +19,7 @@
 #import <SupportIm/CacheManager.h>
 //#import <SupportIm/IMService.h>
 #import <SupportIm/UserManager.h>
-#import <SupportIm/SKToastUtil.h>
+#import <SupportIm/IMToastUtil.h>
 #import <SupportIm/UIViewTools.h>
 #import <SupportIm/AVUser+Custom.h>
 #import <SupportIm/ChatViewController.h>

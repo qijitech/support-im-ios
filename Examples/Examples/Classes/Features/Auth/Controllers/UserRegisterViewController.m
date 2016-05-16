@@ -61,7 +61,7 @@ static  NSString * const kAvatar = @"https://pic4.zhimg.com/c009a954e4055a3bae3c
     WEAKSELF
     self.userRegisterView.registerButtonPressedBlock = ^(){
         if (weakSelf.userRegisterView.accountTextField.text.length < 3 || weakSelf.userRegisterView.passwordTextField.text.length < 3) {
-            [SKToastUtil toastWithText:@"用户名或密码至少三位"];
+            [IMToastUtil toastWithText:@"用户名或密码至少三位"];
             return;
         }
         
@@ -78,7 +78,7 @@ static  NSString * const kAvatar = @"https://pic4.zhimg.com/c009a954e4055a3bae3c
         
         [[UserManager manager] registerWithUser:user block:^(BOOL succeeded, NSError *error) {
             if (error) {
-                [SKToastUtil toastWithText:error.localizedDescription];
+                [IMToastUtil toastWithText:error.localizedDescription];
             }
             else {
                 [[NSUserDefaults standardUserDefaults] setObject:weakSelf.userRegisterView.accountTextField.text forKey:@"userName"];

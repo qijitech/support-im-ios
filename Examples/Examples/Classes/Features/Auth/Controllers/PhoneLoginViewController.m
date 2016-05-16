@@ -61,7 +61,7 @@
     self.phoneLoginView.nextStepButtonPressedBlock = ^(){
         NSString *phone = weakSelf.phoneLoginView.dataArray[1];
         if (!phone.length) {
-            [SKToastUtil toastWithText:@"error phone..."];
+            [IMToastUtil toastWithText:@"error phone..."];
             return ;
         }
         PhoneVerifyCodeViewController *verifyCodeViewController = [[PhoneVerifyCodeViewController alloc] initWithPhone:phone];
@@ -71,7 +71,7 @@
     };
     self.phoneLoginView.selectCellBlock = ^(NSIndexPath *indexPath){
         if (!indexPath.row) {
-            [SKToastUtil toastWithText:@"loading Country..."];
+            [IMToastUtil toastWithText:@"loading Country..."];
         } else {
             UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"请输入您的手机号"
                                                                                       message:nil
@@ -83,7 +83,7 @@
             [alertController addAction: [UIAlertAction actionWithTitle: @"确定" style: UIAlertActionStyleDefault handler:^(UIAlertAction *action){
                 NSString *phone = [alertController.textFields[0].text mutableCopy];
                 if (phone.length != 11) {
-                    [SKToastUtil toastWithText:@"error phone..."];
+                    [IMToastUtil toastWithText:@"error phone..."];
                     return ;
                 }
                 [weakSelf.phoneLoginView.dataArray replaceObjectAtIndex:indexPath.row withObject:[alertController.textFields[0].text mutableCopy]];

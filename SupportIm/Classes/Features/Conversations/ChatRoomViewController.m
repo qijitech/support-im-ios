@@ -22,7 +22,7 @@
 #import "EmotionUtils.h"
 #import "User.h"
 #import "LocationViewController.h"
-#import "SKToastUtil.h"
+#import "IMToastUtil.h"
 #import "ShowSharedLocationViewController.h"
 
 static NSInteger const kOnePageSize = 10;
@@ -411,7 +411,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         [alertController addAction: [UIAlertAction actionWithTitle: @"共享实时位置"
                                                              style: UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction *action){
-                                                               [SKToastUtil toastWithText:@"not implement yet"];
+                                                               [IMToastUtil toastWithText:@"not implement yet"];
                                                            }]];
         [alertController addAction: [UIAlertAction actionWithTitle: @"取消"
                                                              style: UIAlertActionStyleCancel

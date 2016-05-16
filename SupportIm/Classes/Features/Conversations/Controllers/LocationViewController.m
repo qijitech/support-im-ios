@@ -11,7 +11,7 @@
 #import <Masonry/Masonry.h>
 #import <MAMapKit/MAMapKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
-#import "SKToastUtil.h"
+#import "IMToastUtil.h"
 
 
 @interface LocationViewController () <MAMapViewDelegate, AMapSearchDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
@@ -127,7 +127,7 @@
             NSString *location = [NSString stringWithFormat:@"%@", point.address];
             UIImage *image = [self.mapView takeSnapshotInRect:self.mapView.frame];
             if (!point.address) {
-                [SKToastUtil toastWithText:@"您的网络不畅，请稍后再试"];
+                [IMToastUtil toastWithText:@"您的网络不畅，请稍后再试"];
                 return;
             }
             self.locationShareBlock(location, self.mapView.userLocation.location.coordinate, image);
@@ -228,9 +228,9 @@
 - (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error {
     NSLog(@"%@",error.localizedDescription);
     if (error.code == 1806) {
-        [SKToastUtil toastWithText:@"您的网络不畅，暂时无法得到定位数据0"];
+        [IMToastUtil toastWithText:@"您的网络不畅，暂时无法得到定位数据0"];
     } else {
-        [SKToastUtil toastWithText:error.localizedDescription];
+        [IMToastUtil toastWithText:error.localizedDescription];
     }
 }
 

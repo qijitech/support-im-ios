@@ -69,14 +69,14 @@
     self.userLoginView.loginButtonPressedBlock = ^(UserLoginViewButtonType type){
         if (type == UserLoginViewButtonTypeLogin) {
             if (weakSelf.userLoginView.accountTextField.text.length < 3 || weakSelf.userLoginView.passwordTextField.text.length < 3) {
-                [SKToastUtil toastWithText:@"用户名或密码至少三位"];
+                [IMToastUtil toastWithText:@"用户名或密码至少三位"];
                 return;
             }
             
             //login...
             [[UserManager manager] loginWithInput:weakSelf.userLoginView.accountTextField.text password:weakSelf.userLoginView.passwordTextField.text block:^(AVUser *user, NSError *error) {
                 if (error) {
-                    [SKToastUtil toastWithText:error.localizedDescription];
+                    [IMToastUtil toastWithText:error.localizedDescription];
                 }
                 else {
                     [[NSUserDefaults standardUserDefaults] setObject:weakSelf.userLoginView.accountTextField.text forKey:@"userName"];

@@ -74,7 +74,7 @@
 //            weakSelf.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"手机号登陆" style:UIBarButtonItemStylePlain target:nil action:nil];
             [weakSelf.navigationController pushViewController:phoneLoginViewController animated:YES];
         } else {
-            [SKToastUtil toastWithText:@"Agreement"];
+            [IMToastUtil toastWithText:@"Agreement"];
         }
     };
 }

@@ -8,6 +8,7 @@
 
 #import "BaseMutipleSectionViewController.h"
 #import "JSBadgeView.h"
+#import <Masonry/Masonry.h>
 
 #define RGBCOLOR(r, g, b) [UIColor colorWithRed : (r) / 255.0 green : (g) / 255.0 blue : (b) / 255.0 alpha : 1]
 
@@ -104,7 +105,33 @@
     }
     
     if (sectionDictionary[kMutipleSectionSelectorKey]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (title == @"开始聊天" || title == @"添加好友") {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            cell.separatorInset = UIEdgeInsetsMake(0, 10000, 0, 0);
+//            cell.indentationWidth = -10000.f;
+//            cell.indentationLevel = 1;
+            cell.textLabel.text = nil;
+//            UIView *backgroudView = [[UIView alloc] init];
+//            backgroudView.backgroundColor = [UIColor colorWithRed: 240.0/255 green: 240.0/255 blue: 240.0/255 alpha: 1.0];
+//
+//            [cell addSubview:backgroudView];
+//            [backgroudView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.edges.equalTo(cell);
+//            }];
+            UIButton *button = [[UIButton alloc] init];
+            [button setTitle:title forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            button.backgroundColor = [UIColor colorWithRed:203.f/255.f green:0.f/255.f blue:41.f/255.f alpha:1.f];
+            button.layer.cornerRadius = 3.f;
+            button.layer.masksToBounds = YES;
+            [cell addSubview:button];
+            [button mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.bottom.equalTo(cell);
+                make.left.equalTo(cell).with.offset(30);
+                make.right.equalTo(cell).with.offset(-30);
+            }];
+            [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }
     
     BOOL logout = [[sectionDictionary valueForKey:kMutipleSectionLogoutKey] boolValue];
@@ -132,6 +159,53 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSDictionary *sectionDictionary = self.dataSource[section][row];
+    if (sectionDictionary[kMutipleSectionSelectorKey]) {
+        NSString *title = [sectionDictionary valueForKey:kMutipleSectionTitleKey];
+        if (title == @"开始聊天" || title == @"添加好友") {
+            cell.separatorInset = UIEdgeInsetsMake(0, 10000, 0, 0);
+            cell.indentationWidth = -10000.f;
+            cell.indentationLevel = 1;
+//            cell.backgroundColor = [UIColor colorWithRed: 240.0/255 green: 240.0/255 blue: 240.0/255 alpha: 1.0];
+            cell.backgroundColor = nil;
+////            cell.backgroundColor = [UIColor colorWithRed:0.937255 green:0.937255 blue:0.956863 alpha:1];
+//
+//            cell.textLabel.text = nil;
+////            UIView *backgroudView = [[UIView alloc] init];
+////            backgroudView.backgroundColor = [UIColor colorWithRed: 240.0/255 green: 240.0/255 blue: 240.0/255 alpha: 1.0];
+////            [cell addSubview:backgroudView];
+////            [backgroudView mas_makeConstraints:^(MASConstraintMaker *make) {
+////                make.edges.equalTo(cell);
+////            }];
+//            UIButton *button = [[UIButton alloc] init];
+//            [button setTitle:title forState:UIControlStateNormal];
+//            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            button.backgroundColor = [UIColor colorWithRed:203.f/255.f green:0.f/255.f blue:41.f/255.f alpha:1.f];
+//            button.layer.cornerRadius = 3.f;
+//            button.layer.masksToBounds = YES;
+//            [cell addSubview:button];
+//            [button mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.top.bottom.equalTo(cell);
+//                make.left.equalTo(cell).with.offset(30);
+//                make.right.equalTo(cell).with.offset(-30);
+//            }];
+//            [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+        }
+    }
+}
+
+- (void)buttonPressed:(UIButton *)button {
+    if (button.currentTitle == @"开始聊天") {
+        [self performSelector:NSSelectorFromString(NSStringFromSelector(@selector(goChat))) withObject:nil afterDelay:0];
+    } else if (button.currentTitle == @"添加好友") {
+        [self performSelector:NSSelectorFromString(NSStringFromSelector(@selector(tryCreateAddRequest))) withObject:nil afterDelay:0];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0:
@@ -155,8 +229,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *sectionDictionary = self.dataSource[indexPath.section][indexPath.row];
+    
+    NSString *title = [sectionDictionary valueForKey:kMutipleSectionTitleKey];
+    if (title == @"开始聊天" || title == @"添加好友") {
+        return;
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *selectorName = sectionDictionary[kMutipleSectionSelectorKey];
     if (selectorName) {
         [self performSelector:NSSelectorFromString(selectorName) withObject:nil afterDelay:0];

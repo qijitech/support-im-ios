@@ -83,7 +83,7 @@
         if (!indexPath.section) {
             [weakSelf updateUserInfo];
         } else if (indexPath.section == 1) {
-            [SKToastUtil toastWithText:[NSString stringWithFormat:@"section-%ld row-%ld", indexPath.section, indexPath.row]];
+            [IMToastUtil toastWithText:[NSString stringWithFormat:@"section-%ld row-%ld", indexPath.section, indexPath.row]];
         } else {
             [weakSelf userLogout];
         }
@@ -145,7 +145,7 @@
         if (!error) {
             [self.mainAccountView reloadData];
         } else {
-            [SKToastUtil toastWithText:error.localizedDescription];
+            [IMToastUtil toastWithText:error.localizedDescription];
         }
     }];
 }
@@ -166,7 +166,7 @@
             if (!error && succeeded) {
                 [self.mainAccountView reloadData];
             } else {
-                [SKToastUtil toastWithText:error.localizedDescription];
+                [IMToastUtil toastWithText:error.localizedDescription];
             }
         }];
 
@@ -184,7 +184,7 @@
             [delegate toLogin];
 
         } else {
-            [SKToastUtil toastWithText:error.localizedDescription];
+            [IMToastUtil toastWithText:error.localizedDescription];
         }
     }];
 }
