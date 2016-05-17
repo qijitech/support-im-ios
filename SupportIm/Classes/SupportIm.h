@@ -12,12 +12,12 @@
 #import <SupportIm/ChatListTableViewController.h>
 #import <SupportIm/ChatRoomViewController.h>
 #import <SupportIm/ChatManager.h>
+#import <SupportIm/IMService.h>
 #import <SupportIm/UserModel.h>
 #import <SupportIm/UIImage+Icon.h>
 #import <SupportIm/SoundManager.h>
 #import <SupportIm/EmotionUtils.h>
 #import <SupportIm/CacheManager.h>
-//#import <SupportIm/IMService.h>
 #import <SupportIm/UserManager.h>
 #import <SupportIm/IMToastUtil.h>
 #import <SupportIm/UIViewTools.h>

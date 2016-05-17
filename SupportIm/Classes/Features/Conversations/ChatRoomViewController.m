@@ -350,9 +350,9 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         
         // sometimes maybe crash ,because indexPath.row
         NSInteger index = indexPath.row >= self.messages.count ? self.messages.count - 1 : indexPath.row;
-        XHMessage *msg = [self.messages objectAtIndex:index];
+        XHMessage *msg1 = [self.messages objectAtIndex:index];
         
-//        XHMessage *msg = [self.messages objectAtIndex:indexPath.row];
+        XHMessage *msg = [self.messages objectAtIndex:indexPath.row];
         XHMessage *lastMsg = [self.messages objectAtIndex:indexPath.row - 1];
         int interval = [msg.timestamp timeIntervalSinceDate:lastMsg.timestamp];
         if (interval > 60 * 3) {
@@ -555,7 +555,7 @@ typedef void (^ErrorBlock)(NSString *messageUUID, NSError *error);
         case XHBubbleMessageMediaTypeLocalPosition: {
             // used chat framework not support location share ... if need this function ... you know ... he he da
             //had implement. i'm so dia
-            avimTypedMessage = [AVIMLocationMessage messageWithText:@"[位置]" latitude:message.location.coordinate.latitude longitude:message.location.coordinate.longitude attributes:nil];
+            avimTypedMessage = [AVIMLocationMessage messageWithText:message.text latitude:message.location.coordinate.latitude longitude:message.location.coordinate.longitude attributes:nil];
 //            avimTypedMessage = [AVIMLocationMessage messageWithText:message.text latitude:message.location.coordinate.latitude longitude:message.location.coordinate.longitude attributes:@{@"localPositionPhoto":message.localPositionPhoto}];
             break;
         }

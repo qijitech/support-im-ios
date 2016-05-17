@@ -7,12 +7,12 @@
 //
 
 #import "AppDelegate.h"
-#import "CacheManager.h"
+//#import "CacheManager.h"
 #import "ViewController.h"
 #import "MainLoginViewController.h"
 #import "MainTabBarController.h"
 #import <AVOSCloudCrashReporting/AVOSCloudCrashReporting.h>
-#import "IMService.h"
+//#import "IMService.h"
 #import <SupportIm/LZPushManager.h>
 //
 #import <MAMapKit/MAMapKit.h>
@@ -62,8 +62,8 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 }
 
 - (void)setupSupportIm {
-    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
-    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
+//    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+//    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
     [AddRequest registerSubclass];
     [AbuseReport registerSubclass];
     // Enable Crash Reporting

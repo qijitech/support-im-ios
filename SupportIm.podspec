@@ -36,15 +36,15 @@ TODO: Add long description of the pod here.
   }
 
   s.public_header_files = 'SupportIm/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'MapKit', 'MobileCoreServices', 'SystemConfiguration'
+  s.frameworks = 'UIKit', 'MapKit', 'MobileCoreServices', 'SystemConfiguration', 'CoreGraphics', 'AVFoundation', 'AudioToolbox'
+
+#  s.vendored_frameworks = 'AMap2DMap/Frameworks/MAMapKit.framework', 'Pods/AMapSearch/Frameworks/AMapSearchKit.framework'
+
+#  s.libraries = 'libz.tbd'
 
 #  s.vendored_frameworks = 'AVOSCloud', 'AVOSCloudIM', 'AVOSCloudCrashReporting'
 
 #  s.vendored_frameworks = 'SupportIm/Classes/MAMap/MAMapKit.framework', 'SupportIm/Classes/MAMap/AMapSearchKit.framework'
-
-
-#  s.libraries = 'AMapSearch', 'AMap2DMap'
-
 
 #  s.dependency 'AVOSCloud'
 #  s.dependency 'AVOSCloudIM'

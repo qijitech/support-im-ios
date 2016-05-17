@@ -45,6 +45,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // do not note ,if need 
     [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
     [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -242,9 +243,9 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 - (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response {
     
     // If network was very very bad, you can not get location with network, only send nil location detail. heheda been here.
-//    if (!self.firstMapPOI && response.pois.count) {
-//        self.firstMapPOI = response.pois.firstObject;
-//    }
+    if (!self.firstMapPOI && response.pois.count) {
+        self.firstMapPOI = response.pois.firstObject;
+    }
 //    if (self.isDidReceivedCurrentLocation) {
 //        if (!response.pois.count) {
 //            if (!self.firstMapPOI) {
@@ -286,12 +287,12 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 # pragma mark - MAMapViewDelegate
 
 - (void)mapView:(MAMapView *)mapView mapDidMoveByUser:(BOOL)wasUserAction {
-//    if (!wasUserAction && self.firstMapPOI && !self.needUpdateLocationDetail) {
-//        return;
-//    }
-    if (!wasUserAction && !self.needUpdateLocationDetail) {
+    if (!wasUserAction && self.firstMapPOI && !self.needUpdateLocationDetail) {
         return;
     }
+//    if (!wasUserAction && !self.needUpdateLocationDetail) {
+//        return;
+//    }
     self.needUpdateLocationDetail = NO;
     [self shockPin];
     [self.search AMapPOIAroundSearch:[self searchWithCoordinate:self.mapView.centerCoordinate]];

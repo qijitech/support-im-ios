@@ -31,6 +31,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 - (instancetype)initWithMessage:(XHMessage *)message {
     if (self = [super init]) {
+        // do not note ,if need
         [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
         [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
         self.message = message;
