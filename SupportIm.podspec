@@ -32,7 +32,7 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'SupportIm/Classes/**/*'
   s.resource_bundles = {
-    'SupportIm' => ['$(SRCROOT)/SupportIm/Assets/*']
+    'SupportIm' => ['SupportIm/Assets/*']
   }
 
   s.public_header_files = 'SupportIm/Classes/**/*.h'

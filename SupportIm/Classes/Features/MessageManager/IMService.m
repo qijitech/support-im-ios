@@ -79,13 +79,18 @@
 //    [tabbarController.selectedViewController pushViewController:chatVC animated:YES];
 //    completion ? completion(YES, nil) : nil;
 
-    UITabBarController *tabbarController = (UITabBarController *)[[UIApplication sharedApplication] delegate].window.rootViewController;
+//    UITabBarController *tabbarController = (UITabBarController *)[[UIApplication sharedApplication] delegate].window.rootViewController;
+//    ChatViewController *chatVC = [[ChatViewController alloc] initWithConversation:conversation];
+//    chatVC.hidesBottomBarWhenPushed = YES;
+//    tabbarController.selectedViewController = tabbarController.viewControllers[0];
+//    [navigation popToRootViewControllerAnimated:NO];
+//    [tabbarController.selectedViewController pushViewController:chatVC animated:YES];
+//    completion ? completion(YES, nil) : nil;
+    
     ChatViewController *chatVC = [[ChatViewController alloc] initWithConversation:conversation];
     chatVC.hidesBottomBarWhenPushed = YES;
-    tabbarController.selectedViewController = tabbarController.viewControllers[0];
-    [navigation popToRootViewControllerAnimated:NO];
-    [tabbarController.selectedViewController pushViewController:chatVC animated:YES];
-    completion ? completion(YES, nil) : nil;
+
+    [navigation pushViewController:chatVC animated:YES];
 }
 
 - (void)createChatRoomByUserId:(NSString *)userId fromViewController:(BaseViewController *)viewController completion:(CompletionBlock)completion {

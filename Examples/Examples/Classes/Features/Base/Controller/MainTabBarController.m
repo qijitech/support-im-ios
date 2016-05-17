@@ -6,11 +6,12 @@
 //  Copyright © 2016年 qijitech. All rights reserved.
 //
 
+
 #import "MainTabBarController.h"
 #import "MainAccountViewController.h"
-#import "ConversationViewController.h"
-#import "FriendListViewController.h"
-#import "BaseNavigationController.h"
+//#import "ConversationViewController.h"
+//#import "FriendListViewController.h"
+//#import "BaseNavigationController.h"
 
 @interface MainTabBarController ()
 
