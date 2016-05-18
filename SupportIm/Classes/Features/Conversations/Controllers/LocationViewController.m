@@ -45,9 +45,9 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // do not note ,if need 
-    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
-    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
+    // Should init MAMap in init ViewController, not here. But you can do not note ,if need
+//    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+//    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"位置";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(sendLocation)];
@@ -162,7 +162,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 }
 
 - (AMapCloudPOILocalSearchRequest *)searchWithKeywords:(NSString *)keywords {
-    AMapCloudPOILocalSearchRequest *request = [[AMapPOIAroundSearchRequest alloc] init];
+    AMapCloudPOILocalSearchRequest *request = [[AMapCloudPOILocalSearchRequest alloc] init];
     request.tableID = @"8d226fc63316e790c759e7f5430dd6c2";
     request.keywords = keywords;
     request.city = self.mapView.userLocation;
@@ -174,7 +174,6 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
     AMapInputTipsSearchRequest *tipsRequest = [[AMapInputTipsSearchRequest alloc] init];
     tipsRequest.keywords = keywords;
     tipsRequest.city = [self.locationArray[0] city];
-    [self.search AMapInputTipsSearch:tipsRequest];
     return tipsRequest;
 }
 
@@ -315,7 +314,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self searchTipsWithKeywords:self.searchKeywords];
+    [self.search AMapInputTipsSearch:[self searchTipsWithKeywords:self.searchKeywords]];
     self.searchTipsTableView.hidden = NO;
 }
 
@@ -329,7 +328,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
         return;
     }
     self.searchKeywords = searchText;
-    [self searchTipsWithKeywords:self.searchKeywords];
+    [self.search AMapInputTipsSearch:[self searchTipsWithKeywords:self.searchKeywords]];
     self.searchTipsTableView.hidden = NO;
 }
 

@@ -12,6 +12,11 @@
 //#import "ConversationViewController.h"
 //#import "FriendListViewController.h"
 //#import "BaseNavigationController.h"
+#import <MAMapKit/MAMapKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+
+// should replace with your key, or you can not use Map service normal
+static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 @interface MainTabBarController ()
 
@@ -26,6 +31,8 @@
     [super viewDidLoad];
     self.tabBar.tintColor = [UIColor lightGrayColor];
     [self setupControllers];
+    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
 }
 
 -(void)viewWillAppear:(BOOL)animated {

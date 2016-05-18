@@ -39,6 +39,7 @@
 //    [self.view updateConstraintsIfNeeded];
 //    [self.view setNeedsUpdateConstraints];
     [self refreshOnlyCache];
+//    [self refresh:nil];
 }
 
 - (void)setupViews {
@@ -100,6 +101,9 @@
                     if (!error && objects.count > 0) {
                         self.needRefreshFriendListVC = YES;
                     }
+//                     if (!objects.count) {
+//                         [self refresh:nil];
+//                     }
                     _addRequests = objects;
                     [weakSelf.tableView reloadData];
                 }];

@@ -32,7 +32,7 @@
 //#define AVOSAppID @"x3o016bxnkpyee7e9pa5pre6efx2dadyerdlcez0wbzhw25g"
 //#define AVOSAppKey @"057x24cfdzhffnl3dzk14jh9xo2rq6w1hy1fdzt5tv46ym78"
 
-
+// should replace with your key, or you can not use Map service normal
 static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
 

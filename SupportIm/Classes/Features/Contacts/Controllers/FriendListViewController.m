@@ -176,9 +176,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     [self findFriendsAndBadgeNumberCacheOnlyWithBlock:^(NSArray *friends, NSInteger badgeNumber, NSError *error) {
         if ([self filterError:error]) {
             [self refreshWithFriends:friends badgeNumber:badgeNumber];
-            if (!friends.count) {
-                [self refresh];
-            }
+//            if (!friends.count) {
+//                [self refresh];
+//            }
         }
     }];
 }
