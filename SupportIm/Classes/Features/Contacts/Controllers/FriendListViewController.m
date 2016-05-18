@@ -275,7 +275,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     
     if (numberNameIndexArray.count) {
         [sortArray removeObjectsInArray:numberNameSortArray];
-        [sortArray removeObjectsInArray:numberNameIndexArray];
+        [indexArray removeObjectsInArray:numberNameIndexArray];
         
         
         numberNameIndexArray = [numberNameIndexArray sortedArrayUsingComparator:^NSComparisonResult(NSString *name1, NSString *name2) {
@@ -332,7 +332,11 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.indexArray.count + 1;
+    NSInteger *sectionCount = self.indexArray.count + 1;
+    if (!self.dataSource.count) {
+        sectionCount = 1;
+    }
+    return sectionCount;
     
 }
 
@@ -366,8 +370,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
         } else {
-            NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
-            AVUser *user = self.dataSource[index];
+            NSInteger indexCount = [self.indexArray[indexPath.section - 1][indexPath.row] index];
+            AVUser *user = self.dataSource[indexCount];
             [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
             cell.nameLabel.text = user.displayName;
         }
@@ -381,8 +385,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         SEL selector = NSSelectorFromString(self.headerSectionDatas[indexPath.row][kCellSelectorKey]);
         [self performSelector:selector withObject:nil afterDelay:0];
     } else {
-        NSInteger index = [self.indexArray[indexPath.section - 1][indexPath.row] index];
-        AVUser *user = self.dataSource[index];
+        NSInteger indexCount = [self.indexArray[indexPath.section - 1][indexPath.row] index];
+        AVUser *user = self.dataSource[indexCount];
 //        [self showProgress];
         [[IMService service] createChatRoomByUserId:user.objectId fromViewController:self completion:^(BOOL successed, NSError *error) {
 //            [self hideProgress];
@@ -402,22 +406,34 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"解除好友关系吗" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-        alertView.tag = indexPath.row;
-        [alertView show];
-    }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        AVUser *user = [self.dataSource objectAtIndex:alertView.tag];
-        [self showProgress];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"解除好友关系吗" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+//        alertView.tag = indexPath.row;
+//        [alertView show];
+        NSInteger indexCount = [self.indexArray[indexPath.section - 1][indexPath.row] index];
+        AVUser *user = self.dataSource[indexCount];
+//        [self showProgress];
         [[UserManager manager] removeFriend:user callback:^(BOOL succeeded, NSError *error) {
-            [self hideProgress];
+//            [self hideProgress];
             if ([self filterError:error]) {
-                [self refreshOnlyCache];
+//                [self refreshOnlyCache];
+                [self.dataSource removeObject:user];
+//                NSIndexPath *deleteIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:[self.indexArray[indexPath.section - 1][indexPath.row] section]];
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
         }];
     }
 }
+
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    if (buttonIndex == 0) {
+//        AVUser *user = [self.dataSource objectAtIndex:alertView.tag];
+//        [self showProgress];
+//        [[UserManager manager] removeFriend:user callback:^(BOOL succeeded, NSError *error) {
+//            [self hideProgress];
+//            if ([self filterError:error]) {
+//                [self refreshOnlyCache];
+//            }
+//        }];
+//    }
+//}
 @end

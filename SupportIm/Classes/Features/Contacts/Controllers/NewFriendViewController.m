@@ -38,8 +38,8 @@
     [self setupViews];
 //    [self.view updateConstraintsIfNeeded];
 //    [self.view setNeedsUpdateConstraints];
-    [self refreshOnlyCache];
-//    [self refresh:nil];
+//    [self refreshOnlyCache];
+    [self refresh:nil];
 }
 
 - (void)setupViews {
@@ -82,6 +82,8 @@
                     }
                     
                     _addRequests = objects;
+//                    NSSet *requestsSet = [NSSet setWithArray:self.addRequests];
+//                    self.addRequests = [requestsSet allObjects];
                     [weakSelf.tableView reloadData];
                 }];
             }
@@ -105,6 +107,8 @@
 //                         [self refresh:nil];
 //                     }
                     _addRequests = objects;
+//                     NSSet *requestsSet = [NSSet setWithArray:self.addRequests];
+//                     self.addRequests = [requestsSet allObjects];
                     [weakSelf.tableView reloadData];
                 }];
             }
