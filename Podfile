@@ -1,4 +1,3 @@
-#source 'https://github.com/smartydroid/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
@@ -10,7 +9,6 @@ workspace ‘SupportIm’
 
 target 'Examples' do
   pod "SupportIm", :path => "."
-#  pod 'StarterKit', :git => 'https://github.com/qijitech/ios-starter-kit.git', :branch => 'master'
   pod "AMapSearch"
   pod "AMap2DMap"
 

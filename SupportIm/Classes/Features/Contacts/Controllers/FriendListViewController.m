@@ -259,16 +259,48 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         }];
     }];
     
- 
-    NSScanner *scan = [NSScanner scannerWithString:indexArray[0]];
-    int val;
-    if ([scan scanInt:&val]) {
-        [sortArray addObject:sortArray.firstObject];
-        [sortArray removeObjectAtIndex:0];
-        [indexArray addObject:indexArray.firstObject];
-        [indexArray removeObjectAtIndex:0];
+    
+    NSMutableArray *numberNameSortArray = [NSMutableArray array];
+    NSMutableArray *numberNameIndexArray = [NSMutableArray array];
+    [indexArray enumerateObjectsUsingBlock:^(NSString *indexName, NSUInteger section, BOOL * _Nonnull stop) {
+        NSScanner *scan = [NSScanner scannerWithString:indexName];
+        int val;
+        if ([scan scanInt:&val]) {
+            [numberNameSortArray addObject:sortArray[section]];
+            [numberNameIndexArray addObject:indexArray[section]];
+//            [sortArray removeObject:sortArray[section]];
+//            [indexArray removeObject:indexArray[section]];
+        }
+    }];
+    
+    if (numberNameIndexArray.count) {
+        [sortArray removeObjectsInArray:numberNameSortArray];
+        [sortArray removeObjectsInArray:numberNameIndexArray];
+        
+        
+        numberNameIndexArray = [numberNameIndexArray sortedArrayUsingComparator:^NSComparisonResult(NSString *name1, NSString *name2) {
+            return [name1 compare:name2 options:NSCaseInsensitiveSearch];
+        }];
+        numberNameSortArray = [numberNameSortArray sortedArrayUsingComparator:^NSComparisonResult(NSMutableArray *nameArray1, NSMutableArray *nameArray2) {
+            ContactIndexModel *model1 = nameArray1[0];
+            ContactIndexModel *model2 = nameArray2[0];
+            return [model1.fullSpelling compare:model2.fullSpelling options:NSCaseInsensitiveSearch];
+        }];
+        [sortArray addObjectsFromArray:numberNameSortArray];
+        [indexArray addObjectsFromArray:numberNameIndexArray];
     }
-                       
+    
+    
+    
+//    NSScanner *scan = [NSScanner scannerWithString:indexName];
+//    int val;
+//    if ([scan scanInt:&val]) {
+//        [sortArray addObject:sortArray.firstObject];
+//        [sortArray removeObjectAtIndex:0];
+//        [indexArray addObject:indexArray.firstObject];
+//        [indexArray removeObjectAtIndex:0];
+//    }
+    
     self.indexArray = sortArray;
     self.indexTitleArray = indexArray;
     
@@ -290,7 +322,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         return self.headerSectionDatas.count;
     } else if (section == self.indexArray.count) {
         NSLog(@"%ld",[self.indexArray[section - 1] count] + 1);
-
+        
         return [self.indexArray[section - 1] count] + 1;
     } else {
         NSLog(@"%ld",[self.indexArray[section - 1] count]);
@@ -301,6 +333,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.indexArray.count + 1;
+    
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -382,7 +415,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         [[UserManager manager] removeFriend:user callback:^(BOOL succeeded, NSError *error) {
             [self hideProgress];
             if ([self filterError:error]) {
-                [self refresh];
+                [self refreshOnlyCache];
             }
         }];
     }
