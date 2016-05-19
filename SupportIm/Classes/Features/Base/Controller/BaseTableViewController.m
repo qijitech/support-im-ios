@@ -26,6 +26,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
+    self.tableView.tableFooterView = [[UIView alloc] init];
+
 }
 
 - (void)loadDataSource {
@@ -45,7 +47,7 @@
         _tableView = [[UITableView alloc] initWithFrame:self.view.frame style:self.tableViewStyle];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-//        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _tableView;
 }

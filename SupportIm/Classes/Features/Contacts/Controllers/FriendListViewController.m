@@ -48,7 +48,6 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     if ((self = [super init])) {
         self.title = @"联系人";
 //        [self refreshOnlyCache];
-        [self refresh];
     }
     return self;
 }
@@ -73,7 +72,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     self.tableView.sectionIndexBackgroundColor = nil;
     self.tableView.sectionIndexTrackingBackgroundColor = nil;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -217,6 +216,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         }
     }];
 }
+
+
 
 #pragma mark - contact index 
 
