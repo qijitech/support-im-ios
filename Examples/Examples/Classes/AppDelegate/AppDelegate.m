@@ -19,13 +19,13 @@
 #import <AMapSearchKit/AMapSearchKit.h>
 
 
-#define AVOSAppID @"QC1CFBP5VsJfXiiHPohJatmg-gzGzoHsz"
-#define AVOSAppKey @"dQw3KFUMRMFp4vjn48z8GUDk"
+//#define AVOSAppID @"QC1CFBP5VsJfXiiHPohJatmg-gzGzoHsz"
+//#define AVOSAppKey @"dQw3KFUMRMFp4vjn48z8GUDk"
 
 
 // mine
-//#define AVOSAppID @"LXQhO5hvt5IOyYOhmGoFj6YN-gzGzoHsz"
-//#define AVOSAppKey @"8n5D7YOWfV0oGcaaPurlYjtG"
+#define AVOSAppID @"LXQhO5hvt5IOyYOhmGoFj6YN-gzGzoHsz"
+#define AVOSAppKey @"8n5D7YOWfV0oGcaaPurlYjtG"
 
 
 // demo

@@ -14,6 +14,8 @@
 #import "Utils.h"
 #import "AVUser+Custom.h"
 #import <Masonry/Masonry.h>
+#import "UIViewTools.h"
+
 
 @interface AddFriendViewController ()
 @property (nonatomic, assign) BOOL didSetupConstraints;
@@ -86,6 +88,15 @@ static NSString *cellIndentifier = @"cellIndentifier";
     AVUser *user = self.users[indexPath.row];
     cell.nameLabel.text = user.displayName;
     [[UserManager manager] displayAvatarOfUser:user avatarView:cell.avatarImageView];
+    UIView *lineView = [UIViewTools setLineView];
+    [cell addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(1);
+        make.bottom.equalTo(cell);
+        make.left.equalTo(cell);
+        make.right.equalTo(cell);
+    }];
+
     return cell;
 }
 
@@ -112,6 +123,7 @@ static NSString *cellIndentifier = @"cellIndentifier";
         _tableView = [[UITableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _tableView;
 }

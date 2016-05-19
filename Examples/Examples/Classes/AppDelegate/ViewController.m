@@ -33,8 +33,6 @@
         make.left.right.equalTo(self.view);
         make.center.equalTo(self.view);
     }];
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {

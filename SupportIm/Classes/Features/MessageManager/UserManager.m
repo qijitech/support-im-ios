@@ -198,10 +198,31 @@ static UserManager *userManager;
     }];
 }
 
+//- (void)findUsersByPartname:(NSString *)partName withBlock:(AVArrayResultBlock)block {
+//    AVQuery *q = [AVUser query];
+//    [q setCachePolicy:kAVCachePolicyNetworkElseCache];
+//    [q whereKey:@"username" containsString:partName];
+//    AVUser *curUser = [AVUser currentUser];
+//    [q whereKey:@"objectId" notEqualTo:curUser.objectId];
+//    [q orderByDescending:@"updatedAt"];
+//    [q findObjectsInBackgroundWithBlock:block];
+//}
+
+
 - (void)findUsersByPartname:(NSString *)partName withBlock:(AVArrayResultBlock)block {
     AVQuery *q = [AVUser query];
     [q setCachePolicy:kAVCachePolicyNetworkElseCache];
-    [q whereKey:@"username" containsString:partName];
+    
+    NSScanner *scan = [NSScanner scannerWithString:partName];
+    int val;
+    BOOL isPhone = [scan scanInt:&val] && [scan isAtEnd];
+
+    if (partName.length > 4 && isPhone) {
+        [q whereKey:@"username" equalTo:partName];
+    } else {
+        [q whereKey:@"displayName" containsString:partName];
+    }
+
     AVUser *curUser = [AVUser currentUser];
     [q whereKey:@"objectId" notEqualTo:curUser.objectId];
     [q orderByDescending:@"updatedAt"];

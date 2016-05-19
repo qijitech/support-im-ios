@@ -108,7 +108,7 @@
 + (UIView *)setLineView {
     UIView *lineView = [[UIView alloc] init];
     lineView.backgroundColor = [UIColor lightGrayColor];
-    lineView.alpha = 0.1;
+    lineView.alpha = 0.3;
     return lineView;
 }
 

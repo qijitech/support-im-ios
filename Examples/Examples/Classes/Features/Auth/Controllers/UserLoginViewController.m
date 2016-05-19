@@ -74,7 +74,10 @@
             }
             
             //login...
+            [MBProgressHUD showHUDAddedTo:weakSelf.view animated:YES];
+
             [[UserManager manager] loginWithInput:weakSelf.userLoginView.accountTextField.text password:weakSelf.userLoginView.passwordTextField.text block:^(AVUser *user, NSError *error) {
+
                 if (error) {
                     [IMToastUtil toastWithText:error.localizedDescription];
                 }
@@ -95,6 +98,8 @@
 //                        [UIView setAnimationsEnabled:oldState];
 //                    } completion:nil];
                 }
+                [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+
             }];
         }
         

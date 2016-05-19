@@ -46,6 +46,7 @@
         _tableView = [[UITableView alloc] initWithFrame:self.view.frame style:self.tableViewStyle];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+//        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _tableView;
 }

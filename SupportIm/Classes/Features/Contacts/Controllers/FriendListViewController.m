@@ -58,7 +58,27 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     [self setupTableView];
     //Do this because -- Tab Bar covers TableView cells in iOS7
     self.tableView.contentInset = UIEdgeInsetsMake(0., 0., CGRectGetHeight(self.tabBarController.tabBar.frame), 0);
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationFriendListNeedRefresh object:nil];
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.equalTo(self.view);
+//        make.top.equalTo(self.view);
+////        make.top.equalTo(self.mas_topLayoutGuideBottom);
+//        make.bottom.equalTo(self.mas_bottomLayoutGuideTop);
+//    }];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationFriendListNeedRefresh object:nil];
+    self.tableView.sectionIndexColor = [UIColor darkGrayColor];
+    self.tableView.sectionIndexBackgroundColor = nil;
+    self.tableView.sectionIndexTrackingBackgroundColor = nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    for (UIView *view in self.tableView.subviews) {
+        if ([view isKindOfClass:NSClassFromString(@"UITableViewIndex")]) {
+            view.backgroundColor = nil;
+        }
+    }
 }
 
 - (void)dealloc {
@@ -123,7 +143,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
                                          kCellSelectorKey : NSStringFromSelector(@selector(goGroup:))
                                          }];
     self.dataSource = [friends mutableCopy];
-    if (self.dataSource.count) [self sortDataSourceWithIndex];
+    [self sortDataSourceWithIndex];
     [self.tableView reloadData];
 }
 
@@ -268,8 +288,6 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         if ([scan scanInt:&val]) {
             [numberNameSortArray addObject:sortArray[section]];
             [numberNameIndexArray addObject:indexArray[section]];
-//            [sortArray removeObject:sortArray[section]];
-//            [indexArray removeObject:indexArray[section]];
         }
     }];
     
@@ -291,15 +309,19 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     }
     
     
+//    NSMutableArray *sortDataSource = [NSMutableArray array];
+//    [sortDataSource addObject:[NSMutableArray array]];
+//    [indexArray enumerateObjectsUsingBlock:^(NSString *indexName, NSUInteger idx, BOOL * _Nonnull stop) {
+//        NSMutableArray *sortSubDataSource = [NSMutableArray array];
+//        [sortArray[idx] enumerateObjectsUsingBlock:^(NSMutableArray *sortSubArray, NSUInteger idx, BOOL * _Nonnull stop) {
+//            
+//            
+//            
+//        }];
+//        [sortDataSource addObject:sortSubDataSource];
+//    }];
+
     
-//    NSScanner *scan = [NSScanner scannerWithString:indexName];
-//    int val;
-//    if ([scan scanInt:&val]) {
-//        [sortArray addObject:sortArray.firstObject];
-//        [sortArray removeObjectAtIndex:0];
-//        [indexArray addObject:indexArray.firstObject];
-//        [indexArray removeObjectAtIndex:0];
-//    }
     
     self.indexArray = sortArray;
     self.indexTitleArray = indexArray;
@@ -310,38 +332,42 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    self.tableView.sectionIndexColor = [UIColor darkGrayColor];
-    return self.indexTitleArray;
+    return self.indexTitleArray.count ? self.indexTitleArray : nil;
 }
+
+
 
 #pragma mark - Table view data delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        NSLog(@"%ld",self.headerSectionDatas.count);
+        NSLog(@"headerSectionDatas--%ld",self.headerSectionDatas.count);
         return self.headerSectionDatas.count;
     } else if (section == self.indexArray.count) {
-        NSLog(@"%ld",[self.indexArray[section - 1] count] + 1);
-        
-        return [self.indexArray[section - 1] count] + 1;
+        NSLog(@"lastSection --%ld",[self.indexArray[section - 1] count] + 1);
+        return (NSInteger)[self.indexArray[section - 1] count] + 1;
     } else {
-        NSLog(@"%ld",[self.indexArray[section - 1] count]);
-
-        return [self.indexArray[section - 1] count];
+        NSLog(@"nameIndexSectionCount－1  --- %ld",[self.indexArray[section - 1] count]);
+        return (NSInteger)[self.indexArray[section - 1] count];
     }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger *sectionCount = self.indexArray.count + 1;
-    if (!self.dataSource.count) {
-        sectionCount = 1;
-    }
-    return sectionCount;
+//    NSInteger *sectionCount = self.indexArray.count + 1;
+//    if (!self.dataSource.count) {
+//        sectionCount = 1;
+//    }
+    NSLog(@"section--%ld", self.indexArray.count + 1);
+    return self.indexArray.count + 1;
     
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return section ? [self.indexArray[section - 1][0] indexSpelling] : nil;
+    return section ? (self.indexTitleArray.count ? self.indexTitleArray[section - 1] : nil) : nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"%s",__func__);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -364,9 +390,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             badgeView.badgeText = [NSString stringWithFormat:@"%ld", badgeNumber];
         }
     } else {
-        if (indexPath.section == self.indexArray.count && indexPath.row == [self.indexArray[indexPath.section - 1] count]) {
+        if (indexPath.section == self.indexArray.count && indexPath.row == (NSInteger)[self.indexArray[indexPath.section - 1] count]) {
             cell = [[UITableViewCell alloc] init];
-            cell.textLabel.text = [NSString stringWithFormat:@"%ld位联系人", self.indexArray.count];
+            cell.textLabel.text = [NSString stringWithFormat:@"%ld位联系人", self.dataSource.count];
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
         } else {
@@ -417,9 +443,18 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             if ([self filterError:error]) {
 //                [self refreshOnlyCache];
                 [self.dataSource removeObject:user];
-//                NSIndexPath *deleteIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:[self.indexArray[indexPath.section - 1][indexPath.row] section]];
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//                if ((NSInteger)[self.indexArray[indexPath.section - 1] count] == 1) {
+//                    [self.indexArray removeObject:self.indexArray[indexPath.section - 1]];
+//                    [self.indexTitleArray removeObject:self.indexTitleArray[indexPath.section - 1]];
+//                } else {
+//                    NSMutableArray *removeSubArray = self.indexArray[indexPath.section - 1];
+//                    [removeSubArray removeObject:removeSubArray[indexPath.row]];
+//                    [self.indexArray replaceObjectAtIndex:indexPath.section - 1 withObject:removeSubArray];
+//                }
+//                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
+            [self sortDataSourceWithIndex];
+            [self.tableView reloadData];
         }];
     }
 }
