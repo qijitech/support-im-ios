@@ -20,6 +20,9 @@
 #import "JSBadgeView.h"
 #import <Masonry/Masonry.h>
 #import "ContactIndexModel.h"
+#import "UIViewTools.h"
+#import "IMToastUtil.h"
+
 
 static NSString *kCellImageKey = @"image";
 static NSString *kCellBadgeKey = @"badge";
@@ -44,8 +47,8 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 - (instancetype)init {
     if ((self = [super init])) {
         self.title = @"联系人";
-        [self refreshOnlyCache];
-//        [self refresh];
+//        [self refreshOnlyCache];
+        [self refresh];
     }
     return self;
 }
@@ -64,12 +67,13 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 ////        make.top.equalTo(self.mas_topLayoutGuideBottom);
 //        make.bottom.equalTo(self.mas_bottomLayoutGuideTop);
 //    }];
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationFriendListNeedRefresh object:nil];
+
     self.tableView.sectionIndexColor = [UIColor darkGrayColor];
     self.tableView.sectionIndexBackgroundColor = nil;
     self.tableView.sectionIndexTrackingBackgroundColor = nil;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,6 +83,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             view.backgroundColor = nil;
         }
     }
+
 }
 
 - (void)dealloc {
@@ -86,7 +91,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 }
 
 - (void)setupTableView {
-    [UserInfoTableViewCell registerCellToTalbeView:self.tableView];
+//    [UserInfoTableViewCell registerCellToTalbeView:self.tableView];
     [self.tableView addSubview:self.refreshControl];
 }
 
@@ -182,9 +187,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
-    [self showProgress];
+//    [self showProgress];
     [self findFriendsAndBadgeNumberWithBlock:^(NSArray *friends, NSInteger badgeNumber, NSError *error) {
-        [self hideProgress];
+//        [self hideProgress];
         [Utils stopRefreshControl:refreshControl];
         if ([self filterError:error]) {
             [self refreshWithFriends:friends badgeNumber:badgeNumber];
@@ -335,7 +340,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
     return self.indexTitleArray.count ? self.indexTitleArray : nil;
 }
 
-
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"删除";
+}
 
 #pragma mark - Table view data delegate
 
@@ -363,6 +370,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSLog(@"indexTitle--%@",section ? (self.indexTitleArray.count ? self.indexTitleArray[section - 1] : nil) : nil);
     return section ? (self.indexTitleArray.count ? self.indexTitleArray[section - 1] : nil) : nil;
 }
 
@@ -371,7 +379,14 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UserInfoTableViewCell *cell = [UserInfoTableViewCell createOrDequeueCellByTableView:tableView];
+    
+    UserInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([UserInfoTableViewCell class])];
+    if (!cell) {
+        cell = [[UserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([UserInfoTableViewCell class])];
+    }
+    
+    
+//    UserInfoTableViewCell *cell = [UserInfoTableViewCell createOrDequeueCellByTableView:tableView];
     [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     static NSInteger kBadgeViewTag = 103;
     JSBadgeView *badgeView = (JSBadgeView *)[cell viewWithTag:kBadgeViewTag];
@@ -395,6 +410,7 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             cell.textLabel.text = [NSString stringWithFormat:@"%ld位联系人", self.dataSource.count];
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
             NSInteger indexCount = [self.indexArray[indexPath.section - 1][indexPath.row] index];
             AVUser *user = self.dataSource[indexCount];
@@ -402,10 +418,34 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
             cell.nameLabel.text = user.displayName;
         }
     }
+    
+//    BOOL titleLineView = !indexPath.section && !indexPath.row;
+//    BOOL cellLineView;
+//
+//    if (indexPath.section == self.indexTitleArray.count) {
+//        cellLineView = indexPath.section && (indexPath.row != [self.indexArray[indexPath.section - 1] count]);
+//    } else {
+//        cellLineView = indexPath.section && (indexPath.row != [self.indexArray[indexPath.section - 1] count] - 1);
+//    }
+//
+//    if (titleLineView || cellLineView) {
+//        UIView *lineView = [UIViewTools setLineView];
+//        [cell addSubview:lineView];
+//        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.height.mas_equalTo(1);
+//            make.bottom.equalTo(cell);
+//            make.left.equalTo(cell).with.offset(10);
+//            make.right.equalTo(cell).with.offset(-10);
+//        }];
+//    }
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.dataSource.count && indexPath.section == self.indexArray.count && indexPath.row == [self.indexArray.lastObject count]) {
+        return;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         SEL selector = NSSelectorFromString(self.headerSectionDatas[indexPath.row][kCellSelectorKey]);
@@ -425,6 +465,9 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        return NO;
+    }
+    if (indexPath.section == self.indexArray.count && indexPath.row == [self.indexArray.lastObject count]) {
         return NO;
     }
     return YES;
@@ -452,9 +495,11 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
 //                    [self.indexArray replaceObjectAtIndex:indexPath.section - 1 withObject:removeSubArray];
 //                }
 //                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self sortDataSourceWithIndex];
+                [self.tableView reloadData];
+            } else {
+                [IMToastUtil toastWithText:error.localizedDescription];
             }
-            [self sortDataSourceWithIndex];
-            [self.tableView reloadData];
         }];
     }
 }

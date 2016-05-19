@@ -116,6 +116,10 @@ static NSString *cellIndentifier = @"cellIndentifier";
     [self searchUser:content];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"删除";
+}
+
 # pragma mark - lazyload 
 
 - (UITableView *)tableView {

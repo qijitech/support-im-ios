@@ -26,7 +26,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
 - (void)loadDataSource {

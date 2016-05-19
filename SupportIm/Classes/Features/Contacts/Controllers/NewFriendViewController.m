@@ -16,6 +16,8 @@
 #import "JSBadgeView.h"
 #import "AddFriendViewController.h"
 
+static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefresh";
+
 
 @interface NewFriendViewController ()
 @property (nonatomic, assign) BOOL didSetupConstraints;
@@ -63,10 +65,10 @@
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
-    [self showProgress];
+//    [self showProgress];
     WEAKSELF
     [[UserManager manager] findAddRequestsWithBlock : ^(NSArray *objects, NSError *error) {
-        [self hideProgress];
+//        [self hideProgress];
         if (refreshControl) {
             [refreshControl endRefreshing];
         }
@@ -74,9 +76,9 @@
         }
         else {
             if ([self filterError:error]) {
-                [self showProgress];
+//                [self showProgress];
                 [[UserManager manager] markAddRequestsAsRead:objects block:^(BOOL succeeded, NSError *error) {
-                    [self hideProgress];
+//                    [self hideProgress];
                     if (!error && objects.count > 0) {
                         self.needRefreshFriendListVC = YES;
                     }
@@ -119,6 +121,10 @@
 - (void)pushAddFriendViewController {
     AddFriendViewController *addFriendViewController = [[AddFriendViewController alloc] init];
     [self.navigationController pushViewController:addFriendViewController animated:YES];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"删除";
 }
 
 #pragma mark - Table view data source
@@ -164,6 +170,7 @@
         [self hideProgress];
         if ([self filterError:error]) {
             [self showProgress];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationFriendListNeedRefresh object:nil];
             [[ChatManager manager] sendWelcomeMessageToOther:addRequest.fromUser.objectId text:@"我们已经是好友了，来聊天吧" block:^(BOOL succeeded, NSError *error) {
                 [self hideProgress];
                 [self showHUDText:@"添加成功"];

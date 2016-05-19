@@ -14,7 +14,7 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import "AVUser+Custom.h"
 
-#define KEY_USERNAME @"KEY_USERNAME"
+#define KEY_USERNAME @"KEY_IM_USERNAME"
 
 
 static UIImage *defaultAvatar;
@@ -155,7 +155,7 @@ static UserManager *userManager;
 - (void)findFriendsWithBlock:(AVArrayResultBlock)block {
     AVUser *user = [AVUser currentUser];
     AVQuery *q = [user followeeQuery];
-    q.cachePolicy = kAVCachePolicyNetworkElseCache;
+    q.cachePolicy = kAVCachePolicyCacheThenNetwork;
     [q findObjectsInBackgroundWithBlock: ^(NSArray *objects, NSError *error) {
         if (error == nil) {
             [[CacheManager manager] registerUsers:objects];
@@ -317,6 +317,7 @@ static UserManager *userManager;
     AVQuery *q = [AddRequest query];
     [q includeKey:kAddRequestFromUser];
     [q whereKey:kAddRequestToUser equalTo:curUser];
+    [q setCachePolicy:kAVCachePolicyCacheThenNetwork];
     [q orderByDescending:@"createdAt"];
     [q findObjectsInBackgroundWithBlock:block];
 }

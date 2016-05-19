@@ -14,6 +14,7 @@
 #import "LZPushManager.h"
 #import "AVUser+Custom.h"
 
+
 @interface UserInfoViewController ()
 
 @property (strong, nonatomic) AVUser *user;
@@ -77,6 +78,7 @@
         if ([self filterError:error]) {
             [self showProgress];
             NSString *text = [NSString stringWithFormat:@"%@ 申请加你为好友", self.user.username];
+
             [[LZPushManager manager] pushMessage:text userIds:@[self.user.objectId] block:^(BOOL succeeded, NSError *error) {
                 [self hideProgress];
                 [self showHUDText:@"申请成功"];

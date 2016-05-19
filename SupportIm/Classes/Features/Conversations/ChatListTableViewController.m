@@ -239,5 +239,8 @@ static NSString *cellIdentifier = @"ContactCell";
     return [ConversationTableViewCell heightOfCell];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"删除";
+}
 
 @end
