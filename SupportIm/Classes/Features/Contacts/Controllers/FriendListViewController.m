@@ -420,25 +420,25 @@ static NSString *const kNotificationFriendListNeedRefresh = @"FriendListNeedRefr
         }
     }
     
-//    BOOL titleLineView = !indexPath.section && !indexPath.row;
-//    BOOL cellLineView;
-//
-//    if (indexPath.section == self.indexTitleArray.count) {
-//        cellLineView = indexPath.section && (indexPath.row != [self.indexArray[indexPath.section - 1] count]);
-//    } else {
-//        cellLineView = indexPath.section && (indexPath.row != [self.indexArray[indexPath.section - 1] count] - 1);
-//    }
-//
-//    if (titleLineView || cellLineView) {
-//        UIView *lineView = [UIViewTools setLineView];
-//        [cell addSubview:lineView];
-//        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.height.mas_equalTo(1);
-//            make.bottom.equalTo(cell);
-//            make.left.equalTo(cell).with.offset(10);
-//            make.right.equalTo(cell).with.offset(-10);
-//        }];
-//    }
+    BOOL titleLineView = !indexPath.section && !indexPath.row;
+    BOOL cellLineView;
+
+    if (indexPath.section == self.indexTitleArray.count) {
+        cellLineView = indexPath.section && (indexPath.row != [self.indexArray[indexPath.section - 1] count]);
+    } else {
+        cellLineView = indexPath.section && (indexPath.row != [self.indexArray[indexPath.section - 1] count] - 1);
+    }
+
+    if (titleLineView || cellLineView) {
+        UIView *lineView = [UIViewTools setLineView];
+        [cell addSubview:lineView];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(1);
+            make.bottom.equalTo(cell);
+            make.left.equalTo(cell).with.offset(10);
+            make.right.equalTo(cell).with.offset(-10);
+        }];
+    }
 
     return cell;
 }

@@ -13,6 +13,7 @@
 
 #import <AMapSearchKit/AMapSearchKit.h>
 #import "IMToastUtil.h"
+#import "UIViewTools.h"
 
 static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 
@@ -46,8 +47,8 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Should init MAMap in init ViewController, not here. But you can do not note ,if need
-//    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
-//    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
+    [MAMapServices sharedServices].apiKey = (NSString *)APIKey;
+    [AMapSearchServices sharedServices].apiKey = (NSString *)APIKey;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"位置";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(sendLocation)];
@@ -372,12 +373,28 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
         cell.textLabel.attributedText = [self colorDetailText:point.name withTextColor:[UIColor blackColor]];
         cell.detailTextLabel.attributedText = [self colorDetailText:[NSString stringWithFormat:@"%@%@%@%@", point.province, point.city, point.district, point.address] withTextColor:[UIColor grayColor]];
         if(indexPath.row == self.selectRow)  cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        UIView *lineView = [UIViewTools setLineView];
+        [cell addSubview:lineView];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(1);
+            make.bottom.equalTo(cell);
+            make.left.equalTo(cell).with.offset(10);
+            make.right.equalTo(cell).with.offset(-10);
+        }];
         return cell;
     } else {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SearchTipCell"];
         AMapTip *tip = self.tipsArray[indexPath.row];
         cell.textLabel.attributedText = [self colorDetailText:tip.name withTextColor:[UIColor blackColor]];
         cell.detailTextLabel.attributedText = [self colorDetailText:[NSString stringWithFormat:@"%@", tip.district] withTextColor:[UIColor grayColor]];
+        UIView *lineView = [UIViewTools setLineView];
+        [cell addSubview:lineView];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(1);
+            make.bottom.equalTo(cell);
+            make.left.equalTo(cell).with.offset(10);
+            make.right.equalTo(cell).with.offset(-10);
+        }];
         return cell;
     }
 }
@@ -389,6 +406,7 @@ static const NSString *APIKey = @"67a6a84bac750ce757a66f4c33ecfdc4";
         _tableView = [[UITableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _tableView;
 }
